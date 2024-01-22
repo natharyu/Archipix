@@ -1,0 +1,41 @@
+@mixin flex($direction: row, $justify: center, $align: center, $gap: 0) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+  gap: $gap;
+}
+
+@mixin transition($time, $type: ease-in-out) {
+  transition: all $time $type;
+}
+
+@mixin sm {
+  @media (min-width: #{$mobile}) {
+    @content;
+  }
+}
+
+@mixin md {
+  @media (min-width: #{$tablet}) and (max-width: #{$desktop - 1px}) {
+    @content;
+  }
+}
+
+@mixin lg {
+  @media (min-width: #{$desktop}) {
+    @content;
+  }
+}
+
+@mixin xl {
+  @media (min-width: #{$widescreen}) {
+    @content;
+  }
+}
+
+@mixin xxl {
+  @media (min-width: #{$fullhd}) {
+    @content;
+  }
+}

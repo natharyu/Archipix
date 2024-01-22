@@ -1,0 +1,181 @@
+@import url("https://cdn.jsdelivr.net/gh/jgthms/minireset.css@master/minireset.min.css");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;700&display=swap");
+@import "./assets/styles/settings.scss";
+
+* {
+  font-family: "Montserrat", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Montserrat Alternates", sans-serif;
+}
+
+body {
+  background-color: var(--base);
+  width: 100vw;
+  height: 100vh;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  @include flex(column, normal, normal, 0);
+  .theme-toggle {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 3.5rem;
+    height: 1.9rem;
+    input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--neutral);
+      border-radius: 1rem;
+      @include transition(0.3s);
+      &:before {
+        position: absolute;
+        content: "🔆";
+        height: 1.5rem;
+        width: 1.5rem;
+        left: 0.2rem;
+        bottom: 0.2rem;
+        background-color: var(--base);
+        border-radius: 1rem;
+        @include transition(0.3s);
+      }
+    }
+    input:checked + .slider {
+      background-color: var(--primary);
+    }
+    input:focus + .slider {
+      box-shadow: 0 0 1px var(--primary);
+    }
+    input:checked + .slider:before {
+      content: "🌛";
+      transform: translateX(1.5rem);
+    }
+  }
+  a {
+    text-decoration: none;
+    @include transition(0.3s);
+    &:visited {
+      color: inherit;
+    }
+  }
+}
+
+#client {
+  width: 100%;
+  height: 100%;
+  @include flex(column, normal, center, 0);
+  header,
+  footer {
+    width: 100%;
+    height: 5rem;
+    @include flex(row, normal, center, 0);
+    padding: 1rem;
+    background-color: var(--base3);
+    color: var(--base-content);
+    box-shadow: var(--neutral) 0 0 1rem;
+  }
+  header {
+    position: fixed;
+    top: 0;
+    z-index: 50;
+    .burger-menu {
+      width: 2.5rem;
+      height: 2.5rem;
+      cursor: pointer;
+      display: block;
+      @include lg {
+        display: none;
+      }
+      svg {
+        stroke: var(--base-content);
+        @include transition(0.3s);
+        &:hover {
+          cursor: pointer;
+          stroke: var(--primary);
+        }
+      }
+    }
+    h1 {
+      font-size: 2rem;
+      font-weight: bold;
+      flex-grow: 1;
+      text-align: center;
+      @include lg {
+        text-align: inherit;
+        flex-grow: inherit;
+        font-size: 2.5rem;
+      }
+    }
+    nav {
+      display: none;
+      @include lg {
+        @include flex(row, flex-end, center, 1rem);
+      }
+      flex-grow: 1;
+      a {
+        font-size: 1.2rem;
+        &:hover {
+          color: var(--primary);
+        }
+        &:active {
+          color: var(--secondary);
+        }
+      }
+    }
+    .mobile-nav {
+      display: block;
+      position: fixed;
+      z-index: 100;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background-color: rgba(#4c566a, 0.8);
+      @include lg {
+        display: none;
+      }
+      div {
+        @include flex(column, normal, center, 1rem);
+        height: 100%;
+        width: 80%;
+        padding: 1rem;
+        @include md {
+          width: 50%;
+        }
+        background-color: var(--primary);
+      }
+      ul:first-child {
+        @include flex(row, normal, center, 1rem);
+      }
+    }
+  }
+  main {
+    margin-top: 5rem;
+    padding: 1rem 0;
+    @include flex(column, normal, center, 0);
+    width: 100%;
+    @include lg {
+      width: 80%;
+    }
+    flex-grow: 1;
+  }
+}
