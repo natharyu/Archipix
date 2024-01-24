@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import ThemeToggler from "../../../../Components/ThemeToggler";
+
 function MobileNav({ setShowMobileNav }) {
   return (
     <nav className="mobile-nav">
