@@ -1,0 +1,104 @@
+DECLARE newUUID UUID;
+SET newUUID = UUID();
+
+WHILE EXISTS (SELECT 1 FROM MaTable WHERE id = newUUID) DO
+    SET newUUID = UUID();
+END WHILE;
+
+-- Maintenant, newUUID est un UUID unique que vous pouvez utiliser pour l'insertion.
+INSERT INTO MaTable (id, autreColonne) VALUES (newUUID, 'Valeur');
+
+
++-------------------------------------+
+|               Utilisateur           |
++-------------------------------------+
+| idUtilisateur: UUID (PK)             |
+| nom: VARCHAR(255)                    |
+| email: VARCHAR(255)                  |
+| motDePasse: VARCHAR(255)             |
+| + fichiers: Set<Fichier>             |
+| + dossiers: Set<Dossier>             |
+| + partages: Set<Partage>             |
++-------------------------------------+
+|
+|                    /\
+|                    |
+|                    |
+|                    |
+|                    |
+|                    |
+|                    |
+|                    |
+|
+| +-----------------------------------+
+| |              Fichier              |
+| +-----------------------------------+
+| | idFichier: UUID (PK)              |
+| | nomFichier: VARCHAR(255)          |
+| | taille: INT                        |
+| | chemin: VARCHAR(255)              |
+| | dateCreation: DATETIME            |
+| | + proprietaire: Utilisateur       |
+| | + partages: Set<Partage>          |
+| +-----------------------------------+
+| |                                  |
+| | - Set<Dossier> sousDossiers       |
+| |                                  |
+| | - Dossier dossierParent           |
++------------------+                   |
+                   \                  |
+                    \                 |
+                     \                |
+                      \               |
+                       \              |
+                        \             |
++-----------------------------------+    
+|             Dossier                |
++-----------------------------------+
+| idDossier: UUID (PK)               |
+| nomDossier: VARCHAR(255)           |
+| dateCreation: DATETIME             |
+| + proprietaire: Utilisateur        |
+| + fichiers: Set<Fichier>           |
+| + sousDossiers: Set<Dossier>       |
+| + partages: Set<Partage>           |
+| - Dossier dossierParent            |
++-----------------------------------+
+|                                   |
+| - Set<Fichier> fichiers            |
+|                                   |
+| - Set<Dossier> sousDossiers        |
+|                                   |
+| - Dossier dossierParent            |
++-----------------------------------+
+|
+| +--------------------------------------+
+| |               Partage                |
+| +--------------------------------------+
+| | idPartage: UUID (PK)                  |
+| | destinataire: VARCHAR(255)            |
+| | permissions: VARCHAR(255)             |
+| | expiration: DATETIME                  |
+| | + elementPartage: ElementPartage      |
++-----------------------------------------+
+
+
+Explications des Relations :
+Relations Utilisateur - Fichier :
+
+Un utilisateur peut posséder plusieurs fichiers (0..*), tandis que chaque fichier a un seul propriétaire (1).
+Relations Utilisateur - Dossier :
+
+Un utilisateur peut posséder plusieurs dossiers (0..*), tandis que chaque dossier a un seul propriétaire (1).
+Relations Fichier - Partage :
+
+Un fichier peut être partagé avec plusieurs utilisateurs (0..*), tandis que chaque partage est associé à un seul fichier (1).
+Relations Dossier - Partage :
+
+Un dossier peut être partagé avec plusieurs utilisateurs (0..*), tandis que chaque partage est associé à un seul dossier (1).
+Relations Dossier - Fichier :
+
+Un dossier peut contenir plusieurs fichiers (0..*), tandis que chaque fichier peut appartenir à un seul dossier (1).
+Relations Dossier (hiérarchie) :
+
+Un dossier peut avoir plusieurs sous-dossiers (0..*), tandis que chaque sous-dossier a un dossier parent (1).

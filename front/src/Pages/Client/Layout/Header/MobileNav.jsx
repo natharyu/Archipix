@@ -10,7 +10,7 @@ function MobileNav({ setShowMobileNav }) {
             <h2>Menu</h2>
           </li>
           <li>
-            <button className="close" onClick={() => setShowMobileNav(false)}>
+            <button className="close-mobile-nav" onClick={() => setShowMobileNav(false)}>
               X
             </button>
           </li>

@@ -1,9 +1,27 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
 import ThemeToggler from "../../../../Components/ThemeToggler";
+import { logout } from "../../../../store/slices/auth";
 import MobileNav from "./MobileNav";
 function Header() {
   const [showMobileNav, setShowMobileNav] = useState(false);
+  const { isLoggedIn } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    fetch(`/auth/logout`, {
+      credentials: "include",
+    }).then((res) => {
+      if (res.ok) {
+        dispatch(logout());
+        navigate("/connexion");
+      } else {
+        console.log(res.error);
+      }
+    });
+  };
 
   return (
     <header>
@@ -14,8 +32,18 @@ function Header() {
       </div>
       <h1>Mon e-commerce</h1>
       <nav>
-        <NavLink to="/">Home</NavLink>
-        <NavLink to="/connexion">Login</NavLink>
+        <NavLink to="/">Accueil</NavLink>
+        {isLoggedIn ? (
+          <>
+            <button onClick={handleLogout}>Deconnexion</button>
+          </>
+        ) : (
+          <>
+            <NavLink to="/connexion">Connexion</NavLink>
+            <NavLink to="/inscription">Inscription</NavLink>
+          </>
+        )}
+
         <ThemeToggler />
       </nav>
       {showMobileNav && <MobileNav setShowMobileNav={setShowMobileNav} />}
