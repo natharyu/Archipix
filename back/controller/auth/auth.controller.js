@@ -52,7 +52,7 @@ const register = async (req, res) => {
     const templateParams = {
       to_email: email,
       subject: "Vérification de l'adresse e-mail",
-      message: `http://localhost:3000/verify/${emailVerificationToken}`,
+      message: `http://localhost:3000/verification-email/${emailVerificationToken}`,
     };
 
     try {
@@ -202,8 +202,8 @@ const verifyEmail = async (req, res) => {
     if (!user) {
       return res.status(400).json({ error: "Lien de vérification invalide." });
     }
-    const result = await User.update({ is_verified: true, email_verification_token: null }, user.id);
-    return res.json({ message: "E-mail vérifié avec succès." });
+    await User.update({ is_verified: true, email_verification_token: null }, user.id);
+    return res.json({ message: "Adresse e-mail validée, veuillez-vous connecter." });
   } catch (error) {
     return res.status(500).json({ error: "Erreur lors de la vérification de l'e-mail." });
   }

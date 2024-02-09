@@ -34,6 +34,12 @@
         }
       }
     }
+    .brand {
+      &:hover {
+        cursor: pointer;
+        text-shadow: 0 0 0.1rem var(--primary);
+      }
+    }
     h1 {
       font-size: 2rem;
       font-weight: bold;
@@ -51,6 +57,16 @@
         @include flex(row, flex-end, center, 1rem);
       }
       flex-grow: 1;
+      button {
+        background-color: transparent;
+        border: none;
+        @include transition(0.3s);
+        font-size: 1.2rem;
+        color: var(--error);
+        &:hover {
+          text-shadow: 0 0 1rem var(--error);
+        }
+      }
     }
     .mobile-nav {
       display: block;
@@ -103,6 +119,8 @@
     margin-top: 6.5rem;
     margin-bottom: 1.5rem;
     padding: 1rem 0;
+    border-radius: 0.5rem;
+    box-shadow: var(--neutral) 0 0 2px;
     @include flex(column, normal, center, 0);
     width: 100%;
     @include lg {
@@ -110,5 +128,152 @@
     }
     flex-grow: 1;
     background-color: var(--base2);
+  }
+  footer {
+    height: fit-content;
+    section {
+      width: 80%;
+      @include flex(column, space-around, center, 1rem);
+      margin: 0 auto;
+      @include lg {
+        flex-direction: row;
+      }
+      nav,
+      div {
+        @include flex(column, normal, center, 1rem);
+      }
+      h3 {
+        font-weight: bold;
+        font-size: 1.5rem;
+      }
+      nav button {
+        background-color: transparent;
+        border: none;
+        @include transition(0.3s);
+        font-size: 1.2rem;
+        color: var(--base-content);
+        &:hover {
+          color: var(--primary);
+          text-shadow: 0 0 1rem var(--base-content);
+        }
+      }
+    }
+  }
+}
+#home {
+  @include flex(column, normal, center, 1rem);
+  flex-grow: 1;
+  padding: 0 1rem;
+  width: 100%;
+  article:first-child {
+    max-height: 40rem;
+    figure {
+      height: 100%;
+      img {
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
+  article:last-child {
+    @include flex(column, center, normal, 1rem);
+    h2 {
+      font-size: 2rem;
+      font-weight: bold;
+      text-align: center;
+    }
+  }
+}
+#files {
+  width: 100%;
+  padding: 1rem;
+  @include flex(column, normal, center, 1rem);
+  article:first-child {
+    width: 100%;
+    @include flex(row, normal, center, 1rem);
+    h2 {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+    .add-file,
+    .close-add-file {
+      cursor: pointer;
+      color: var(--base-content);
+      @include transition(0.3s);
+      font-size: 2.5rem;
+    }
+    .add-file {
+      &:hover {
+        color: var(--primary);
+      }
+    }
+    .close-add-file {
+      &:hover {
+        color: var(--error);
+      }
+    }
+  }
+  .drag-and-drop {
+    @include flex(column, normal, normal, 1rem);
+    cursor: pointer;
+    width: 100%;
+    background-color: var(--base);
+    padding: 1rem;
+    border: 2px dashed var(--base-content);
+    border-radius: 0.5rem;
+    @include transition(0.3s);
+    &:hover {
+      border-color: var(--primary);
+      background-color: var(--base3);
+    }
+    div {
+      @include flex(column, normal, center, 1rem);
+    }
+    .file-list {
+      width: 100%;
+      @include flex(column, normal, normal, 1rem);
+      @include lg {
+        @include flex(row, space-around, normal, 1rem);
+      }
+      h4 {
+        font-weight: bold;
+        font-size: 1.2rem;
+        text-align: center;
+      }
+      .valide-file,
+      .invalid-file {
+        font-size: 1rem;
+        margin-right: 0.5rem;
+      }
+      .valide-file {
+        color: var(--success);
+      }
+      .invalid-file {
+        color: var(--error);
+      }
+    }
+  }
+  .active-drag-and-drop {
+    border-color: var(--primary);
+    background-color: var(--base3);
+  }
+
+  #progress {
+    display: none;
+    width: 90%;
+    height: 1.5rem;
+    background-color: var(--base3);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    .progress-bar {
+      transition: width 0.1s ease;
+      text-align: center;
+      line-height: 1.5rem;
+      height: 100%;
+      width: 0%;
+      color: var(--primary-content);
+      font-weight: bold;
+      background-color: var(--primary);
+    }
   }
 }

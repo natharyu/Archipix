@@ -71,6 +71,7 @@
     text-decoration: none;
     @include transition(0.3s);
     font-size: 1.2rem;
+    color: var(--base-content);
     &:visited {
       color: inherit;
     }

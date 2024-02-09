@@ -1,13 +1,11 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-// import useToastStore from "store/toast.jsx";
 import { useForm } from "react-hook-form";
-// import { createCustomer } from "slices/stripeSlice.js";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setToast } from "../../store/slices/toast";
 
 const Register = () => {
   const navigate = useNavigate();
-  // const { setToast } = useToastStore();
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const {
@@ -18,11 +16,7 @@ const Register = () => {
 
   const onSubmit = async (data) => {
     setIsLoading(true);
-    let stripeId;
-    await dispatch(createCustomer({ email: data.email }))
-      .then((res) => (stripeId = res.payload.id))
-      .catch((err) => setToast(err.message, "error", true));
-    await fetch(`${import.meta.env.VITE_AUTH_BASEURL}/signup`, {
+    await fetch(`/auth/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -30,24 +24,39 @@ const Register = () => {
       body: JSON.stringify({
         email: data.email,
         password: data.password,
-        stripeId: stripeId,
+        username: data.username,
       }),
     })
       .then((res) => res.json())
       .then((res) => {
         if (res.error) {
-          // return setToast(res.error, "error", true);
+          return dispatch(setToast({ message: res.error, type: "error", showToast: true }));
         }
-        navigate("/login");
-        // setToast(res.message, "success", true);
+        navigate("/connexion");
+        dispatch(setToast({ message: res.message, type: "success", showToast: true }));
       });
-
     setIsLoading(false);
   };
 
   return (
     <section id="register">
       <form onSubmit={handleSubmit(onSubmit)}>
+        <label>
+          Nom d'utilisateur :
+          <input
+            type="text"
+            className={`${errors.username ? "inputError" : ""}`}
+            placeholder="Nom d'utilisateur"
+            {...register("username", {
+              required: "Veuillez saisir votre nom d'utilisateur.",
+              pattern: {
+                value: /[a-zA-Z0-9]{3,25}/,
+                message: "Le nom d'utilisateur doit contenir entre 3 et 25 caractères.",
+              },
+            })}
+          />
+          <span>{errors.username?.message}</span>
+        </label>
         <label>
           E-mail :
           <input
@@ -79,9 +88,7 @@ const Register = () => {
           />
           <span>{errors.password?.message}</span>
         </label>
-        <button type="submit">
-          {isLoading ? <span className="loading loading-dots loading-md"></span> : "S'inscrire"}
-        </button>
+        <button type="submit">{isLoading ? "En cours..." : "S'inscrire"}</button>
       </form>
       <aside>
         <h2>S'incrire !</h2>

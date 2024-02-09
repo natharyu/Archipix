@@ -2,6 +2,7 @@ import express from "express";
 import authController from "../../controller/auth/auth.controller.js";
 
 const authRoutes = express.Router();
+//route prefix: /auth
 
 //Get Routes
 authRoutes.get("/verify-email/:token", authController.verifyEmail);

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import ThemeToggler from "../../../../Components/ThemeToggler";
 import { logout } from "../../../../store/slices/auth";
 import MobileNav from "./MobileNav";
@@ -30,11 +30,14 @@ function Header() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
         </svg>
       </div>
-      <h1>Mon e-commerce</h1>
+      <Link to="/" className="brand">
+        <h1>Home-Cloud</h1>
+      </Link>
       <nav>
         <NavLink to="/">Accueil</NavLink>
         {isLoggedIn ? (
           <>
+            <NavLink to="/mes-fichiers">Mes Fichiers</NavLink>
             <button onClick={handleLogout}>Deconnexion</button>
           </>
         ) : (
