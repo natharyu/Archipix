@@ -7,7 +7,7 @@ const initialState = {
 };
 
 export const getFiles = createAsyncThunk("file/getFiles", async (folder_id) => {
-  const response = await fetch("/api/v1/file/get", {
+  const response = await fetch(`/api/v1/file/get/${folder_id}`, {
     method: "GET",
   });
   return await response.json();

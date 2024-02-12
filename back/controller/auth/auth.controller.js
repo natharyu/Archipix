@@ -3,9 +3,9 @@ import bcrypt from "bcrypt";
 import crypto from "crypto";
 import fs from "fs";
 import jwt from "jsonwebtoken";
-import Folder from "../../model/Folder.js";
-import Query from "../../model/Query.js";
-import User from "../../model/User.js";
+import Folder from "../../model/Folder.model.js";
+import Query from "../../model/Query.model.js";
+import User from "../../model/User.model.js";
 
 const register = async (req, res) => {
   try {
@@ -30,6 +30,7 @@ const register = async (req, res) => {
     const newFolder = await Folder.create({
       id: storage.uuid,
       user_id: newUser.insertId,
+      parent_id: null,
       label: username,
       created_at: new Date(),
     });

@@ -235,6 +235,9 @@
       @include lg {
         @include flex(row, space-around, normal, 1rem);
       }
+      li {
+        @include flex(row, normal, center, 0.5rem);
+      }
       h4 {
         font-weight: bold;
         font-size: 1.2rem;

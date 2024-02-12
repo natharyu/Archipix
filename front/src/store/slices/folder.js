@@ -2,7 +2,9 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   rootFolder: [],
+  rootFolderName: "",
   currentFolder: [],
+  currentFolderName: "",
   loading: false,
   error: null,
 };
@@ -29,11 +31,15 @@ export const folderSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getRootFolder.fulfilled, (state, action) => {
-        state.rootFolder = action.payload;
+        state.rootFolder = action.payload.rootFolder;
+        state.rootFolderName = action.payload.rootFolderName;
+        state.currentFolder = action.payload.currentFolder;
+        state.currentFolderName = action.payload.currentFolderName;
         state.loading = false;
       })
       .addCase(getCurrentFolder.fulfilled, (state, action) => {
-        state.currentFolder = action.payload;
+        state.currentFolder = action.payload.currentFolder;
+        state.currentFolderName = action.payload.currentFolderName;
         state.loading = false;
       })
       .addMatcher(

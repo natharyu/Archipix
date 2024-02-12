@@ -9,8 +9,9 @@ class File {
 
   static async create(data) {
     const query =
-      "INSERT INTO file (user_id,folder_id, label, size, type, extension, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO file (id, user_id, folder_id, label, size, type, extension, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     const [result] = await pool.execute(query, [
+      data.id,
       data.user_id,
       data.folder_id,
       data.label,
