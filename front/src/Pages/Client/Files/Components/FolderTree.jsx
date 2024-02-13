@@ -1,10 +1,14 @@
-import { useDispatch, useSelector } from "react-redux";
-function FolderTree({ currentFolder }) {
-  const dispatch = useDispatch();
-  const { rootFolder, rootFolderName } = useSelector((state) => state.folder);
-  const entirePath = [];
+import { useSelector } from "react-redux";
+function FolderTree() {
+  const { pathName } = useSelector((state) => state.folder);
 
-  return <div>{currentFolder}</div>;
+  return (
+    <div>
+      {pathName.map((folder, index) => (
+        <span key={index}>{folder}/</span>
+      ))}
+    </div>
+  );
 }
 
 export default FolderTree;

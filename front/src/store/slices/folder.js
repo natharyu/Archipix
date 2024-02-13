@@ -5,9 +5,18 @@ const initialState = {
   rootFolderName: "",
   currentFolder: [],
   currentFolderName: "",
+  path: [],
+  pathName: [],
+  folders: [],
   loading: false,
   error: null,
 };
+export const getFolders = createAsyncThunk("file/getFolders", async (parent_id) => {
+  const response = await fetch(`/api/v1/folder/get/${parent_id}`, {
+    method: "GET",
+  });
+  return await response.json();
+});
 
 export const getRootFolder = createAsyncThunk("folder/getRoot", async () => {
   const response = await fetch("/api/v1/folder/getRoot", {
@@ -24,12 +33,33 @@ export const getCurrentFolder = createAsyncThunk("folder/getCurrent", async (fol
   return await response.json();
 });
 
+export const getPath = createAsyncThunk("folder/getPath", async (folder_id) => {
+  const response = await fetch(`/api/v1/folder/getPath/${folder_id}`, {
+    method: "GET",
+  });
+  return await response.json();
+});
+
 export const folderSlice = createSlice({
   name: "folder",
   initialState,
-  reducers: {},
+  reducers: {
+    setCurrentFolder: (state, action) => {
+      state.currentFolder = action.payload.currentFolder;
+      state.currentFolderName = action.payload.currentFolderName;
+    },
+  },
   extraReducers: (builder) => {
     builder
+      .addCase(getPath.fulfilled, (state, action) => {
+        state.path = action.payload.path;
+        state.pathName = action.payload.pathName;
+        state.loading = false;
+      })
+      .addCase(getFolders.fulfilled, (state, action) => {
+        state.folders = action.payload;
+        state.loading = false;
+      })
       .addCase(getRootFolder.fulfilled, (state, action) => {
         state.rootFolder = action.payload.rootFolder;
         state.rootFolderName = action.payload.rootFolderName;
@@ -58,6 +88,6 @@ export const folderSlice = createSlice({
   },
 });
 
-export const {} = folderSlice.actions;
+export const { setCurrentFolder } = folderSlice.actions;
 
 export default folderSlice.reducer;

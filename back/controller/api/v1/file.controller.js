@@ -25,12 +25,12 @@ const add = async (req, res) => {
     }
     const files = req.files.file;
     files.map(async (file) => {
-      const destination = `uploads/${req.body.currentFolder}/${file.name}`;
+      const destination = `uploads/${req.body.path}/${file.name}`;
       if (fs.existsSync(destination)) {
         return;
       }
       file.mv(destination, function (err) {
-        if (err) return res.status(500).send(err);
+        if (err) return res.status(500).json(err);
       });
       const [fileId] = await Query.generateUUID();
       await File.create({

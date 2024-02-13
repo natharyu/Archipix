@@ -11,7 +11,7 @@ function AddMenu() {
   const newFolderName = useRef(null);
   let percentage = 0;
   const dispatch = useDispatch();
-  const { currentFolder } = useSelector((state) => state.folder);
+  const { currentFolder, path } = useSelector((state) => state.folder);
   const dragZone = document.querySelector(".drag-and-drop");
   const { getRootProps, getInputProps, open, acceptedFiles, fileRejections, isDragActive } = useDropzone({
     noKeyboard: true,
@@ -54,6 +54,7 @@ function AddMenu() {
     const formData = new FormData();
     uploadedFiles.forEach((file) => formData.append("file", file));
     formData.append("currentFolder", currentFolder);
+    formData.append("path", path.join("/"));
 
     const xhr = new XMLHttpRequest();
     xhr.upload.onprogress = (event) => {
@@ -86,7 +87,20 @@ function AddMenu() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ currentFolder: currentFolder, newFolderName: newFolderName.current.value }),
+      body: JSON.stringify({
+        currentFolder: currentFolder,
+        newFolderName: newFolderName.current.value,
+        path: path.join("/"),
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        dispatch(setToast({ type: "success", message: "Dossier créé avec succès !", showToast: true }));
+        newFolderName.current.value = "";
+        setNewFolder(!newFolder);
+      }
+      if (!res.ok) {
+        dispatch(setToast({ type: "error", message: "Une erreur est survenue", showToast: true }));
+      }
     });
   };
 

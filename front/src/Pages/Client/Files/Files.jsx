@@ -1,21 +1,32 @@
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
+import FolderIcon from "@mui/icons-material/Folder";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SizeCalculator from "../../../Components/SizeCalculator";
 import { getFiles } from "../../../store/slices/files";
-import { getRootFolder } from "../../../store/slices/folder";
+import { getFolders, getPath, getRootFolder, setCurrentFolder } from "../../../store/slices/folder";
 import AddMenu from "./Components/AddMenu";
+import FileIcon from "./Components/FileIcon";
 import FolderTree from "./Components/FolderTree";
 function Files() {
   const [addMenu, setAddMenu] = useState(false);
-  const { files, isLoading } = useSelector((state) => state.file);
-  const { currentFolder } = useSelector((state) => state.folder);
+  const { files, isLoading: isLoadingFiles } = useSelector((state) => state.file);
+  const { currentFolder, isLoading: isLoadingFolder, folders } = useSelector((state) => state.folder);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getRootFolder());
     dispatch(getFiles(currentFolder));
+    dispatch(getFolders(currentFolder));
+    dispatch(getPath(currentFolder));
   }, [dispatch]);
+
+  const handleClickFolder = (id, label) => {
+    dispatch(getFolders(id));
+    dispatch(getFiles(id));
+    dispatch(getPath(id));
+    dispatch(setCurrentFolder({ currentFolder: id, currentFolderName: label }));
+  };
   return (
     <section id="files">
       <article>
@@ -28,10 +39,30 @@ function Files() {
       </article>
       {addMenu && <AddMenu />}
       <article className="folder-tree">
-        <FolderTree currentFolder={currentFolder} />
+        <FolderTree />
       </article>
       <article>
-        {isLoading ? (
+        {isLoadingFolder ? (
+          <p>Chargement...</p>
+        ) : (
+          <ul>
+            {folders.length === 0 ? null : (
+              <>
+                {folders.map((folder, index) => (
+                  <li key={index} onClick={() => handleClickFolder(folder.id, folder.label)}>
+                    <p>
+                      <FolderIcon className="icon" />
+                      {folder.label}
+                    </p>
+                  </li>
+                ))}
+              </>
+            )}
+          </ul>
+        )}
+      </article>
+      <article>
+        {isLoadingFiles ? (
           <p>Chargement...</p>
         ) : (
           <ul>
@@ -41,7 +72,10 @@ function Files() {
               <>
                 {files.map((file, index) => (
                   <li key={index}>
-                    <p>{file.label}</p>
+                    <p>
+                      <FileIcon ext={file.extension} />
+                      {file.label}
+                    </p>
                     <SizeCalculator size={file.size} />
                   </li>
                 ))}

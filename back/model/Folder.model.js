@@ -7,7 +7,17 @@ class Folder {
     return result;
   }
 
-  static async getEntirePath(id) {}
+  static async getOneById(id) {
+    const query = "SELECT id, user_id, parent_id, label FROM folder WHERE id = ? LIMIT 1";
+    const [result] = await pool.execute(query, [id]);
+    return result;
+  }
+
+  static async getByField(field, data) {
+    const query = `SELECT id, user_id, parent_id, label FROM folder WHERE ${field} = ?`;
+    const [result] = await pool.execute(query, [data]);
+    return result;
+  }
 }
 
 export default Folder;
