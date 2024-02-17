@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import ThemeToggler from "../../../../Components/ThemeToggler";
 import { logout } from "../../../../store/slices/auth";
+import { resetFileState } from "../../../../store/slices/files";
+import { resetFolderState } from "../../../../store/slices/folder";
 import MobileNav from "./MobileNav";
 function Header() {
   const [showMobileNav, setShowMobileNav] = useState(false);
@@ -16,6 +18,8 @@ function Header() {
     }).then((res) => {
       if (res.ok) {
         dispatch(logout());
+        dispatch(resetFileState());
+        dispatch(resetFolderState());
         navigate("/connexion");
       } else {
         console.log(res.error);

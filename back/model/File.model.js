@@ -2,7 +2,12 @@ import pool from "../config/database.js";
 
 class File {
   static async getOneByField(field, data) {
-    const query = `SELECT id, label, size, type, extension FROM file WHERE ${field} = ?`;
+    const query = `SELECT id, label, size, type, extension FROM file WHERE ${field} = ? LIMIT 1`;
+    const [result] = await pool.execute(query, [data]);
+    return result;
+  }
+  static async getAllByField(field, data) {
+    const query = `SELECT id, label, size, type, extension FROM file WHERE ${field} = ? ORDER BY ${field} ASC`;
     const [result] = await pool.execute(query, [data]);
     return result;
   }
@@ -28,6 +33,12 @@ class File {
       .map((key) => `${key} = ?`)
       .join(", ")} WHERE id = ?`;
     const [result] = await pool.execute(query, [...Object.values(data), id]);
+    return result;
+  }
+
+  static async delete(id) {
+    const query = `DELETE FROM file WHERE id = ?`;
+    const [result] = await pool.execute(query, [id]);
     return result;
   }
 }

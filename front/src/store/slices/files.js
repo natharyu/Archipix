@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   files: [],
+  currentFile: null,
   loading: false,
   error: null,
 };
@@ -13,14 +14,30 @@ export const getFiles = createAsyncThunk("file/getFiles", async (folder_id) => {
   return await response.json();
 });
 
+export const getFile = createAsyncThunk("file/getFile", async ({ id, label, path }) => {
+  const response = await fetch(`/api/v1/file/get/${id}/${label}/${path}`, {
+    method: "GET",
+  });
+  return await response.json();
+});
+
 export const fileSlice = createSlice({
   name: "file",
   initialState,
-  reducers: {},
+  reducers: {
+    resetCurrentFile: (state) => {
+      state.currentFile = null;
+    },
+    resetFileState: () => initialState,
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getFiles.fulfilled, (state, action) => {
         state.files = action.payload;
+        state.loading = false;
+      })
+      .addCase(getFile.fulfilled, (state, action) => {
+        state.currentFile = action.payload;
         state.loading = false;
       })
       .addMatcher(
@@ -39,6 +56,6 @@ export const fileSlice = createSlice({
   },
 });
 
-export const {} = fileSlice.actions;
+export const { resetCurrentFile, resetFileState } = fileSlice.actions;
 
 export default fileSlice.reducer;

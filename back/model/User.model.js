@@ -2,7 +2,7 @@ import pool from "../config/database.js";
 
 class User {
   static async getOneByField(field, data) {
-    const query = `SELECT id, email, password, storage, username, role, reset_token_expires FROM user WHERE ${field} = ?`;
+    const query = `SELECT id, email, password, storage, username, role, reset_token_expires, is_verified FROM user WHERE ${field} = ?`;
     const [result] = await pool.execute(query, [data]);
     return result;
   }

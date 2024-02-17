@@ -25,6 +25,7 @@ const register = async (req, res) => {
       password: hashedPassword,
       created_at: new Date(),
       email_verification_token: emailVerificationToken,
+      is_verified: false,
     });
 
     const newFolder = await Folder.create({
@@ -53,7 +54,7 @@ const register = async (req, res) => {
     const templateParams = {
       to_email: email,
       subject: "Vérification de l'adresse e-mail",
-      message: `http://localhost:3000/verification-email/${emailVerificationToken}`,
+      message: `http://localhost:5173/verification-email/${emailVerificationToken}`,
     };
 
     try {
@@ -80,7 +81,7 @@ const login = async (req, res) => {
     if (!user || !isPasswordValid) {
       return res.status(401).json({ error: "Erreur lors de la connexion." });
     }
-    if (user.isVerified === false) {
+    if (!user.is_verified) {
       return res.status(401).json({ error: "Veuillez verifier votre adresse e-mail avant de vous connecter." });
     }
     const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, process.env.JWT_SECRET, {

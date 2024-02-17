@@ -192,6 +192,7 @@
 #files {
   width: 100%;
   padding: 1rem;
+  flex-grow: 1;
   @include flex(column, normal, center, 1rem);
   article:first-child {
     width: 100%;
@@ -219,12 +220,15 @@
     }
   }
   article {
+    font-size: 1.2rem;
+    @include lg {
+      font-size: 1.5rem;
+    }
     width: 100%;
     ul {
       width: 100%;
       @include flex(column, normal, normal, 0);
       li {
-        font-size: 1.2rem;
         @include flex(row, space-between, center, 0);
         cursor: pointer;
         @include transition(0.3s);

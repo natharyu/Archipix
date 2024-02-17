@@ -48,9 +48,17 @@ export const folderSlice = createSlice({
       state.currentFolder = action.payload.currentFolder;
       state.currentFolderName = action.payload.currentFolderName;
     },
+    resetFolderState: () => initialState,
   },
   extraReducers: (builder) => {
     builder
+      .addCase(getRootFolder.fulfilled, (state, action) => {
+        state.rootFolder = action.payload.rootFolder;
+        state.rootFolderName = action.payload.rootFolderName;
+        state.currentFolder = action.payload.currentFolder;
+        state.currentFolderName = action.payload.currentFolderName;
+        state.loading = false;
+      })
       .addCase(getPath.fulfilled, (state, action) => {
         state.path = action.payload.path;
         state.pathName = action.payload.pathName;
@@ -58,13 +66,6 @@ export const folderSlice = createSlice({
       })
       .addCase(getFolders.fulfilled, (state, action) => {
         state.folders = action.payload;
-        state.loading = false;
-      })
-      .addCase(getRootFolder.fulfilled, (state, action) => {
-        state.rootFolder = action.payload.rootFolder;
-        state.rootFolderName = action.payload.rootFolderName;
-        state.currentFolder = action.payload.currentFolder;
-        state.currentFolderName = action.payload.currentFolderName;
         state.loading = false;
       })
       .addCase(getCurrentFolder.fulfilled, (state, action) => {
@@ -88,6 +89,6 @@ export const folderSlice = createSlice({
   },
 });
 
-export const { setCurrentFolder } = folderSlice.actions;
+export const { setCurrentFolder, resetFolderState } = folderSlice.actions;
 
 export default folderSlice.reducer;

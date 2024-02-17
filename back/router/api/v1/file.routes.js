@@ -6,6 +6,7 @@ const fileRoutes = express.Router();
 
 //get routes
 fileRoutes.get("/get/:folder_id", fileController.get);
+fileRoutes.get("/get/:id/:label/:path", fileController.getOne);
 
 //post routes
 fileRoutes.post("/add", fileController.add);

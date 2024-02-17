@@ -4,8 +4,10 @@ import { useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useDispatch, useSelector } from "react-redux";
 import SizeCalculator from "../../../../Components/SizeCalculator";
+import { getFiles } from "../../../../store/slices/files";
+import { getFolders } from "../../../../store/slices/folder";
 import { setToast } from "../../../../store/slices/toast";
-function AddMenu() {
+function AddMenu({ setAddMenu }) {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [newFolder, setNewFolder] = useState(false);
   const newFolderName = useRef(null);
@@ -74,9 +76,11 @@ function AddMenu() {
       acceptedFiles.length = 0;
       fileRejections.length = 0;
       dispatch(setToast({ type: "success", message: "Fichiers envoyés avec succès !", showToast: true }));
+      setAddMenu(false);
     };
     xhr.open("POST", "/api/v1/file/add", true);
     xhr.send(formData);
+    dispatch(getFiles(currentFolder));
   };
 
   const handleCreateFolder = (e) => {
@@ -97,6 +101,8 @@ function AddMenu() {
         dispatch(setToast({ type: "success", message: "Dossier créé avec succès !", showToast: true }));
         newFolderName.current.value = "";
         setNewFolder(!newFolder);
+        setAddMenu(false);
+        dispatch(getFolders(currentFolder));
       }
       if (!res.ok) {
         dispatch(setToast({ type: "error", message: "Une erreur est survenue", showToast: true }));
