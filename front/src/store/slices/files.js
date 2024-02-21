@@ -14,8 +14,8 @@ export const getFiles = createAsyncThunk("file/getFiles", async (folder_id) => {
   return await response.json();
 });
 
-export const getFile = createAsyncThunk("file/getFile", async ({ id, label, path }) => {
-  const response = await fetch(`/api/v1/file/get/${id}/${label}/${path}`, {
+export const getFile = createAsyncThunk("file/getFile", async ({ id, label, path, rootFolder }) => {
+  const response = await fetch(`/api/v1/file/get/${rootFolder}/${id}/${label}/${path}`, {
     method: "GET",
   });
   return await response.json();
@@ -25,6 +25,9 @@ export const fileSlice = createSlice({
   name: "file",
   initialState,
   reducers: {
+    setFiles: (state, action) => {
+      state.files = action.payload;
+    },
     resetCurrentFile: (state) => {
       state.currentFile = null;
     },
@@ -56,6 +59,6 @@ export const fileSlice = createSlice({
   },
 });
 
-export const { resetCurrentFile, resetFileState } = fileSlice.actions;
+export const { setFiles, resetCurrentFile, resetFileState } = fileSlice.actions;
 
 export default fileSlice.reducer;

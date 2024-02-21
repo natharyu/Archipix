@@ -36,7 +36,7 @@ class File {
     return result;
   }
 
-  static async delete(id) {
+  static async deleteOne(id) {
     const query = `DELETE FROM file WHERE id = ?`;
     const [result] = await pool.execute(query, [id]);
     return result;

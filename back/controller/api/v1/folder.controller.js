@@ -1,3 +1,4 @@
+import fs from "fs";
 import Folder from "../../../model/Folder.model.js";
 
 const get = async (req, res) => {
@@ -31,4 +32,33 @@ const getPath = async (req, res) => {
   }
 };
 
-export default { get, getPath };
+const checkEmptyFolder = async (path) => {
+  try {
+    const files = fs.readdirSync(path);
+    if (files.length > 0) {
+      return false;
+    }
+    return true;
+  } catch (error) {
+    return error;
+  }
+};
+const deleteOneFolder = async (req, res) => {
+  try {
+    const [folder] = await Folder.getOneById(req.body.folder_id);
+    if (!folder) {
+      return res.status(404).json({ error: "Dossier introuvable" });
+    }
+    const path = `./uploads/${req.body.path}/${folder.id}`;
+    if (!fs.existsSync(path)) {
+      return res.status(404).json({ error: "Dossier introuvable" });
+    }
+    fs.rmSync(path, { recursive: true });
+    await Folder.deleteOne(folder.id);
+    return res.json({ message: "Dossier supprimé avec succès !" });
+  } catch (error) {
+    return res.status(500).json({ error: "Une erreur est survenue" });
+  }
+};
+
+export default { get, getPath, deleteOneFolder };

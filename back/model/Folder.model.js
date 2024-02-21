@@ -18,6 +18,12 @@ class Folder {
     const [result] = await pool.execute(query, [data]);
     return result;
   }
+
+  static async deleteOne(id) {
+    const query = "DELETE FROM folder WHERE id = ?";
+    const [result] = await pool.execute(query, [id]);
+    return result;
+  }
 }
 
 export default Folder;

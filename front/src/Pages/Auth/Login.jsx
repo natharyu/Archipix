@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { checkAuth } from "../../store/slices/auth";
-import { getRootFolder } from "../../store/slices/folder";
 import { setToast } from "../../store/slices/toast";
 import ForgotPassword from "./ForgotPassword";
 
@@ -34,7 +33,6 @@ const Login = () => {
           return dispatch(setToast({ message: res.error, type: "error", showToast: true }));
         }
         dispatch(checkAuth());
-        dispatch(getRootFolder());
         navigate("/");
         dispatch(setToast({ message: res.message, type: "success", showToast: true }));
       });

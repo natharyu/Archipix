@@ -14,17 +14,24 @@ const get = async (req, res) => {
 
 const getOne = async (req, res) => {
   try {
-    const files = await fs.readdirSync("uploads/tmp");
-    files.map(async (file) => await fs.unlinkSync(`uploads/tmp/${file}`));
+    // await fs.mkdirSync(`uploads/${req.params.rootFolder}/tmp`);
+    const files = await fs.readdirSync(`uploads/${req.params.rootFolder}/tmp`);
+    if (files.length > 0) {
+      files.map(async (file) => await fs.unlinkSync(`uploads/${req.params.rootFolder}/tmp/${file}`));
+    }
     const [file] = await File.getOneByField("id", req.params.id);
     if (!file) {
       return res.status(404).json({ error: "Fichier introuvable" });
     }
     const path = req.params.path.replace("&&&", "/");
 
-    fs.copyFile(`uploads/${path}/${req.params.label}`, `uploads/tmp/${req.params.label}`, (err) => {
-      if (err) throw err;
-    });
+    fs.copyFile(
+      `uploads/${path}/${req.params.label}`,
+      `uploads/${req.params.rootFolder}/tmp/${req.params.label}`,
+      (err) => {
+        if (err) throw err;
+      }
+    );
     return res.json(file);
   } catch (error) {
     return res.status(500).json({ error: "Une erreur est survenue" });
@@ -76,4 +83,21 @@ const add = async (req, res) => {
   }
 };
 
-export default { get, getOne, add };
+const deleteOneFile = async (req, res) => {
+  try {
+    const [file] = await File.getOneByField("id", req.body.file_id);
+    if (!file) {
+      return res.status(404).json({ error: "Fichier introuvable" });
+    }
+    if (!fs.existsSync(`./uploads/${req.body.path}/${file.label}`)) {
+      return res.status(404).json({ error: "Fichier introuvable" });
+    }
+    fs.unlinkSync(`./uploads/${req.body.path}/${file.label}`);
+    await File.deleteOne(file.id);
+    return res.json({ message: "Fichier supprimé avec succès !" });
+  } catch (error) {
+    return res.status(500).json({ error: "Une erreur est survenue" });
+  }
+};
+
+export default { get, getOne, add, deleteOneFile };

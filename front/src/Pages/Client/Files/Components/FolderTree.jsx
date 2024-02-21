@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { getFiles } from "../../../../store/slices/files";
-import { getFolders, getPath, setCurrentFolder } from "../../../../store/slices/folder";
+import { setCurrentFolder } from "../../../../store/slices/folder";
 function FolderTree() {
   const { pathName, path } = useSelector((state) => state.folder);
   const dispatch = useDispatch();
@@ -12,9 +11,6 @@ function FolderTree() {
         currentFolderName: folder,
       })
     );
-    dispatch(getFiles(path[index]));
-    dispatch(getFolders(path[index]));
-    dispatch(getPath(path[index]));
   };
 
   return (

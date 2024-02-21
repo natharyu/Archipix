@@ -75,4 +75,7 @@ folderRoutes.post("/create", async (req, res) => {
   }
 });
 
+//delete routes
+folderRoutes.delete("/delete", folderController.deleteOneFolder);
+
 export default folderRoutes;

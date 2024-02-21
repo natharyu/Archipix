@@ -4,7 +4,6 @@ import { useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useDispatch, useSelector } from "react-redux";
 import SizeCalculator from "../../../../Components/SizeCalculator";
-import { getFiles } from "../../../../store/slices/files";
 import { getFolders } from "../../../../store/slices/folder";
 import { setToast } from "../../../../store/slices/toast";
 function AddMenu({ setAddMenu }) {
@@ -51,13 +50,24 @@ function AddMenu({ setAddMenu }) {
     );
   });
 
-  const handleSendFiles = () => {
+  const handleSendFiles = async () => {
     if (acceptedFiles.length === 0) return;
     const formData = new FormData();
     uploadedFiles.forEach((file) => formData.append("file", file));
     formData.append("currentFolder", currentFolder);
     formData.append("path", path.join("/"));
 
+    function consume(stream, total = 0) {
+      while (stream.state === "readable") {
+        var data = stream.read();
+        total += data.byteLength;
+        console.log("received " + data.byteLength + " bytes (" + total + " bytes in total).");
+      }
+      if (stream.state === "waiting") {
+        stream.ready.then(() => consume(stream, total));
+      }
+      return stream.closed;
+    }
     const xhr = new XMLHttpRequest();
     xhr.upload.onprogress = (event) => {
       percentage = parseInt((event.loaded / event.total) * 100);
@@ -80,7 +90,6 @@ function AddMenu({ setAddMenu }) {
     };
     xhr.open("POST", "/api/v1/file/add", true);
     xhr.send(formData);
-    dispatch(getFiles(currentFolder));
   };
 
   const handleCreateFolder = (e) => {

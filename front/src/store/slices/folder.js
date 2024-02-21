@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  rootFolder: [],
+  rootFolder: "",
   rootFolderName: "",
-  currentFolder: [],
+  currentFolder: "",
   currentFolderName: "",
   path: [],
   pathName: [],
