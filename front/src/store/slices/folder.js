@@ -26,13 +26,6 @@ export const getRootFolder = createAsyncThunk("folder/getRoot", async () => {
   return await response.json();
 });
 
-export const getCurrentFolder = createAsyncThunk("folder/getCurrent", async (folder_id) => {
-  const response = await fetch("/api/v1/folder/getCurrent", {
-    method: "GET",
-  });
-  return await response.json();
-});
-
 export const getPath = createAsyncThunk("folder/getPath", async (folder_id) => {
   const response = await fetch(`/api/v1/folder/getPath/${folder_id}`, {
     method: "GET",
@@ -44,6 +37,10 @@ export const folderSlice = createSlice({
   name: "folder",
   initialState,
   reducers: {
+    setRootFolder: (state, action) => {
+      state.rootFolder = action.payload.rootFolder;
+      state.rootFolderName = action.payload.rootFolderName;
+    },
     setCurrentFolder: (state, action) => {
       state.currentFolder = action.payload.currentFolder;
       state.currentFolderName = action.payload.currentFolderName;
@@ -55,8 +52,6 @@ export const folderSlice = createSlice({
       .addCase(getRootFolder.fulfilled, (state, action) => {
         state.rootFolder = action.payload.rootFolder;
         state.rootFolderName = action.payload.rootFolderName;
-        state.currentFolder = action.payload.currentFolder;
-        state.currentFolderName = action.payload.currentFolderName;
         state.loading = false;
       })
       .addCase(getPath.fulfilled, (state, action) => {
@@ -66,11 +61,6 @@ export const folderSlice = createSlice({
       })
       .addCase(getFolders.fulfilled, (state, action) => {
         state.folders = action.payload;
-        state.loading = false;
-      })
-      .addCase(getCurrentFolder.fulfilled, (state, action) => {
-        state.currentFolder = action.payload.currentFolder;
-        state.currentFolderName = action.payload.currentFolderName;
         state.loading = false;
       })
       .addMatcher(
@@ -89,6 +79,6 @@ export const folderSlice = createSlice({
   },
 });
 
-export const { setCurrentFolder, resetFolderState } = folderSlice.actions;
+export const { setRootFolder, setCurrentFolder, resetFolderState } = folderSlice.actions;
 
 export default folderSlice.reducer;

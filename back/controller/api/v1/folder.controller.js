@@ -1,5 +1,8 @@
 import fs from "fs";
+import jwt from "jsonwebtoken";
 import Folder from "../../../model/Folder.model.js";
+import Query from "../../../model/Query.model.js";
+import User from "../../../model/User.model.js";
 
 const get = async (req, res) => {
   try {
@@ -32,17 +35,53 @@ const getPath = async (req, res) => {
   }
 };
 
-const checkEmptyFolder = async (path) => {
+const getRoot = async (req, res) => {
   try {
-    const files = fs.readdirSync(path);
-    if (files.length > 0) {
-      return false;
-    }
-    return true;
+    const { Session: sessionToken } = req.cookies;
+    const data = jwt.verify(sessionToken, process.env.JWT_SECRET);
+    const [user] = await User.getOneByField("id", data.id);
+    return res.json({
+      rootFolder: user.storage,
+      currentFolder: user.storage,
+      rootFolderName: user.username,
+      currentFolderName: user.username,
+    });
   } catch (error) {
-    return error;
+    return res.status(500).json({ error: "Une erreur est survenue" });
   }
 };
+
+const create = async (req, res) => {
+  try {
+    const sessionToken = req.cookies["Session"];
+    const data = jwt.verify(sessionToken, process.env.JWT_SECRET);
+    const [user] = await User.getOneByField("id", data.id);
+    const [newFolderId] = await Query.generateUUID();
+
+    try {
+      if (!fs.existsSync(`./uploads/${req.body.path}/${newFolderId.uuid}`)) {
+        fs.mkdirSync(`./uploads/${req.body.path}/${newFolderId.uuid}`);
+        const newFolder = await Folder.create({
+          id: newFolderId.uuid,
+          user_id: user.id,
+          parent_id: req.body.currentFolder,
+          label: req.body.newFolderName,
+          created_at: new Date(),
+        });
+        if (!newFolder) {
+          return res.status(409).json({ error: "Erreur lors de la création du dossier" });
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+
+    return res.json({ message: "Dossier creé avec succes" });
+  } catch (error) {
+    return res.status(500).json({ error: "Une erreur est survenue" });
+  }
+};
+
 const deleteOneFolder = async (req, res) => {
   try {
     const [folder] = await Folder.getOneById(req.body.folder_id);
@@ -61,4 +100,4 @@ const deleteOneFolder = async (req, res) => {
   }
 };
 
-export default { get, getPath, deleteOneFolder };
+export default { get, getPath, getRoot, create, deleteOneFolder };

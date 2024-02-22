@@ -251,6 +251,108 @@
       }
     }
   }
+  #folder-tree {
+    width: 100%;
+    @include flex(row, normal, normal, 0rem);
+    flex-wrap: wrap;
+    font-size: 1.2rem;
+    @include lg {
+      font-size: 1.5rem;
+    }
+    p {
+      &:hover {
+        cursor: pointer;
+        text-shadow: 0 0 0.5rem var(--primary);
+      }
+    }
+  }
+  .create-new-folder {
+    @include flex(row, normal, center, 1rem);
+    color: var(--base-content);
+    border: 1px solid var(--primary);
+    border-radius: 0.5rem;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 1.2rem;
+    @include lg {
+      font-size: 1.5rem;
+    }
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    @include transition(0.3s);
+    :first-child {
+      @include transition(0.3s);
+      color: var(--primary);
+    }
+    &:hover {
+      :first-child {
+        color: var(--base);
+      }
+      color: var(--base);
+      background-color: var(--primary);
+    }
+  }
+  .create-new-folder-form {
+    @include flex(column, center, center, 1rem);
+    @include lg {
+      @include flex(row, center, normal, 1rem);
+    }
+    width: 100%;
+    font-size: 1.2rem;
+    @include lg {
+      font-size: 1.5rem;
+    }
+    input {
+      width: 100%;
+      @include lg {
+        width: 50%;
+      }
+      border: 1px solid var(--base);
+      border-radius: 0.5rem;
+      background-color: var(--base3);
+      color: var(--base-content);
+      padding: 0.5rem 1rem;
+      @include transition(0.3s);
+    }
+    div {
+      @include flex(row, normal, center, 1rem);
+    }
+    .create-new-folder-cancel {
+      @include flex(row, normal, center, 1rem);
+      color: var(--base-content);
+      border: 1px solid var(--error);
+      border-radius: 0.5rem;
+      background-color: transparent;
+      cursor: pointer;
+      font-size: 1.2rem;
+      @include lg {
+        font-size: 1.5rem;
+      }
+      font-weight: bold;
+      padding: 0.5rem 1rem;
+      @include transition(0.3s);
+      &:hover {
+        color: var(--base);
+        background-color: var(--error);
+      }
+    }
+  }
+  .send-files {
+    @include flex(row, normal, center, 1rem);
+    color: var(--base-content);
+    border: 1px solid var(--primary);
+    border-radius: 0.5rem;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    @include transition(0.3s);
+    &:hover {
+      background-color: var(--primary);
+      color: var(--base);
+    }
+  }
   .drag-and-drop {
     @include flex(column, normal, normal, 1rem);
     cursor: pointer;
@@ -298,26 +400,6 @@
     border-color: var(--primary);
     background-color: var(--base3);
   }
-
-  #progress {
-    display: none;
-    width: 90%;
-    height: 1.5rem;
-    background-color: var(--base3);
-    border-radius: 0.5rem;
-    overflow: hidden;
-    .progress-bar {
-      transition: width 0.1s ease;
-      text-align: center;
-      line-height: 1.5rem;
-      height: 100%;
-      width: 0%;
-      color: var(--primary-content);
-      font-weight: bold;
-      background-color: var(--primary);
-    }
-  }
-
   .delete-modal {
     position: fixed;
     top: 0;
@@ -375,5 +457,51 @@
         }
       }
     }
+  }
+}
+#profile {
+  @include flex(column, normal, center, 1rem);
+  width: 100%;
+  .profile-nav {
+    @include flex(column, normal, center, 1rem);
+    width: 100%;
+    @include lg {
+      @include flex(row, space-around, normal, 1rem);
+      width: 75%;
+    }
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--base-content);
+    li {
+      flex-grow: 1;
+      text-align: center;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      @include transition(0.3s);
+      font-size: 1.5rem;
+      @include md {
+        font-size: 2rem;
+      }
+      font-weight: bold;
+      &:hover {
+        color: var(--primary);
+      }
+    }
+    .active {
+      color: var(--primary);
+      text-decoration: underline;
+      background-color: var(--base3);
+    }
+  }
+  .profile-stats {
+    @include flex(column, normal, center, 1rem);
+    @include transition(0.3s);
+    width: 100%;
+  }
+  .profile-account {
+    @include flex(column, normal, center, 1rem);
+    display: none;
+    @include transition(0.3s);
+    width: 100%;
   }
 }

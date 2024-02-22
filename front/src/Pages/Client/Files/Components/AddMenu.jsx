@@ -1,14 +1,18 @@
 import BlockIcon from "@mui/icons-material/Block";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
 import { useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import SizeCalculator from "../../../../Components/SizeCalculator";
 import { getFolders } from "../../../../store/slices/folder";
 import { setToast } from "../../../../store/slices/toast";
 function AddMenu({ setAddMenu }) {
+  const navigate = useNavigate();
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [newFolder, setNewFolder] = useState(false);
+  const [isSending, setIsSending] = useState(false);
   const newFolderName = useRef(null);
   let percentage = 0;
   const dispatch = useDispatch();
@@ -19,7 +23,7 @@ function AddMenu({ setAddMenu }) {
     // accept: {
     //   "image/*": [".jpeg", ".png"],
     // },
-    maxFiles: 50,
+    maxFiles: 10,
     onDragEnter: () => dragZone.classList.add("active-drag-and-drop"),
     onDragLeave: () => dragZone.classList.remove("active-drag-and-drop"),
     onDrop: (acceptedFiles) => {
@@ -57,39 +61,27 @@ function AddMenu({ setAddMenu }) {
     formData.append("currentFolder", currentFolder);
     formData.append("path", path.join("/"));
 
-    function consume(stream, total = 0) {
-      while (stream.state === "readable") {
-        var data = stream.read();
-        total += data.byteLength;
-        console.log("received " + data.byteLength + " bytes (" + total + " bytes in total).");
-      }
-      if (stream.state === "waiting") {
-        stream.ready.then(() => consume(stream, total));
-      }
-      return stream.closed;
-    }
-    const xhr = new XMLHttpRequest();
-    xhr.upload.onprogress = (event) => {
-      percentage = parseInt((event.loaded / event.total) * 100);
-      document.getElementById("progress").style.display = "block";
-      document.querySelector(".progress-bar").style.width = `${percentage}%`;
-      document.querySelector(".progress-bar").innerHTML = `${percentage}%`;
-    };
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState !== 4) return;
-      if (xhr.status !== 200) {
+    try {
+      setIsSending(true);
+      const response = await fetch("/api/v1/file/add", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
         dispatch(setToast({ type: "error", message: "Une erreur est survenue", showToast: true }));
+        return;
       }
-      document.getElementById("progress").style.display = "none";
-      percentage = 0;
+      setIsSending(false);
       setUploadedFiles([]);
       acceptedFiles.length = 0;
       fileRejections.length = 0;
-      dispatch(setToast({ type: "success", message: "Fichiers envoyés avec succès !", showToast: true }));
       setAddMenu(false);
-    };
-    xhr.open("POST", "/api/v1/file/add", true);
-    xhr.send(formData);
+      navigate(0);
+      dispatch(setToast({ type: "success", message: "Fichiers envoyés avec succès !", showToast: true }));
+    } catch (error) {
+      dispatch(setToast({ type: "error", message: "Une erreur est survenue", showToast: true }));
+    }
   };
 
   const handleCreateFolder = (e) => {
@@ -122,12 +114,22 @@ function AddMenu({ setAddMenu }) {
   return (
     <>
       {!newFolder ? (
-        <button onClick={() => setNewFolder(!newFolder)}>Nouveau dossier</button>
+        <button className="create-new-folder" onClick={() => setNewFolder(!newFolder)}>
+          {" "}
+          <CreateNewFolderIcon />
+          <p>Créer un nouveau dossier</p>
+        </button>
       ) : (
-        <form onSubmit={handleCreateFolder}>
+        <form className="create-new-folder-form" onSubmit={handleCreateFolder}>
           <input type="text" placeholder="Nom du dossier" name="newFolderName" ref={newFolderName} />
-          <button type="submit">Créer dossier</button>
-          <button onClick={() => setNewFolder(!newFolder)}>Annuler</button>
+          <div>
+            <button className="create-new-folder" type="submit">
+              Ajouter dossier
+            </button>
+            <button className="create-new-folder-cancel" onClick={() => setNewFolder(!newFolder)}>
+              Annuler
+            </button>
+          </div>
         </form>
       )}
 
@@ -160,10 +162,9 @@ function AddMenu({ setAddMenu }) {
           )}
         </div>
       </article>
-      <button onClick={handleSendFiles}>Envoyer</button>
-      <div id="progress">
-        <div className="progress-bar">{percentage}%</div>
-      </div>
+      <button className="send-files" onClick={handleSendFiles}>
+        {isSending ? "Envoi en cours..." : "Envoyer"}
+      </button>
     </>
   );
 }

@@ -43,6 +43,7 @@ const register = async (req, res) => {
     try {
       if (!fs.existsSync(`./uploads/${storage.uuid}`)) {
         fs.mkdirSync(`./uploads/${storage.uuid}`);
+        fs.mkdirSync(`./uploads/${storage.uuid}/tmp`);
       }
     } catch (err) {
       console.error(err);
@@ -98,10 +99,10 @@ const login = async (req, res) => {
     res.cookie("Refresh", refreshToken, {
       sameSite: "lax",
       httpOnly: true,
-      maxAge: remember === true ? 1000 * 60 * 30 * 24 : 1000 * 60 * 24,
+      maxAge: remember === true ? 1000 * 60 * 60 * 30 * 24 : 1000 * 60 * 60 * 24,
     });
 
-    return res.json({ message: "Connexion reussie." });
+    return res.json({ message: "Connexion reussie.", folder: user.storage, folderName: user.username });
   } catch (error) {
     return res.status(500).json({ error: "Erreur lors de la connexion" });
   }
@@ -117,26 +118,47 @@ const logout = (req, res) => {
   }
 };
 
-const refresh = async (req, res) => {
+const refresh = (req, res) => {
   try {
-    const refreshToken = req.cookies.Refresh;
-    if (!refreshToken) {
+    const { Session: sessionToken, Refresh: refreshToken } = req.cookies;
+    if (!sessionToken && !refreshToken) {
       return res.json({ isLoggedIn: false, role: null, message: "Refresh token manquant" });
-    }
-    await jwt.verify(refreshToken, process.env.JWT_SECRET_REFRESH, async (err, user) => {
-      if (err) {
-        return res.json({ isLoggedIn: false, role: null, message: "Token invalide" });
-      }
-      const [refreshUser] = await User.getOneByField("email", user.email);
-      const role = refreshUser.role;
-      const token = jwt.sign({ id: user.id, email: user.email, role: role }, process.env.JWT_SECRET, {
-        algorithm: "HS256",
-        allowInsecureKeySizes: true,
-        expiresIn: "15m",
+    } else if (!sessionToken) {
+      jwt.verify(refreshToken, process.env.JWT_SECRET_REFRESH, async (err, user) => {
+        if (err) {
+          return res.json({ isLoggedIn: false, role: null, message: "Token invalide" });
+        }
+        const [refreshUser] = await User.getOneByField("email", user.email);
+        const role = refreshUser.role;
+        const token = jwt.sign({ id: user.id, email: user.email, role: role }, process.env.JWT_SECRET, {
+          algorithm: "HS256",
+          allowInsecureKeySizes: true,
+          expiresIn: "15m",
+        });
+        res.cookie("Session", token, { sameSite: "lax", httpOnly: true, maxAge: 1000 * 60 * 15 });
+        return res.json({ isLoggedIn: true, role: role });
       });
-      res.cookie("Session", token, { sameSite: "lax", httpOnly: true, maxAge: 1000 * 60 * 15 });
-      return res.json({ isLoggedIn: true, role: role });
-    });
+    } else if (sessionToken && refreshToken) {
+      jwt.verify(sessionToken, process.env.JWT_SECRET, (err, user) => {
+        if (err) {
+          jwt.verify(refreshToken, process.env.JWT_SECRET_REFRESH, async (err, user) => {
+            if (err) {
+              return res.json({ isLoggedIn: false, role: null, message: "Token invalide" });
+            }
+            const [refreshUser] = await User.getOneByField("email", user.email);
+            const role = refreshUser.role;
+            const token = jwt.sign({ id: user.id, email: user.email, role: role }, process.env.JWT_SECRET, {
+              algorithm: "HS256",
+              allowInsecureKeySizes: true,
+              expiresIn: "15m",
+            });
+            res.cookie("Session", token, { sameSite: "lax", httpOnly: true, maxAge: 1000 * 60 * 15 });
+            return res.json({ isLoggedIn: true, role: role });
+          });
+        }
+        return res.json({ isLoggedIn: true, role: user.role });
+      });
+    }
   } catch (error) {
     return res.status(500).json({ error: "Une erreur est survenue" });
   }

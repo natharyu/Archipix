@@ -22,12 +22,25 @@ function Files() {
   const [showDeleteFileModal, setShowDeleteFileModal] = useState(false);
   const [fileToDelete, setFileToDelete] = useState(null);
   const { files, isLoading: isLoadingFiles } = useSelector((state) => state.file);
-  const { currentFolder, isLoading: isLoadingFolder, folders, path, rootFolder } = useSelector((state) => state.folder);
+  const {
+    currentFolder,
+    isLoading: isLoadingFolder,
+    folders,
+    path,
+    rootFolder,
+    rootFolderName,
+  } = useSelector((state) => state.folder);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getRootFolder());
-  }, [dispatch]);
+  }, []);
+
+  useEffect(() => {
+    if (rootFolder) {
+      dispatch(setCurrentFolder({ currentFolder: rootFolder, currentFolderName: rootFolderName }));
+    }
+  }, [rootFolder]);
 
   useEffect(() => {
     if (currentFolder) {
@@ -69,10 +82,10 @@ function Files() {
           )}
           <h2>Mes Fichiers</h2>
         </article>
-        {addMenu && <AddMenu setAddMenu={setAddMenu} />}
         <article className="folder-tree">
           <FolderTree />
         </article>
+        {addMenu && <AddMenu setAddMenu={setAddMenu} />}
         <article>
           {isLoadingFolder ? (
             <p>Chargement...</p>

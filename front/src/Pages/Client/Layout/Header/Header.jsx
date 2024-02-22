@@ -42,6 +42,7 @@ function Header() {
         {isLoggedIn ? (
           <>
             <NavLink to="/mes-fichiers">Mes Fichiers</NavLink>
+            <NavLink to="/mon-compte">Mon compte</NavLink>
             <button onClick={handleLogout}>Deconnexion</button>
           </>
         ) : (

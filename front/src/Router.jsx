@@ -8,14 +8,19 @@ import Login from "./Pages/Auth/Login";
 import Register from "./Pages/Auth/Register";
 import ResetPassword from "./Pages/Auth/ResetPassword";
 import VerifyEmail from "./Pages/Auth/VerifyEmail";
-import Error from "./Pages/Client/Error";
 import Files from "./Pages/Client/Files/Files";
 import ClientHome from "./Pages/Client/Home";
 import ClientLayout from "./Pages/Client/Layout/Layout";
+import Profile from "./Pages/Client/Profile/Profile";
+import Error from "./Pages/Error";
+import { AdminOnly, LoggedOnly } from "./middleware/Middleware";
 import { checkAuth } from "./store/slices/auth";
 function Router() {
   const dispatch = useDispatch();
   const { showToast } = useSelector((state) => state.toast);
+
+  LoggedOnly();
+  AdminOnly();
 
   useEffect(() => {
     // dispatch(getTheme());
@@ -32,6 +37,7 @@ function Router() {
           <Route path="nouveau-mot-de-passe/:resetToken" element={<ResetPassword />} />
           <Route path="verification-email/:token" element={<VerifyEmail />} />
           <Route path="mes-fichiers" element={<Files />} />
+          <Route path="mon-compte" element={<Profile />} />
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminHome />} />

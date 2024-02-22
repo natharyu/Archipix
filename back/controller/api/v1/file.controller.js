@@ -14,10 +14,9 @@ const get = async (req, res) => {
 
 const getOne = async (req, res) => {
   try {
-    // await fs.mkdirSync(`uploads/${req.params.rootFolder}/tmp`);
     const files = await fs.readdirSync(`uploads/${req.params.rootFolder}/tmp`);
     if (files.length > 0) {
-      files.map(async (file) => await fs.unlinkSync(`uploads/${req.params.rootFolder}/tmp/${file}`));
+      files.map(async (file) => fs.unlinkSync(`uploads/${req.params.rootFolder}/tmp/${file}`));
     }
     const [file] = await File.getOneByField("id", req.params.id);
     if (!file) {
@@ -33,6 +32,19 @@ const getOne = async (req, res) => {
       }
     );
     return res.json(file);
+  } catch (error) {
+    return res.status(500).json({ error: "Une erreur est survenue" });
+  }
+};
+
+const getFilePreview = async (req, res) => {
+  try {
+    fs.readFile(`./uploads/${req.params.rootFolder}/tmp/${req.params.fileName}`, (err, data) => {
+      if (err) {
+        return res.status(500).json({ error: "Une erreur est survenue" });
+      }
+      return res.write(data);
+    });
   } catch (error) {
     return res.status(500).json({ error: "Une erreur est survenue" });
   }
@@ -100,4 +112,4 @@ const deleteOneFile = async (req, res) => {
   }
 };
 
-export default { get, getOne, add, deleteOneFile };
+export default { get, getOne, getFilePreview, add, deleteOneFile };

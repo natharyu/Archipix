@@ -7,7 +7,7 @@ function Footer() {
     <footer>
       <section>
         <aside>
-          <p>Mon e-commerce &copy; {new Date().getFullYear()} Tous droits réservés.</p>
+          <p>Home-cloud &copy; {new Date().getFullYear()} Tous droits réservés.</p>
         </aside>
         <nav>
           <h3>Menu</h3>

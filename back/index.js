@@ -14,7 +14,7 @@ app.use(
 );
 app.use(cookieParser());
 app.use(fileUpload());
-app.use("/tmp", express.static("uploads/tmp"));
+// app.use("/uploads", express.static("uploads"));
 
 app.use(router);
 

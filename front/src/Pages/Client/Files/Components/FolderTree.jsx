@@ -14,11 +14,11 @@ function FolderTree() {
   };
 
   return (
-    <div>
+    <div id="folder-tree">
       {pathName.map((folder, index) => (
-        <button key={index} onClick={() => handleClick(folder, index)}>
+        <p key={index} onClick={() => handleClick(folder, index)}>
           {folder}/
-        </button>
+        </p>
       ))}
     </div>
   );

@@ -32,10 +32,12 @@ export const authSlice = createSlice({
       .addCase(checkAuth.fulfilled, (state, action) => {
         state.isLoggedIn = action.payload.isLoggedIn;
         state.role = action.payload.role;
+        state.loading = false;
       })
       .addCase(checkAuth.rejected, (state) => {
         state.isLoggedIn = false;
         state.role = null;
+        state.loading = false;
       })
       .addMatcher(
         (action) => action.type.endsWith("/pending"),
