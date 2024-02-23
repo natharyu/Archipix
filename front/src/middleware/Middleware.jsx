@@ -1,19 +1,14 @@
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { logout } from "../store/slices/auth";
 
-export const LoggedOnly = () => {
-  const location = useLocation();
+const LoggedOnly = ({ children }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [authorized, setAuthorized] = useState(false);
 
-  if (
-    location.pathname !== "/" &&
-    location.pathname !== "/connexion" &&
-    location.pathname !== "/inscription" &&
-    location.pathname !== "/nouveau-mot-de-passe/:resetToken" &&
-    location.pathname !== "/verification-email/:token"
-  ) {
+  useEffect(() => {
     fetch("/auth/refresh", {
       method: "GET",
       credentials: "include",
@@ -23,17 +18,24 @@ export const LoggedOnly = () => {
         if (data.message) {
           dispatch(logout());
           navigate("/connexion");
+        } else {
+          setAuthorized(true);
         }
+      })
+      .catch(() => {
+        navigate("/connexion");
       });
-  }
+  }, []);
+
+  return authorized ? children : null;
 };
 
-export const AdminOnly = () => {
-  const location = useLocation();
+const AdminOnly = ({ children }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [authorized, setAuthorized] = useState(false);
 
-  if (location.pathname.includes("/admin")) {
+  useEffect(() => {
     fetch("/auth/refresh", {
       method: "GET",
       credentials: "include",
@@ -42,10 +44,19 @@ export const AdminOnly = () => {
       .then((data) => {
         if (data.message) {
           dispatch(logout());
-          navigate("/connexion");
+          navigate("/error");
         } else if (data.role !== "admin") {
-          navigate("/");
+          navigate("/error");
+        } else {
+          setAuthorized(true);
         }
+      })
+      .catch(() => {
+        navigate("/error");
       });
-  }
+  }, [dispatch, navigate]);
+
+  return authorized ? children : null;
 };
+
+export { AdminOnly, LoggedOnly };
