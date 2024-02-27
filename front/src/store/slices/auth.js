@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isLoggedIn: "",
   role: "",
+  email: null,
   loading: false,
   error: null,
 };
@@ -32,11 +33,13 @@ export const authSlice = createSlice({
       .addCase(checkAuth.fulfilled, (state, action) => {
         state.isLoggedIn = action.payload.isLoggedIn;
         state.role = action.payload.role;
+        state.email = action.payload.email;
         state.loading = false;
       })
       .addCase(checkAuth.rejected, (state) => {
         state.isLoggedIn = false;
-        state.role = null;
+        state.role = "";
+        state.email = "";
         state.loading = false;
       })
       .addMatcher(

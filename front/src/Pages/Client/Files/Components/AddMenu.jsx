@@ -4,12 +4,11 @@ import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
 import { useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import SizeCalculator from "../../../../Components/SizeCalculator";
 import { getFolders } from "../../../../store/slices/folder";
 import { setToast } from "../../../../store/slices/toast";
+
 function AddMenu({ setAddMenu }) {
-  const navigate = useNavigate();
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [newFolder, setNewFolder] = useState(false);
   const [isSending, setIsSending] = useState(false);
@@ -63,31 +62,32 @@ function AddMenu({ setAddMenu }) {
 
     try {
       setIsSending(true);
-      const response = await fetch("/api/v1/file/add", {
+      await fetch("/api/v1/file/add", {
         method: "POST",
         body: formData,
-      });
-
-      if (!response.ok) {
-        dispatch(setToast({ type: "error", message: "Une erreur est survenue", showToast: true }));
-        return;
-      }
-      setIsSending(false);
-      setUploadedFiles([]);
-      acceptedFiles.length = 0;
-      fileRejections.length = 0;
-      setAddMenu(false);
-      navigate(0);
-      dispatch(setToast({ type: "success", message: "Fichiers envoyés avec succès !", showToast: true }));
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          if (data.error) {
+            return dispatch(setToast({ type: "error", message: data.error, showToast: true }));
+          }
+          setUploadedFiles([]);
+          acceptedFiles.length = 0;
+          fileRejections.length = 0;
+          setIsSending(false);
+          setAddMenu(false);
+          dispatch(setToast({ type: "success", message: data.message, showToast: true }));
+        });
     } catch (error) {
       dispatch(setToast({ type: "error", message: "Une erreur est survenue", showToast: true }));
     }
   };
 
-  const handleCreateFolder = (e) => {
+  const handleCreateFolder = async (e) => {
     e.preventDefault();
     if (!newFolderName.current.value) return;
-    fetch("/api/v1/folder/create", {
+    await fetch("/api/v1/folder/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

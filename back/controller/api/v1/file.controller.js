@@ -62,7 +62,7 @@ const add = async (req, res) => {
       req.files.file = [req.files.file];
     }
     const files = req.files.file;
-    files.map(async (file) => {
+    await files.map(async (file) => {
       const destination = `uploads/${req.body.path}/${file.name}`;
       if (fs.existsSync(destination)) {
         return;

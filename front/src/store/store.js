@@ -4,6 +4,7 @@ import fileSlice from "./slices/files";
 import folderSlice from "./slices/folder";
 import themeSlice from "./slices/theme";
 import toastSlice from "./slices/toast";
+import userSlice from "./slices/user";
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     toast: toastSlice,
     file: fileSlice,
     folder: folderSlice,
+    user: userSlice,
   },
 });

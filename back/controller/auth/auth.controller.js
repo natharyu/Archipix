@@ -1,5 +1,5 @@
 import emailjs from "@emailjs/nodejs";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import fs from "fs";
 import jwt from "jsonwebtoken";
@@ -15,7 +15,7 @@ const register = async (req, res) => {
       return res.status(400).json({ error: "Cet e-mail est déjà utilisé." });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = bcrypt.hashSync(password, 10);
     const emailVerificationToken = crypto.randomBytes(20).toString("hex");
     const [storage] = await Query.generateUUID();
     const newUser = await User.create({
@@ -77,8 +77,8 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password, remember } = req.body;
-    const [user] = await User.getOneByField("email", email);
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const [user] = await User.getAllFields("email", email);
+    const isPasswordValid = bcrypt.compareSync(password, user.password);
     if (!user || !isPasswordValid) {
       return res.status(401).json({ error: "Erreur lors de la connexion." });
     }
@@ -156,7 +156,7 @@ const refresh = (req, res) => {
             return res.json({ isLoggedIn: true, role: role });
           });
         }
-        return res.json({ isLoggedIn: true, role: user.role });
+        return res.json({ isLoggedIn: true, role: user.role, email: user.email });
       });
     }
   } catch (error) {

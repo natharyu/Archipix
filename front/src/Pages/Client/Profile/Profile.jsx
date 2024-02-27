@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserInfo } from "../../../store/slices/user";
 import Account from "./Components/Account";
 import Stats from "./Components/Stats";
 
@@ -14,6 +17,15 @@ function Profile() {
     document.getElementById("profile-stats").classList.remove("active");
     document.getElementById("profile-account").classList.add("active");
   };
+
+  const dispatch = useDispatch();
+  const { email } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (!email) return;
+    dispatch(getUserInfo(email));
+  }, [email]);
+
   return (
     <section id="profile">
       <ul className="profile-nav">

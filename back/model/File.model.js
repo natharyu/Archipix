@@ -7,7 +7,7 @@ class File {
     return result;
   }
   static async getAllByField(field, data) {
-    const query = `SELECT id, label, size, type, extension FROM file WHERE ${field} = ? ORDER BY ${field} ASC`;
+    const query = `SELECT id, label, size, type, extension FROM file WHERE ${field} = ? ORDER BY label ASC`;
     const [result] = await pool.execute(query, [data]);
     return result;
   }
@@ -25,6 +25,18 @@ class File {
       data.extension,
       data.created_at,
     ]);
+    return result;
+  }
+
+  static async countTotal(id) {
+    const query = "SELECT COUNT(*) AS totalFiles FROM file WHERE user_id = ?";
+    const [result] = await pool.execute(query, [id]);
+    return result;
+  }
+
+  static async getTotalSize(id) {
+    const query = "SELECT SUM(size) AS totalSize FROM file WHERE user_id = ?";
+    const [result] = await pool.execute(query, [id]);
     return result;
   }
 
