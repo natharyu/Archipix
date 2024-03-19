@@ -1,11 +1,20 @@
 #client {
   width: 100%;
-  height: 100%;
   @include flex(column, normal, center, 0);
+  flex-grow: 1;
   .icon {
     font-size: 1.2rem;
     margin-right: 0.5rem;
     color: var(--primary);
+  }
+  .logo {
+    height: 3rem;
+    fill: none;
+    stroke: var(--primary);
+    display: none;
+    @include sm {
+      display: block;
+    }
   }
   header,
   footer {
@@ -22,6 +31,7 @@
     top: 0;
     left: 0;
     z-index: 50;
+    width: 100%;
     .burger-menu {
       width: 2.5rem;
       height: 2.5rem;
@@ -40,6 +50,18 @@
       }
     }
     .brand {
+      @include flex(row, normal, center, 1rem);
+      width: 90%;
+      @include lg {
+        width: auto;
+      }
+      h1 {
+        @include flex(row, center, center, 1rem);
+        flex-grow: 1;
+        @include lg {
+          @include flex(row, normal, center, 1rem);
+        }
+      }
       &:hover {
         cursor: pointer;
         text-shadow: 0 0 0.1rem var(--primary);
@@ -171,7 +193,6 @@
   padding: 0 1rem;
   width: 100%;
   article:first-child {
-    max-height: 40rem;
     figure {
       height: 100%;
       img {
@@ -337,69 +358,123 @@
       }
     }
   }
-  .send-files {
-    @include flex(row, normal, center, 1rem);
+  .preview-container {
+    @include flex(column, center, center, 1rem);
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 0.5rem;
+    @include md {
+      @include flex(row, normal, center, 1rem);
+    }
+    .preview-error {
+      @include flex(row, normal, center, 1rem);
+      color: var(--error);
+      font-size: 1.2rem;
+      @include lg {
+        font-size: 1.5rem;
+      }
+      font-weight: bold;
+    }
+    .preview {
+      margin: auto;
+      width: 90%;
+      @include md {
+        width: 45%;
+      }
+      @include lg {
+        width: 20%;
+      }
+      @include flex(column, normal, normal, 1rem);
+      .img-preview {
+        width: 100%;
+        height: 10rem;
+        border-radius: 0.5rem;
+        object-fit: cover;
+        @include lg {
+          height: 15rem;
+        }
+      }
+      .name-preview {
+        width: 100%;
+        height: 10rem;
+        color: var(--base-content);
+        font-size: 1.2rem;
+        @include lg {
+          font-size: 1.4rem;
+          height: 15rem;
+        }
+        font-weight: bold;
+      }
+      .status-preview {
+        width: 100%;
+        @include flex(row, space-around, normal, 0);
+        color: var(--base-content);
+        font-size: 1.2rem;
+        @include lg {
+          font-size: 1.5rem;
+        }
+        font-weight: bold;
+        padding: 0.5rem 1rem;
+        height: 2rem;
+        span {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .input-without-file {
+    width: 100%;
+    min-height: 120px;
+    margin-bottom: 1rem;
+    @include flex(column, center, center, 1rem);
+    flex-grow: 1;
     color: var(--base-content);
-    border: 1px solid var(--primary);
-    border-radius: 0.5rem;
-    background-color: transparent;
-    cursor: pointer;
+    font-size: 1.2rem;
+    @include lg {
+      font-size: 1.5rem;
+    }
+    font-weight: bold;
+    &:hover {
+      cursor: pointer;
+      background-color: var(--base);
+    }
+  }
+  .dropzone-footer {
+    width: 100%;
+    @include flex(row, center, center, 1rem);
+    color: var(--base-content);
     font-size: 1.5rem;
     font-weight: bold;
-    padding: 0.5rem 1rem;
-    @include transition(0.3s);
-    &:hover {
-      background-color: var(--primary);
-      color: var(--base);
+    @include lg {
+      font-size: 2rem;
     }
-  }
-  .drag-and-drop {
-    @include flex(column, normal, normal, 1rem);
-    cursor: pointer;
-    width: 100%;
-    background-color: var(--base);
-    padding: 1rem;
-    border: 2px dashed var(--base-content);
-    border-radius: 0.5rem;
-    @include transition(0.3s);
-    &:hover {
-      border-color: var(--primary);
-      background-color: var(--base3);
+    .send-files,
+    .add-file {
+      @include flex(row, normal, center, 1rem);
+      color: var(--base-content);
+      border: 1px solid var(--primary);
+      border-radius: 0.5rem;
+      background-color: transparent;
+      cursor: pointer;
+      font-size: 1.5rem;
+      font-weight: bold;
+      padding: 0.5rem 1rem;
+      margin-bottom: 0.5rem;
+      @include transition(0.3s);
+      &:hover {
+        background-color: var(--primary);
+        color: var(--base);
+      }
     }
-    div {
-      @include flex(column, normal, center, 1rem);
-    }
-    .file-list {
-      width: 100%;
-      @include flex(column, normal, normal, 1rem);
-      @include lg {
-        @include flex(row, space-around, normal, 1rem);
-      }
-      li {
-        @include flex(row, normal, center, 0.5rem);
-      }
-      h4 {
-        font-weight: bold;
-        font-size: 1.2rem;
-        text-align: center;
-      }
-      .valide-file,
-      .invalid-file {
-        font-size: 1rem;
-        margin-right: 0.5rem;
-      }
-      .valide-file {
-        color: var(--success);
-      }
-      .invalid-file {
-        color: var(--error);
+    .add-file {
+      border: 1px solid var(--warning);
+      &:hover {
+        background-color: var(--warning);
+        color: var(--base);
       }
     }
   }
-  .active-drag-and-drop {
-    border-color: var(--primary);
-    background-color: var(--base3);
-  }
+
   .delete-modal {
     position: fixed;
     top: 0;

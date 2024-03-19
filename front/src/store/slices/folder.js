@@ -45,6 +45,9 @@ export const folderSlice = createSlice({
       state.currentFolder = action.payload.currentFolder;
       state.currentFolderName = action.payload.currentFolderName;
     },
+    setFolders: (state, action) => {
+      state.folders = action.payload;
+    },
     resetFolderState: () => initialState,
   },
   extraReducers: (builder) => {
@@ -79,6 +82,6 @@ export const folderSlice = createSlice({
   },
 });
 
-export const { setRootFolder, setCurrentFolder, resetFolderState } = folderSlice.actions;
+export const { setRootFolder, setCurrentFolder, setFolders, resetFolderState } = folderSlice.actions;
 
 export default folderSlice.reducer;

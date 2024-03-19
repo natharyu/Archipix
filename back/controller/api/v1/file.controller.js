@@ -1,6 +1,7 @@
 import fs from "fs";
 import jwt from "jsonwebtoken";
 import File from "../../../model/File.model.js";
+import Folder from "../../../model/Folder.model.js";
 import Query from "../../../model/Query.model.js";
 import User from "../../../model/User.model.js";
 const get = async (req, res) => {
@@ -14,7 +15,7 @@ const get = async (req, res) => {
 
 const getOne = async (req, res) => {
   try {
-    const files = await fs.readdirSync(`uploads/${req.params.rootFolder}/tmp`);
+    const files = fs.readdirSync(`uploads/${req.params.rootFolder}/tmp`);
     if (files.length > 0) {
       files.map(async (file) => fs.unlinkSync(`uploads/${req.params.rootFolder}/tmp/${file}`));
     }
@@ -63,31 +64,37 @@ const add = async (req, res) => {
     }
     const files = req.files.file;
     await files.map(async (file) => {
-      const destination = `uploads/${req.body.path}/${file.name}`;
-      if (fs.existsSync(destination)) {
+      const [existingFileName] = await File.getOneByField("label", file.name);
+      if (existingFileName || fs.existsSync(`./uploads/${req.body.path}/${file.name}`)) {
+        console.log("File already exists");
         return;
-      }
-      file.mv(destination, function (err) {
-        if (err) return res.status(500).json(err);
-      });
-      const checkExistingFile = async () => {
-        const [fileId] = await Query.generateUUID();
-        const [existingFile] = await File.getOneByField("id", fileId.uuid);
-        if (!existingFile) {
-          return await File.create({
-            id: fileId.uuid,
-            user_id: user.id,
-            folder_id: req.body.currentFolder,
-            label: file.name,
-            size: file.size,
-            type: file.mimetype,
-            extension: file.name.split(".").pop(),
-            created_at: new Date(),
-          });
+      } else {
+        const checkExistingFile = async () => {
+          const [fileId] = await Query.generateUUID();
+          const [existingFile] = await File.getOneByField("id", fileId.uuid);
+          if (!existingFile) {
+            return await File.create({
+              id: fileId.uuid,
+              user_id: user.id,
+              folder_id: req.body.currentFolder,
+              label: file.name,
+              size: file.size,
+              type: file.mimetype,
+              extension: file.name.split(".").pop(),
+              created_at: new Date(),
+            });
+          }
+          return checkExistingFile();
+        };
+        await checkExistingFile();
+        const destination = `uploads/${req.body.path}/${file.name}`;
+        if (fs.existsSync(destination)) {
+          return;
         }
-        return checkExistingFile();
-      };
-      checkExistingFile();
+        await file.mv(destination, function (err) {
+          if (err) return res.status(500).json(err);
+        });
+      }
     });
     return res.json({ message: "Fichiers envoyés avec succès !" });
   } catch (error) {
@@ -112,4 +119,33 @@ const deleteOneFile = async (req, res) => {
   }
 };
 
-export default { get, getOne, getFilePreview, add, deleteOneFile };
+const deleteManyFiles = async (req, res) => {
+  try {
+    const { files, folders, path } = req.body;
+    if (files.length > 0) {
+      files.map(async (file) => {
+        const [existingFile] = await File.getOneByField("id", file.id);
+        if (existingFile || fs.existsSync(`./uploads/${path}/${existingFile.label}`)) {
+          fs.unlinkSync(`./uploads/${path}/${existingFile.label}`);
+          await File.deleteOne(existingFile.id);
+        }
+      });
+    }
+    if (folders.length > 0) {
+      folders.map(async (folder) => {
+        const [existingFolder] = await Folder.getOneById(folder.id);
+        if (existingFolder || fs.existsSync(`./uploads/${path}/${existingFolder.id}`)) {
+          fs.rmSync(`./uploads/${path}/${existingFolder.id}`, { recursive: true });
+          await Folder.deleteOne(existingFolder.id);
+        }
+      });
+    }
+    return res.json({
+      message: "Sélection des fichiers supprimé avec succès !",
+    });
+  } catch (error) {
+    return res.status(500).json({ error: "Une erreur est survenue" });
+  }
+};
+
+export default { get, getOne, getFilePreview, add, deleteOneFile, deleteManyFiles };

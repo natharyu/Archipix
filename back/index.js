@@ -13,7 +13,12 @@ app.use(
   cors({ origin: `${process.env.CLIENT_APP_URL}`, methods: ["GET", "POST", "PATCH", "DELETE"], credentials: true })
 );
 app.use(cookieParser());
-app.use(fileUpload());
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "./uploads/tmp/",
+  })
+);
 // app.use("/uploads", express.static("uploads"));
 
 app.use(router);
