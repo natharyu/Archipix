@@ -7,7 +7,7 @@ function Footer() {
     <footer>
       <section>
         <aside>
-          <p>Home-cloud &copy; {new Date().getFullYear()} Tous droits réservés.</p>
+          <p>ArchiPix &copy; {new Date().getFullYear()} Tous droits réservés.</p>
         </aside>
         <nav>
           <h3>Menu</h3>
@@ -18,8 +18,7 @@ function Footer() {
         </nav>
         <div>
           <h3>Contactez-nous</h3>
-          <p>Adresse : 123 Rue de la Boutique</p>
-          <p>Email : contact@votre-boutique.com</p>
+          <p>Email : anthony.dewitte@3wa.io</p>
           <p>Téléphone : +1 123-456-7890</p>
         </div>
       </section>

@@ -10,6 +10,7 @@ import { getFolders, getPath, getRootFolder, setCurrentFolder } from "../../../s
 import AddMenu from "./Components/AddMenu";
 import DeleteFileModal from "./Components/DeleteFileModal";
 import DeleteFolderModal from "./Components/DeleteFolderModal";
+import DeleteMultipleModal from "./Components/DeleteMultipleModal";
 import FileIcon from "./Components/FileIcon";
 import FilePreview from "./Components/FilePreview";
 import FolderTree from "./Components/FolderTree";
@@ -21,6 +22,9 @@ function Files() {
   const [folderToDelete, setFolderToDelete] = useState(null);
   const [showDeleteFileModal, setShowDeleteFileModal] = useState(false);
   const [fileToDelete, setFileToDelete] = useState(null);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedFolders, setSelectedFolders] = useState([]);
+  const [showDeleteMultipleModal, setShowDeleteMultipleModal] = useState(false);
   const { files, isLoading: isLoadingFiles } = useSelector((state) => state.file);
   const {
     currentFolder,
@@ -71,6 +75,21 @@ function Files() {
     setFolderToDelete(folder_id);
   };
 
+  const handleAddSelectedFile = (file) => {
+    if (selectedFiles.includes(file)) {
+      return setSelectedFiles(selectedFiles.filter((selectedFile) => selectedFile !== file));
+    } else {
+      return setSelectedFiles([...selectedFiles, file]);
+    }
+  };
+  const handleAddSelectedFolder = (folder) => {
+    if (selectedFolders.includes(folder)) {
+      return setSelectedFolders(selectedFolders.filter((selectedFolder) => selectedFolder !== folder));
+    } else {
+      return setSelectedFolders([...selectedFolders, folder]);
+    }
+  };
+
   return (
     <>
       <section id="files">
@@ -81,6 +100,7 @@ function Files() {
             <AddCircleIcon className="add-file" onClick={() => setAddMenu(!addMenu)} />
           )}
           <h2>Mes Fichiers</h2>
+          <button onClick={() => setShowDeleteMultipleModal(true)}>Supprimer</button>
         </article>
         <article className="folder-tree">
           <FolderTree />
@@ -95,6 +115,11 @@ function Files() {
                 <>
                   {folders.map((folder, index) => (
                     <li key={index}>
+                      <input
+                        type="checkbox"
+                        name={`folder-${folder.id}`}
+                        onChange={() => handleAddSelectedFolder(folder)}
+                      />
                       <p onClick={() => handleClickFolder(folder.id, folder.label)}>
                         <FolderIcon className="icon" />
                         {folder.label}
@@ -118,6 +143,7 @@ function Files() {
                 <>
                   {files.map((file, index) => (
                     <li key={index}>
+                      <input type="checkbox" name={`file-${file.id}`} onChange={() => handleAddSelectedFile(file)} />
                       <FileIcon ext={file.extension} className="icon" />
                       <div onClick={() => handleClickFile(file.id, file.label)}>
                         <p>{file.label}</p>
@@ -136,6 +162,15 @@ function Files() {
         )}
         {showDeleteFileModal && (
           <DeleteFileModal setShowDeleteFileModal={setShowDeleteFileModal} file_id={fileToDelete} />
+        )}
+        {showDeleteMultipleModal && (
+          <DeleteMultipleModal
+            setShowDeleteMultipleModal={setShowDeleteMultipleModal}
+            files={selectedFiles}
+            folders={selectedFolders}
+            setSelectedFiles={setSelectedFiles}
+            setSelectedFolders={setSelectedFolders}
+          />
         )}
       </section>
       {filePreview && <FilePreview />}

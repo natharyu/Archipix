@@ -14,5 +14,6 @@ fileRoutes.post("/add", fileController.add);
 
 //delete routes
 fileRoutes.delete("/delete", fileController.deleteOneFile);
+fileRoutes.delete("/deleteMany", fileController.deleteManyFiles);
 
 export default fileRoutes;

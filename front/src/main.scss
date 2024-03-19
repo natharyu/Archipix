@@ -10,7 +10,7 @@
   background-color: var(--base);
   color: var(--base-content);
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   @include flex(column, normal, normal, 0);
   * {
     font-family: "Montserrat", sans-serif;
@@ -145,7 +145,6 @@
       background-color: var(--base);
       color: var(--base-content);
       h3 {
-        @include flex(row, center, center, 1rem);
         height: 2.5rem;
         font-size: 1.2rem;
         @include md {
@@ -159,7 +158,7 @@
       }
       .closeBtn {
         position: absolute;
-        top: 2rem;
+        top: 2.2rem;
         right: 1rem;
         cursor: pointer;
         font-weight: bold;
@@ -172,7 +171,7 @@
         color: var(--error);
         background-color: var(--base);
         &:hover {
-          color: var(--neutral-content);
+          color: var(--neutral);
           border: 1px solid var(--error);
           background-color: var(--error);
         }
