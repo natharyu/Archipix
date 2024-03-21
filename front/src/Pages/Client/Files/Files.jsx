@@ -54,6 +54,7 @@ function Files() {
           )}
           <h2>Mes Fichiers</h2>
           <button onClick={() => setShowDeleteMultipleModal(true)}>Supprimer</button>
+          <button onClick={() => setShowDeleteMultipleModal(true)}>Supprimer</button>
         </article>
         <article className="folder-tree">
           <FolderTree />
@@ -76,6 +77,15 @@ function Files() {
         )}
         {showDeleteFileModal && (
           <DeleteFileModal setShowDeleteFileModal={setShowDeleteFileModal} file_id={fileToDelete} />
+        )}
+        {showDeleteMultipleModal && (
+          <DeleteMultipleModal
+            setShowDeleteMultipleModal={setShowDeleteMultipleModal}
+            files={selectedFiles}
+            folders={selectedFolders}
+            setSelectedFiles={setSelectedFiles}
+            setSelectedFolders={setSelectedFolders}
+          />
         )}
         {showDeleteMultipleModal && (
           <DeleteMultipleModal

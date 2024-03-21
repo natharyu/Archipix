@@ -16,6 +16,7 @@ const get = async (req, res) => {
 const getOne = async (req, res) => {
   try {
     const files = fs.readdirSync(`uploads/${req.params.rootFolder}/tmp`);
+    const files = fs.readdirSync(`uploads/${req.params.rootFolder}/tmp`);
     if (files.length > 0) {
       files.map(async (file) => fs.unlinkSync(`uploads/${req.params.rootFolder}/tmp/${file}`));
     }
@@ -119,6 +120,36 @@ const deleteOneFile = async (req, res) => {
   }
 };
 
+const deleteManyFiles = async (req, res) => {
+  try {
+    const { files, folders, path } = req.body;
+    if (files.length > 0) {
+      files.map(async (file) => {
+        const [existingFile] = await File.getOneByField("id", file.id);
+        if (existingFile || fs.existsSync(`./uploads/${path}/${existingFile.label}`)) {
+          fs.unlinkSync(`./uploads/${path}/${existingFile.label}`);
+          await File.deleteOne(existingFile.id);
+        }
+      });
+    }
+    if (folders.length > 0) {
+      folders.map(async (folder) => {
+        const [existingFolder] = await Folder.getOneById(folder.id);
+        if (existingFolder || fs.existsSync(`./uploads/${path}/${existingFolder.id}`)) {
+          fs.rmSync(`./uploads/${path}/${existingFolder.id}`, { recursive: true });
+          await Folder.deleteOne(existingFolder.id);
+        }
+      });
+    }
+    return res.json({
+      message: "Sélection des fichiers supprimé avec succès !",
+    });
+  } catch (error) {
+    return res.status(500).json({ error: "Une erreur est survenue" });
+  }
+};
+
+export default { get, getOne, getFilePreview, add, deleteOneFile, deleteManyFiles };
 const deleteManyFiles = async (req, res) => {
   try {
     const { files, folders, path } = req.body;
