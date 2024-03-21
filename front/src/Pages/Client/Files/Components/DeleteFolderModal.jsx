@@ -18,7 +18,7 @@ function DeleteFolderModal({ setShowDeleteFolderModal, folder_id }) {
           return dispatch(setToast({ message: res.error, type: "error", showToast: true }));
         }
         dispatch(setToast({ message: res.message, type: "success", showToast: true }));
-        dispatch(getFolders(currentFolder));
+        setTimeout(() => dispatch(getFolders(currentFolder)), 200);
         setShowDeleteFolderModal(false);
       })
       .catch((err) => {

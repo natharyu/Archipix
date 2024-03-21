@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { getFiles } from "../../../../store/slices/files";
 import { setToast } from "../../../../store/slices/toast";
-function DeleteFileModal({ setShowDeleteFileModal, file_id }) {
+function DeleteFileModal({ setShowDeleteFileModal, file_id, setFilePreview }) {
   const { currentFolder, path } = useSelector((state) => state.folder);
   const dispatch = useDispatch();
   const handleConfirm = async () => {
@@ -18,7 +18,8 @@ function DeleteFileModal({ setShowDeleteFileModal, file_id }) {
           return dispatch(setToast({ type: "error", message: res.error, showToast: true }));
         }
         dispatch(setToast({ type: "success", message: res.message, showToast: true }));
-        dispatch(getFiles(currentFolder));
+        setTimeout(() => dispatch(getFiles(currentFolder)), 200);
+        setFilePreview(false);
         setShowDeleteFileModal(false);
       })
       .catch((err) => {

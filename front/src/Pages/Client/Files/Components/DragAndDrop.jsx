@@ -27,7 +27,7 @@ const DragAndDrop = () => {
       if (f.meta.status === "done") {
         await f.remove();
         dispatch(setToast({ type: "success", message: "Fichiers importés avec succès !", showToast: true }));
-        dispatch(getFiles(currentFolder));
+        setTimeout(() => dispatch(getFiles(currentFolder)), 200);
       }
     });
   };

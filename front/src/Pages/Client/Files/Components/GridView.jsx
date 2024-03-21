@@ -1,12 +1,9 @@
-import DeleteIcon from "@mui/icons-material/Delete";
 import FolderIcon from "@mui/icons-material/Folder";
 import { useDispatch, useSelector } from "react-redux";
-import SizeCalculator from "../../../../Components/SizeCalculator";
 import { getFile } from "../../../../store/slices/files";
 import { setCurrentFolder } from "../../../../store/slices/folder";
-import FileIcon from "../Components/FileIcon";
 
-function ListView({
+function GridView({
   setFilePreview,
   selectedFiles,
   setSelectedFiles,
@@ -59,59 +56,61 @@ function ListView({
   };
   return (
     <>
-      <article className="list-view">
+      <article className="grid-view">
         {isLoadingFolder ? (
           <p>Chargement...</p>
         ) : (
-          <ul>
+          <>
             {folders.length === 0 ? null : (
               <>
                 {folders.map((folder, index) => (
-                  <li key={index}>
+                  <div key={index}>
                     <input
                       type="checkbox"
                       name={`folder-${folder.id}`}
                       onChange={() => handleAddSelectedFolder(folder)}
                     />
-                    <p onClick={() => handleClickFolder(folder.id, folder.label)}>
-                      <FolderIcon className="icon" />
-                      {folder.label}
-                    </p>
-                    <DeleteIcon className="delete-icon" onClick={() => handleClickDeleteFolder(folder.id)} />
-                  </li>
+                    <div className="grid-folder" onClick={() => handleClickFolder(folder.id, folder.label)}>
+                      <FolderIcon className="grid-folder-icon" />
+                      <p>{folder.label}</p>
+                    </div>
+                  </div>
                 ))}
               </>
             )}
-          </ul>
+          </>
         )}
       </article>
-      <article className="list-view">
+      <article className="grid-view">
         {isLoadingFiles ? (
           <p>Chargement...</p>
         ) : (
-          <ul>
+          <>
             {files.length === 0 ? (
               <p>Aucun fichier présent dans ce dossier</p>
             ) : (
               <>
                 {files.map((file, index) => (
-                  <li key={index}>
+                  <div className="grid-file-container" key={index}>
                     <input type="checkbox" name={`file-${file.id}`} onChange={() => handleAddSelectedFile(file)} />
-                    <FileIcon ext={file.extension} className="icon" />
-                    <div onClick={() => handleClickFile(file)}>
-                      <p>{file.label}</p>
-                      <SizeCalculator size={file.size} />
+                    <div className="grid-file" onClick={() => handleClickFile(file)}>
+                      {file.type.includes("image") && (
+                        <img src={`/uploads/${path.join("/")}/${file.label}`} alt={file.label} />
+                      )}
+
+                      {file.type.includes("video") && (
+                        <video src={`/uploads/${path.join("/")}/${file.label}`} controls />
+                      )}
                     </div>
-                    <DeleteIcon className="delete-icon" onClick={() => handleClickDeleteFile(file.id)} />
-                  </li>
+                  </div>
                 ))}
               </>
             )}
-          </ul>
+          </>
         )}
       </article>
     </>
   );
 }
 
-export default ListView;
+export default GridView;

@@ -19,7 +19,7 @@ app.use(
     tempFileDir: "./uploads/tmp/",
   })
 );
-// app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static("uploads"));
 
 app.use(router);
 

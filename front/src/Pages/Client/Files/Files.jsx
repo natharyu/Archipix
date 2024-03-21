@@ -10,6 +10,7 @@ import DeleteFolderModal from "./Components/DeleteFolderModal";
 import DeleteMultipleModal from "./Components/DeleteMultipleModal";
 import FilePreview from "./Components/FilePreview";
 import FolderTree from "./Components/FolderTree";
+import GridView from "./Components/GridView";
 import ListView from "./Components/ListView";
 
 function Files() {
@@ -23,6 +24,7 @@ function Files() {
   const [selectedFolders, setSelectedFolders] = useState([]);
   const [showDeleteMultipleModal, setShowDeleteMultipleModal] = useState(false);
   const { currentFolder, path, rootFolder, rootFolderName } = useSelector((state) => state.folder);
+  const [view, setView] = useState("list");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -54,29 +56,49 @@ function Files() {
           )}
           <h2>Mes Fichiers</h2>
           <button onClick={() => setShowDeleteMultipleModal(true)}>Supprimer</button>
-          <button onClick={() => setShowDeleteMultipleModal(true)}>Supprimer</button>
+          <button onClick={() => setView(view === "list" ? "grid" : "list")}>
+            {view === "list" ? "Liste" : "Grille"}
+          </button>
         </article>
         <article className="folder-tree">
           <FolderTree />
         </article>
         {addMenu && <AddMenu setAddMenu={setAddMenu} />}
-        <ListView
-          setFilePreview={setFilePreview}
-          selectedFiles={selectedFiles}
-          setSelectedFiles={setSelectedFiles}
-          selectedFolders={selectedFolders}
-          setSelectedFolders={setSelectedFolders}
-          setShowDeleteFileModal={setShowDeleteFileModal}
-          setShowDeleteFolderModal={setShowDeleteFolderModal}
-          setFolderToDelete={setFolderToDelete}
-          setFileToDelete={setFileToDelete}
-        />
+        {view === "list" ? (
+          <ListView
+            setFilePreview={setFilePreview}
+            selectedFiles={selectedFiles}
+            setSelectedFiles={setSelectedFiles}
+            selectedFolders={selectedFolders}
+            setSelectedFolders={setSelectedFolders}
+            setShowDeleteFileModal={setShowDeleteFileModal}
+            setShowDeleteFolderModal={setShowDeleteFolderModal}
+            setFolderToDelete={setFolderToDelete}
+            setFileToDelete={setFileToDelete}
+          />
+        ) : (
+          <GridView
+            setFilePreview={setFilePreview}
+            selectedFiles={selectedFiles}
+            setSelectedFiles={setSelectedFiles}
+            selectedFolders={selectedFolders}
+            setSelectedFolders={setSelectedFolders}
+            setShowDeleteFileModal={setShowDeleteFileModal}
+            setShowDeleteFolderModal={setShowDeleteFolderModal}
+            setFolderToDelete={setFolderToDelete}
+            setFileToDelete={setFileToDelete}
+          />
+        )}
 
         {showDeleteFolderModal && (
           <DeleteFolderModal setShowDeleteFolderModal={setShowDeleteFolderModal} folder_id={folderToDelete} />
         )}
         {showDeleteFileModal && (
-          <DeleteFileModal setShowDeleteFileModal={setShowDeleteFileModal} file_id={fileToDelete} />
+          <DeleteFileModal
+            setFilePreview={setFilePreview}
+            setShowDeleteFileModal={setShowDeleteFileModal}
+            file_id={fileToDelete}
+          />
         )}
         {showDeleteMultipleModal && (
           <DeleteMultipleModal
