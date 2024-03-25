@@ -1,6 +1,8 @@
+import DownloadIcon from "@mui/icons-material/Download";
 import FolderIcon from "@mui/icons-material/Folder";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getFile } from "../../../../store/slices/files";
+import { getFile, getFiles } from "../../../../store/slices/files";
 import { setCurrentFolder } from "../../../../store/slices/folder";
 
 function GridView({
@@ -16,12 +18,14 @@ function GridView({
 }) {
   const { files, isLoading: isLoadingFiles } = useSelector((state) => state.file);
   const { isLoading: isLoadingFolder, folders, path, rootFolder } = useSelector((state) => state.folder);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const dispatch = useDispatch();
 
   const handleClickFolder = (id, label) => {
     setFilePreview(false);
     dispatch(setCurrentFolder({ currentFolder: id, currentFolderName: label }));
+    dispatch(getFiles(id));
   };
 
   const handleClickFile = (file) => {
@@ -54,6 +58,36 @@ function GridView({
       return setSelectedFolders([...selectedFolders, folder]);
     }
   };
+
+  const handleDownloadFolder = async (folder_id) => {
+    setIsDownloading(true);
+    await fetch(`/api/v1/folder/download/${path.join("&&&")}/${folder_id}`, {
+      method: "GET",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Erreur lors du téléchargement du zip");
+        }
+        return response.blob();
+      })
+      .then((blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", `${folder_id}.zip`);
+        document.body.appendChild(link);
+        link.click();
+
+        link.onload = () => {
+          URL.revokeObjectURL(url);
+          document.body.removeChild(link);
+        };
+      })
+      .catch((error) => {
+        console.error("Erreur lors du téléchargement de l'archive:", error);
+      });
+    setIsDownloading(false);
+  };
   return (
     <>
       <article className="grid-view">
@@ -70,6 +104,14 @@ function GridView({
                       name={`folder-${folder.id}`}
                       onChange={() => handleAddSelectedFolder(folder)}
                     />
+                    {isDownloading ? (
+                      <span className="loader"></span>
+                    ) : (
+                      <button className="download-button" onClick={() => handleDownloadFolder(folder.id, path)}>
+                        <DownloadIcon />
+                      </button>
+                    )}
+
                     <div className="grid-folder" onClick={() => handleClickFolder(folder.id, folder.label)}>
                       <FolderIcon className="grid-folder-icon" />
                       <p>{folder.label}</p>

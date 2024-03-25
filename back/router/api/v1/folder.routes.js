@@ -8,6 +8,7 @@ const folderRoutes = express.Router();
 folderRoutes.get("/get/:parent_id", folderController.get);
 folderRoutes.get("/getPath/:folder_id", folderController.getPath);
 folderRoutes.get("/getRoot", folderController.getRoot);
+folderRoutes.get("/download/:path/:folder_id", folderController.download);
 
 //post routes
 folderRoutes.post("/create", folderController.create);

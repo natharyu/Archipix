@@ -330,6 +330,36 @@
         cursor: pointer;
         z-index: 10;
       }
+      .download-button {
+        color: var(--base-content);
+        background: transparent;
+        border: 1px solid var(--base-content);
+        border-radius: 0.5rem;
+        position: absolute;
+        top: 0.5rem;
+        left: 0.5rem;
+        width: 2.5rem;
+        height: 2.5rem;
+        cursor: pointer;
+        @include transition(0.3s);
+        &:hover {
+          color: var(--primary);
+        }
+      }
+      .loader {
+        position: absolute;
+        bottom: 0.5rem;
+        right: 0.5rem;
+        width: 2rem;
+        height: 2rem;
+        border: 2px solid var(--primary);
+        border-bottom-color: transparent;
+        border-radius: 50%;
+        display: inline-block;
+        box-sizing: border-box;
+        animation: rotation 1s linear infinite;
+        margin: 0.2rem;
+      }
     }
     .grid-folder {
       border: none;

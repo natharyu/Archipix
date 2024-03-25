@@ -1,3 +1,4 @@
+import archiver from "archiver";
 import fs from "fs";
 import jwt from "jsonwebtoken";
 import Folder from "../../../model/Folder.model.js";
@@ -100,4 +101,87 @@ const deleteOneFolder = async (req, res) => {
   }
 };
 
-export default { get, getPath, getRoot, create, deleteOneFolder };
+/**
+ * Download a folder and its contents as a zip file.
+ * @param {object} req Express request object.
+ * @param {object} res Express response object.
+ */
+const download = async (req, res) => {
+  try {
+    // Get the folder from the database
+    const [folder] = await Folder.getOneById(req.params.folder_id);
+    // If the folder doesn't exist, return a 404
+    if (!folder) {
+      return res.status(404).json({ error: "Dossier introuvable" });
+    }
+
+    /**
+     * Build the path to the folder to be downloaded.
+     * @type {string}
+     */
+    const path = `./uploads/${req.params.path.replace("&&&", "/")}/${folder.id}`;
+
+    /**
+     * Build the name of the zip file to be downloaded.
+     * @type {string}
+     */
+    const zipName = `${folder.id}.zip`;
+
+    /**
+     * Build the path to the downloaded zip file.
+     * @type {string}
+     */
+    const out = `./uploads/tmp/${zipName}`;
+
+    const existingArchive = fs.existsSync(out);
+    if (existingArchive) {
+      fs.unlink(out, (err) => {
+        if (err) {
+          console.error(err);
+        }
+      });
+    }
+
+    // Create a new zip archive
+    const archive = archiver("zip", { zlib: { level: 9 } });
+    // Create a write stream for the archive
+    const stream = fs.createWriteStream(out);
+
+    // Add the folder to the archive and pipe it to the response
+    archive
+      .directory(path, false)
+      .on("error", (err) => {
+        throw err;
+      })
+      .pipe(stream);
+
+    // When the archive has been finalized, send the file to the user
+    stream.on("close", () => {
+      res.download(out, (err) => {
+        if (err) {
+          console.error(err);
+        } else {
+          // Delete the downloaded zip file after a short delay
+          setTimeout(() => {
+            fs.unlink(out, (err) => {
+              if (err) {
+                console.error(err);
+              }
+            });
+          }, 3000);
+        }
+      });
+    });
+
+    /**
+     * Finalize the archive and send it to the user.
+     */
+    archive.finalize();
+  } catch (error) {
+    console.error(error);
+    // If an error occurs, send a 500 response
+    // return res.status(500).json({ error: "Une erreur est survenue" });
+  }
+};
+
+export default { get, getPath, getRoot, create, deleteOneFolder, download };
