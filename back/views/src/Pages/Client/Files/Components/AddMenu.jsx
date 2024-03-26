@@ -10,7 +10,6 @@ function AddMenu({ setAddMenu }) {
   const newFolderName = useRef(null);
   const dispatch = useDispatch();
   const { currentFolder, path } = useSelector((state) => state.folder);
-  const dragZone = document.querySelector(".drag-and-drop");
 
   const handleCreateFolder = async (e) => {
     e.preventDefault();

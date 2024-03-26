@@ -5,6 +5,8 @@ import SizeCalculator from "../../../../Components/SizeCalculator";
 import { setCurrentFile } from "../../../../store/slices/files";
 import { setCurrentFolder } from "../../../../store/slices/folder";
 import FileIcon from "../Components/FileIcon";
+import SelectAll from "./Select/SelectAll";
+import SelectFolders from "./Select/SelectFolders";
 
 function ListView({
   setFilePreview,
@@ -18,7 +20,7 @@ function ListView({
   setFileToDelete,
 }) {
   const { files, isLoading: isLoadingFiles } = useSelector((state) => state.file);
-  const { isLoading: isLoadingFolder, folders, path, rootFolder } = useSelector((state) => state.folder);
+  const { isLoading: isLoadingFolder, folders } = useSelector((state) => state.folder);
 
   const dispatch = useDispatch();
 
@@ -59,10 +61,12 @@ function ListView({
   return (
     <>
       <article className="list-view">
+        <SelectAll />
         {isLoadingFolder ? (
           <p>Chargement...</p>
         ) : (
           <ul>
+            <SelectFolders setSelectedFolders={setSelectedFolders} />
             {folders.length === 0 ? null : (
               <>
                 {folders.map((folder, index) => (

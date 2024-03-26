@@ -7,7 +7,7 @@ import Input from "./DragAndDrop/Input";
 import Layout from "./DragAndDrop/Layout";
 import Preview from "./DragAndDrop/Preview";
 import Submit from "./DragAndDrop/Submit";
-const DragAndDrop = () => {
+const DragAndDrop = ({ setAddMenu }) => {
   const { currentFolder, path } = useSelector((state) => state.folder);
   const { files } = useSelector((state) => state.file);
   const dispatch = useDispatch();
@@ -28,6 +28,7 @@ const DragAndDrop = () => {
         await f.remove();
         dispatch(setToast({ type: "success", message: "Fichiers importés avec succès !", showToast: true }));
         setTimeout(() => dispatch(getFiles(currentFolder)), 200);
+        setAddMenu(false);
       }
     });
   };

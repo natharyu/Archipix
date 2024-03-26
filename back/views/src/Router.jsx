@@ -12,6 +12,8 @@ import Error from "./Pages/Client/Error";
 import Files from "./Pages/Client/Files/Files";
 import ClientHome from "./Pages/Client/Home";
 import ClientLayout from "./Pages/Client/Layout/Layout";
+import MentionsLegales from "./Pages/Client/MentionsLegales";
+import PolitiqueConfidentialite from "./Pages/Client/PolitiqueConfidentialite";
 import Profile from "./Pages/Client/Profile/Profile";
 import { AdminOnly, LoggedOnly } from "./middleware/Middleware";
 import { checkAuth } from "./store/slices/auth";
@@ -48,6 +50,8 @@ function Router() {
               </LoggedOnly>
             }
           />
+          <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
+          <Route path="/mentions-legales" element={<MentionsLegales />} />
           <Route path="*" element={<Error />} />
         </Route>
         <Route

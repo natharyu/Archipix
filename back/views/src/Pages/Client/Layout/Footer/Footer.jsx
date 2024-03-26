@@ -8,6 +8,10 @@ function Footer() {
       <section>
         <aside>
           <p>ArchiPix &copy; {new Date().getFullYear()} Tous droits réservés.</p>
+          <div>
+            <a href="/mentions-legales">Mentions legales</a>
+            <a href="/politique-confidentialite">Politique de confidentialité</a>
+          </div>
         </aside>
         <nav>
           <h3>Menu</h3>
@@ -19,7 +23,7 @@ function Footer() {
         <div>
           <h3>Contactez-nous</h3>
           <p>Email : anthony.dewitte@3wa.io</p>
-          <p>Téléphone : +1 123-456-7890</p>
+          <p>Téléphone : +33 123-456-789</p>
         </div>
       </section>
     </footer>

@@ -71,9 +71,8 @@ const Contact = () => {
           <button type="submit">{isLoading ? "En cours..." : "Envoyer"}</button>
         </form>
         <div>
-          <p>Adresse : 123 Rue de la Boutique</p>
-          <p>Email : contact@votre-boutique.com</p>
-          <p>Téléphone : +1 123-456-7890</p>
+          <p>Email : anthony.dewitte@3wa.io</p>
+          <p>Téléphone : +1 123-456-789</p>
         </div>
       </section>
     </dialog>
