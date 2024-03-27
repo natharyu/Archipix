@@ -7,13 +7,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { getFiles } from "../../../store/slices/files";
 import { getFolders, getPath, getRootFolder, setCurrentFolder } from "../../../store/slices/folder";
 import AddMenu from "./Components/AddMenu";
-import DeleteFileModal from "./Components/DeleteFileModal";
-import DeleteFolderModal from "./Components/DeleteFolderModal";
-import DeleteMultipleModal from "./Components/DeleteMultipleModal";
 import FilePreview from "./Components/FilePreview";
 import FolderTree from "./Components/FolderTree";
 import GridView from "./Components/GridView";
 import ListView from "./Components/ListView";
+import DeleteFileModal from "./Components/Modals/DeleteFileModal";
+import DeleteFolderModal from "./Components/Modals/DeleteFolderModal";
+import DeleteMultipleModal from "./Components/Modals/DeleteMultipleModal";
 
 function Files() {
   const [addMenu, setAddMenu] = useState(false);

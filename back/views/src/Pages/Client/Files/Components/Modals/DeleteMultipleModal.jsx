@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import { getFiles } from "../../../../store/slices/files";
-import { getFolders } from "../../../../store/slices/folder";
-import { setToast } from "../../../../store/slices/toast";
+import { getFiles } from "../../../../../store/slices/files";
+import { getFolders } from "../../../../../store/slices/folder";
+import { setToast } from "../../../../../store/slices/toast";
 function DeleteMultipleModal({ setShowDeleteMultipleModal, files, folders, setSelectedFiles, setSelectedFolders }) {
   const { currentFolder, path } = useSelector((state) => state.folder);
   const dispatch = useDispatch();

@@ -50,8 +50,8 @@ function Router() {
               </LoggedOnly>
             }
           />
-          <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
-          <Route path="/mentions-legales" element={<MentionsLegales />} />
+          <Route path="politique-confidentialite" element={<PolitiqueConfidentialite />} />
+          <Route path="mentions-legales" element={<MentionsLegales />} />
           <Route path="*" element={<Error />} />
         </Route>
         <Route

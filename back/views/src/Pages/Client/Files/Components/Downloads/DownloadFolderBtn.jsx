@@ -1,7 +1,7 @@
 import DownloadIcon from "@mui/icons-material/Download";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { resetToast, setToast } from "../../../../store/slices/toast";
+import { resetToast, setToast } from "../../../../../store/slices/toast";
 function DownloadFolderBtn({ folder_id }) {
   const { path } = useSelector((state) => state.folder);
   const [isDownloading, setIsDownloading] = useState(false);

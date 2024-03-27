@@ -2,7 +2,7 @@ import FolderIcon from "@mui/icons-material/Folder";
 import { useDispatch, useSelector } from "react-redux";
 import { getFiles, setCurrentFile } from "../../../../store/slices/files";
 import { setCurrentFolder } from "../../../../store/slices/folder";
-import DownloadFolderBtn from "./DownloadFolderBtn";
+import DownloadFolderBtn from "./Downloads/DownloadFolderBtn";
 
 function GridView({
   setFilePreview,

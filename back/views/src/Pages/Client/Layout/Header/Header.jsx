@@ -59,7 +59,7 @@ function Header() {
 
         <ThemeToggler />
       </nav>
-      {showMobileNav && <MobileNav setShowMobileNav={setShowMobileNav} />}
+      {showMobileNav && <MobileNav setShowMobileNav={setShowMobileNav} handleLogout={handleLogout} />}
     </header>
   );
 }
