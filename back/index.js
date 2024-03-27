@@ -6,6 +6,7 @@ import fileUpload from "express-fileupload";
 import router from "./router/router.js";
 
 const app = express();
+const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -28,6 +29,11 @@ app.get("/ping", (req, res) => {
   res.send("pong 🏓");
 });
 
-app.listen(process.env.SERVER_PORT, () => {
-  console.log(`Server started on port ${process.env.SERVER_PORT}`);
+app.listen(port, (err, res) => {
+  if (err) {
+    console.log(err);
+    return res.status(500).send(err.message);
+  } else {
+    console.log("[INFO] Server Running on port:", port);
+  }
 });
