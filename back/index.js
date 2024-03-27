@@ -25,6 +25,10 @@ app.use(
 app.use("/uploads", express.static("uploads"));
 
 app.use(router);
+
+app.get("/", (req, res) => {
+  res.send("Express JS on Vercel");
+});
 app.get("/ping", (req, res) => {
   res.send("pong 🏓");
 });
