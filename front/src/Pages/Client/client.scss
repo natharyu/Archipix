@@ -188,6 +188,9 @@
       @include lg {
         flex-direction: row;
       }
+      aside {
+        @include flex(column, normal, center, 1rem);
+      }
       nav,
       div {
         @include flex(column, normal, center, 1rem);
@@ -207,6 +210,40 @@
           text-shadow: 0 0 1rem var(--base-content);
         }
       }
+    }
+  }
+}
+#mentions,
+#politique {
+  @include flex(column, normal, normal, 1rem);
+  padding: 1rem;
+  width: 100%;
+  :nth-child(2),
+  h2 {
+    text-align: center;
+  }
+  h2 {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  ul {
+    text-align: center;
+  }
+  a {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+#politique {
+  ul {
+    text-align: inherit;
+    :nth-child(2) {
+      text-align: inherit;
     }
   }
 }
@@ -240,25 +277,59 @@
   @include flex(column, normal, flex-start, 1rem);
   article:first-child {
     width: 100%;
-    @include flex(row, normal, center, 1rem);
+    @include flex(row, space-between, center, 1rem);
     h2 {
       font-size: 2rem;
       font-weight: bold;
     }
-    .add-file,
-    .close-add-file {
+    .head-add-file,
+    .head-close-add-file {
       cursor: pointer;
       color: var(--base-content);
-      font-size: 2.5rem;
+      @include transition(0.3s);
+      font-size: 1.2rem;
+      @include md {
+        font-size: 1.5rem;
+      }
+      @include lg {
+        font-size: 2rem;
+      }
     }
-    .add-file {
+    .head-add-file {
       &:hover {
         color: var(--primary);
       }
     }
-    .close-add-file {
+    .head-close-add-file {
       &:hover {
         color: var(--error);
+      }
+    }
+    .viewMode {
+      @include flex(row, normal, center, 1rem);
+      cursor: pointer;
+      @include transition(0.3s);
+      @include lg {
+        font-size: 1.5rem;
+      }
+      p {
+        display: none;
+        @include md {
+          display: block;
+        }
+      }
+      .viewModeSelector {
+        @include flex(row, normal, center, 1rem);
+        @include transition(0.3s);
+        border: 1px solid var(--base-content);
+        border-radius: 0.5rem;
+        padding: 0.5rem 0.7rem;
+        color: var(--base-content);
+
+        .active {
+          @include transition(0.3s);
+          color: var(--primary);
+        }
       }
     }
   }
@@ -341,6 +412,7 @@
         width: 2.5rem;
         height: 2.5rem;
         cursor: pointer;
+        z-index: 10;
         @include transition(0.3s);
         &:hover {
           color: var(--primary);
@@ -348,8 +420,8 @@
       }
       .loader {
         position: absolute;
-        bottom: 0.5rem;
-        right: 0.5rem;
+        top: 0.5rem;
+        left: 0.5rem;
         width: 2rem;
         height: 2rem;
         border: 2px solid var(--primary);

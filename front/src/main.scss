@@ -116,6 +116,10 @@
     background-color: var(--error);
     animation: slide 5s forwards;
   }
+  .info {
+    background-color: var(--info);
+    animation: slide 5s forwards;
+  }
 
   @keyframes slide {
     0% {

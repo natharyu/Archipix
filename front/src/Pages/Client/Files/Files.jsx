@@ -1,17 +1,19 @@
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
+import GridViewIcon from "@mui/icons-material/GridView";
+import ViewListIcon from "@mui/icons-material/ViewList";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getFiles } from "../../../store/slices/files";
 import { getFolders, getPath, getRootFolder, setCurrentFolder } from "../../../store/slices/folder";
 import AddMenu from "./Components/AddMenu";
-import DeleteFileModal from "./Components/DeleteFileModal";
-import DeleteFolderModal from "./Components/DeleteFolderModal";
-import DeleteMultipleModal from "./Components/DeleteMultipleModal";
 import FilePreview from "./Components/FilePreview";
 import FolderTree from "./Components/FolderTree";
 import GridView from "./Components/GridView";
 import ListView from "./Components/ListView";
+import DeleteFileModal from "./Components/Modals/DeleteFileModal";
+import DeleteFolderModal from "./Components/Modals/DeleteFolderModal";
+import DeleteMultipleModal from "./Components/Modals/DeleteMultipleModal";
 
 function Files() {
   const [addMenu, setAddMenu] = useState(false);
@@ -50,15 +52,28 @@ function Files() {
       <section id="files">
         <article>
           {addMenu ? (
-            <CancelIcon className="close-add-file" onClick={() => setAddMenu(!addMenu)} />
+            <h2 className="head-close-add-file" onClick={() => setAddMenu(!addMenu)}>
+              <CancelIcon /> Annuler
+            </h2>
           ) : (
-            <AddCircleIcon className="add-file" onClick={() => setAddMenu(!addMenu)} />
+            <h2 className="head-add-file" onClick={() => setAddMenu(!addMenu)}>
+              <AddCircleIcon /> Ajouter des fichiers
+            </h2>
           )}
-          <h2>Mes Fichiers</h2>
           <button onClick={() => setShowDeleteMultipleModal(true)}>Supprimer</button>
-          <button onClick={() => setView(view === "list" ? "grid" : "list")}>
-            {view === "list" ? "Liste" : "Grille"}
-          </button>
+          <div className="viewMode">
+            <p>Affichage :</p>
+            <div
+              onClick={() => {
+                setFilePreview(false);
+                setView(view === "list" ? "grid" : "list");
+              }}
+              className="viewModeSelector"
+            >
+              <GridViewIcon className={view === "grid" ? "active" : null} />
+              <ViewListIcon className={view === "list" ? "active" : null} />
+            </div>
+          </div>
         </article>
         <article className="folder-tree">
           <FolderTree />

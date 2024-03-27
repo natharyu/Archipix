@@ -2,9 +2,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FolderIcon from "@mui/icons-material/Folder";
 import { useDispatch, useSelector } from "react-redux";
 import SizeCalculator from "../../../../Components/SizeCalculator";
-import { getFile } from "../../../../store/slices/files";
+import { setCurrentFile } from "../../../../store/slices/files";
 import { setCurrentFolder } from "../../../../store/slices/folder";
 import FileIcon from "../Components/FileIcon";
+import SelectAll from "./Select/SelectAll";
+import SelectFolders from "./Select/SelectFolders";
 
 function ListView({
   setFilePreview,
@@ -18,7 +20,7 @@ function ListView({
   setFileToDelete,
 }) {
   const { files, isLoading: isLoadingFiles } = useSelector((state) => state.file);
-  const { isLoading: isLoadingFolder, folders, path, rootFolder } = useSelector((state) => state.folder);
+  const { isLoading: isLoadingFolder, folders } = useSelector((state) => state.folder);
 
   const dispatch = useDispatch();
 
@@ -28,8 +30,7 @@ function ListView({
   };
 
   const handleClickFile = (file) => {
-    const exactpath = path.join("&&&");
-    dispatch(getFile({ id: file.id, label: file.label, path: exactpath, rootFolder: rootFolder }));
+    dispatch(setCurrentFile(file));
     setFilePreview(true);
   };
 
@@ -60,10 +61,12 @@ function ListView({
   return (
     <>
       <article className="list-view">
+        <SelectAll />
         {isLoadingFolder ? (
           <p>Chargement...</p>
         ) : (
           <ul>
+            <SelectFolders setSelectedFolders={setSelectedFolders} />
             {folders.length === 0 ? null : (
               <>
                 {folders.map((folder, index) => (
@@ -73,10 +76,11 @@ function ListView({
                       name={`folder-${folder.id}`}
                       onChange={() => handleAddSelectedFolder(folder)}
                     />
-                    <p onClick={() => handleClickFolder(folder.id, folder.label)}>
-                      <FolderIcon className="icon" />
-                      {folder.label}
-                    </p>
+                    <FolderIcon className="icon" />
+                    <div onClick={() => handleClickFolder(folder.id, folder.label)}>
+                      <p>{folder.label}</p>
+                      <p>Dossier</p>
+                    </div>
                     <DeleteIcon className="delete-icon" onClick={() => handleClickDeleteFolder(folder.id)} />
                   </li>
                 ))}

@@ -3,7 +3,7 @@ function Home() {
     <section id="home">
       <article>
         <figure>
-          <img src={"./src/assets/images/home.jpeg"} alt="Image accueil" />
+          <img src={"/assets/images/home.jpeg"} alt="Image accueil" />
         </figure>
       </article>
       <article>

@@ -28,6 +28,9 @@ export const fileSlice = createSlice({
     setFiles: (state, action) => {
       state.files = action.payload;
     },
+    setCurrentFile: (state, action) => {
+      state.currentFile = action.payload;
+    },
     resetCurrentFile: (state) => {
       state.currentFile = null;
     },
@@ -59,6 +62,6 @@ export const fileSlice = createSlice({
   },
 });
 
-export const { setFiles, resetCurrentFile, resetFileState } = fileSlice.actions;
+export const { setFiles, setCurrentFile, resetCurrentFile, resetFileState } = fileSlice.actions;
 
 export default fileSlice.reducer;

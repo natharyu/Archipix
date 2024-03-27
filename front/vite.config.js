@@ -15,7 +15,11 @@ export default defineConfig({
     alias: {
       src: "./src",
       slices: "./src/store/slices",
+      assets: "./src/assets",
     },
+  },
+  build: {
+    watch: "./vite.config.js",
   },
   plugins: [react()],
 });

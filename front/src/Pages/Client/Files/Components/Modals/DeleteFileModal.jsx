@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { getFiles } from "../../../../store/slices/files";
-import { setToast } from "../../../../store/slices/toast";
+import { getFiles } from "../../../../../store/slices/files";
+import { setToast } from "../../../../../store/slices/toast";
 function DeleteFileModal({ setShowDeleteFileModal, file_id, setFilePreview }) {
   const { currentFolder, path } = useSelector((state) => state.folder);
   const dispatch = useDispatch();
