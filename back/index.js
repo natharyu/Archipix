@@ -24,6 +24,9 @@ app.use(
 app.use("/uploads", express.static("uploads"));
 
 app.use(router);
+app.get("/ping", (req, res) => {
+  res.send("pong 🏓");
+});
 
 app.listen(process.env.SERVER_PORT, () => {
   console.log(`Server started on port ${process.env.SERVER_PORT}`);
