@@ -20,6 +20,7 @@ function SelectFolders({ setSelectedFolders }) {
         checkbox.checked = !isChecked;
       }
     });
+    setIsChecked(false);
   };
 
   return (

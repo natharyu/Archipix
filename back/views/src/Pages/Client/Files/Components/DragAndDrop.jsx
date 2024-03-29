@@ -22,15 +22,15 @@ const DragAndDrop = ({ setAddMenu }) => {
 
   const handleChangeStatus = ({ meta, file }, status, allFiles) => {
     allFiles.map(async (f) => {
-      if (f.meta.status === "ready" && f.meta.exist === true) f.remove();
+      // if (f.meta.status === "ready" && f.meta.exist === true) f.remove();
 
       if (f.meta.status === "done") {
-        await f.remove();
-        dispatch(setToast({ type: "success", message: "Fichiers importés avec succès !", showToast: true }));
-        setTimeout(() => dispatch(getFiles(currentFolder)), 200);
+        // await f.remove();
         setAddMenu(false);
       }
     });
+    dispatch(setToast({ type: "success", message: "Fichiers importés avec succès !", showToast: true }));
+    setTimeout(() => dispatch(getFiles(currentFolder)), 200);
   };
 
   const handleSubmit = async (successFiles, allFiles) => {

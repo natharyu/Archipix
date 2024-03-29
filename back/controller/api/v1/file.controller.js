@@ -1,6 +1,5 @@
-import fs from "fs";
 import jwt from "jsonwebtoken";
-import { checkExisting, deleteFile, uploadFile } from "../../../config/S3.js";
+import { checkExisting, deleteFile, deleteFolder, uploadFile } from "../../../config/S3.js";
 import File from "../../../model/File.model.js";
 import Folder from "../../../model/Folder.model.js";
 import Query from "../../../model/Query.model.js";
@@ -16,37 +15,11 @@ const get = async (req, res) => {
 
 const getOne = async (req, res) => {
   try {
-    const files = fs.readdirSync(`uploads/${req.params.rootFolder}/tmp`);
-    if (files.length > 0) {
-      files.map(async (file) => fs.unlinkSync(`uploads/${req.params.rootFolder}/tmp/${file}`));
-    }
     const [file] = await File.getOneByField("id", req.params.id);
     if (!file) {
       return res.status(404).json({ error: "Fichier introuvable" });
     }
-    const path = req.params.path.replace("&&&", "/");
-
-    fs.copyFile(
-      `uploads/${path}/${req.params.label}`,
-      `uploads/${req.params.rootFolder}/tmp/${req.params.label}`,
-      (err) => {
-        if (err) throw err;
-      }
-    );
     return res.json(file);
-  } catch (error) {
-    return res.status(500).json({ error: "Une erreur est survenue" });
-  }
-};
-
-const getFilePreview = async (req, res) => {
-  try {
-    fs.readFile(`./uploads/${req.params.rootFolder}/tmp/${req.params.fileName}`, (err, data) => {
-      if (err) {
-        return res.status(500).json({ error: "Une erreur est survenue" });
-      }
-      return res.write(data);
-    });
   } catch (error) {
     return res.status(500).json({ error: "Une erreur est survenue" });
   }
@@ -66,7 +39,7 @@ const add = async (req, res) => {
     const files = req.files.file;
     await files.map(async (file) => {
       const [existingFileName] = await File.getOneByField("label", file.name);
-      if (existingFileName || fs.existsSync(`./uploads/${req.body.path}/${file.name}`)) {
+      if (existingFileName && file.folder_id === req.body.currentFolder) {
         console.log("File already exists");
         return;
       } else {
@@ -123,23 +96,23 @@ const deleteManyFiles = async (req, res) => {
     const { files, folders, path } = req.body;
     if (files.length > 0) {
       files.map(async (file) => {
+        const completeFilePath = `${req.body.path}/${file.label}`;
         const [existingFile] = await File.getOneByField("id", file.id);
-        if (existingFile || fs.existsSync(`./uploads/${path}/${existingFile.label}`)) {
-          fs.unlinkSync(`./uploads/${path}/${existingFile.label}`);
-          const command = new DeleteObjectCommand({
-            Bucket: "archipix",
-            Key: file.label,
-          });
-          s3Client.send(command);
+        const ExistingFileS3 = await checkExisting(completeFilePath);
+        if (existingFile && ExistingFileS3) {
+          await deleteFile(completeFilePath);
           await File.deleteOne(existingFile.id);
         }
       });
     }
+
     if (folders.length > 0) {
       folders.map(async (folder) => {
+        const completeFolderPath = `${req.body.path}/${folder.id}/`;
         const [existingFolder] = await Folder.getOneById(folder.id);
-        if (existingFolder || fs.existsSync(`./uploads/${path}/${existingFolder.id}`)) {
-          fs.rmSync(`./uploads/${path}/${existingFolder.id}`, { recursive: true });
+        const existingFolderS3 = await checkExisting(completeFolderPath);
+        if (existingFolder || existingFolderS3) {
+          await deleteFolder(completeFolderPath);
           await Folder.deleteOne(existingFolder.id);
         }
       });
@@ -152,4 +125,4 @@ const deleteManyFiles = async (req, res) => {
   }
 };
 
-export default { get, getOne, getFilePreview, add, deleteOneFile, deleteManyFiles };
+export default { get, getOne, add, deleteOneFile, deleteManyFiles };

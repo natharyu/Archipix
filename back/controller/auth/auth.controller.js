@@ -2,10 +2,10 @@ import emailjs from "@emailjs/nodejs";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
+import { createFolder } from "../../config/S3.js";
 import Folder from "../../model/Folder.model.js";
 import Query from "../../model/Query.model.js";
 import User from "../../model/User.model.js";
-import { createFolder } from "../../config/S3.js";
 
 const register = async (req, res) => {
   try {
@@ -42,22 +42,24 @@ const register = async (req, res) => {
 
     createFolder(storage.uuid);
 
-    // try {
-    //   if (!fs.existsSync(`./uploads/${storage.uuid}`)) {
-    //     fs.mkdirSync(`./uploads/${storage.uuid}`);
-    //     fs.mkdirSync(`./uploads/${storage.uuid}/tmp`);
-    //   }
-    // } catch (err) {
-    //   console.error(err);
-    // }
-
     const serviceID = process.env.EMAIL_JS_REGISTER_SERVICE_ID;
     const templateID = process.env.EMAIL_JS_REGISTER_TEMPLATE_ID;
     const userID = process.env.EMAIL_JS_REGISTER_USER_ID;
     const templateParams = {
       to_email: email,
       subject: "Vérification de l'adresse e-mail",
-      message: `http://localhost:5173/verification-email/${emailVerificationToken}`,
+      message: `<html>
+      <head>
+        <title>Vérification de votre adresse e-mail</title>
+      </head>
+      <body>
+        <p>Bonjour,</p>
+        <p>Merci de cliquer sur le lien ci-dessous pour vérifier votre adresse e-mail afin de pouvoir vous connecter :</p>
+        <a href="https://archipix.dew-hub.ovh/verification-email/${emailVerificationToken}">Vérifier mon adresse e-mail</a>
+        <p>Cordialement,</p>
+        <p>Archipix</p>
+      </body>
+    </html>`,
     };
 
     try {

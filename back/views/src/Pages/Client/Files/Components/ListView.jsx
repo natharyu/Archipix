@@ -6,6 +6,7 @@ import { setCurrentFile } from "../../../../store/slices/files";
 import { setCurrentFolder } from "../../../../store/slices/folder";
 import FileIcon from "../Components/FileIcon";
 import SelectAll from "./Select/SelectAll";
+import SelectFiles from "./Select/SelectFiles";
 import SelectFolders from "./Select/SelectFolders";
 
 function ListView({
@@ -61,7 +62,7 @@ function ListView({
   return (
     <>
       <article className="list-view">
-        <SelectAll />
+        <SelectAll setSelectedFiles={setSelectedFiles} setSelectedFolders={setSelectedFolders} />
         {isLoadingFolder ? (
           <p>Chargement...</p>
         ) : (
@@ -75,6 +76,7 @@ function ListView({
                       type="checkbox"
                       name={`folder-${folder.id}`}
                       onChange={() => handleAddSelectedFolder(folder)}
+                      checked={selectedFolders.includes(folder)}
                     />
                     <FolderIcon className="icon" />
                     <div onClick={() => handleClickFolder(folder.id, folder.label)}>
@@ -94,13 +96,19 @@ function ListView({
           <p>Chargement...</p>
         ) : (
           <ul>
+            <SelectFiles setSelectedFiles={setSelectedFiles} />
             {files.length === 0 ? (
               <p>Aucun fichier présent dans ce dossier</p>
             ) : (
               <>
                 {files.map((file, index) => (
                   <li key={index}>
-                    <input type="checkbox" name={`file-${file.id}`} onChange={() => handleAddSelectedFile(file)} />
+                    <input
+                      type="checkbox"
+                      name={`file-${file.id}`}
+                      onChange={() => handleAddSelectedFile(file)}
+                      checked={selectedFiles.includes(file)}
+                    />
                     <FileIcon ext={file.extension} className="icon" />
                     <div onClick={() => handleClickFile(file)}>
                       <p>{file.label}</p>

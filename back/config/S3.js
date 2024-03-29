@@ -47,7 +47,6 @@ const createFolder = async (key) => {
 
 const deleteFolder = async (key) => {
   let filesDeleted = false;
-  console.log(key);
   const folderParams = {
     Bucket: process.env.S3_BUCKET_NAME,
     Prefix: key,

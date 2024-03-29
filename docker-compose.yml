@@ -1,0 +1,22 @@
+version: "3.3"
+
+services:
+  test:
+    image: natharyu/nodejs-image:latest
+    container_name: test
+    restart: always
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.test.rule=Host(`archipix.dew-hub.ovh`)"
+      - "traefik.http.routers.test.entrypoints=websecure"
+      - "traefik.http.routers.test.tls=true"
+      - "traefik.http.routers.test.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.test.service=testService"
+      - "traefik.http.services.testService.loadbalancer.server.port=8089"
+
+networks:
+  traefik:
+    name: traefik
+    external: true

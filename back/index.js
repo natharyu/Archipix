@@ -6,7 +6,7 @@ import fileUpload from "express-fileupload";
 import router from "./router/router.js";
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8089;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -16,12 +16,7 @@ app.use(
 app.use(cookieParser());
 app.use(express.static("views/dist"));
 app.use("/assets", express.static("views/src/assets"));
-app.use(
-  fileUpload({
-    // useTempFiles: true,
-    // tempFileDir: "./uploads/tmp/",
-  })
-);
+app.use(fileUpload());
 app.use("/uploads", express.static("uploads"));
 
 app.use(router);
