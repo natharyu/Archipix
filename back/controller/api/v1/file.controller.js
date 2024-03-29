@@ -1,5 +1,6 @@
 import fs from "fs";
 import jwt from "jsonwebtoken";
+import { checkExisting, deleteFile, uploadFile } from "../../../config/S3.js";
 import File from "../../../model/File.model.js";
 import Folder from "../../../model/Folder.model.js";
 import Query from "../../../model/Query.model.js";
@@ -87,13 +88,9 @@ const add = async (req, res) => {
           return checkExistingFile();
         };
         await checkExistingFile();
-        const destination = `uploads/${req.body.path}/${file.name}`;
-        if (fs.existsSync(destination)) {
-          return;
-        }
-        await file.mv(destination, function (err) {
-          if (err) return res.status(500).json(err);
-        });
+        const destination = `${req.body.path}/${file.name}`;
+        const fileContent = Buffer.from(file.data, "binary");
+        await uploadFile(destination, file, fileContent);
       }
     });
     return res.json({ message: "Fichiers envoyés avec succès !" });
@@ -108,10 +105,12 @@ const deleteOneFile = async (req, res) => {
     if (!file) {
       return res.status(404).json({ error: "Fichier introuvable" });
     }
-    if (!fs.existsSync(`./uploads/${req.body.path}/${file.label}`)) {
-      return res.status(404).json({ error: "Fichier introuvable" });
+    const completePath = `${req.body.path}/${file.label}`;
+    const existingFile = await checkExisting(completePath);
+
+    if (existingFile) {
+      await deleteFile(completePath);
     }
-    fs.unlinkSync(`./uploads/${req.body.path}/${file.label}`);
     await File.deleteOne(file.id);
     return res.json({ message: "Fichier supprimé avec succès !" });
   } catch (error) {
@@ -127,6 +126,11 @@ const deleteManyFiles = async (req, res) => {
         const [existingFile] = await File.getOneByField("id", file.id);
         if (existingFile || fs.existsSync(`./uploads/${path}/${existingFile.label}`)) {
           fs.unlinkSync(`./uploads/${path}/${existingFile.label}`);
+          const command = new DeleteObjectCommand({
+            Bucket: "archipix",
+            Key: file.label,
+          });
+          s3Client.send(command);
           await File.deleteOne(existingFile.id);
         }
       });

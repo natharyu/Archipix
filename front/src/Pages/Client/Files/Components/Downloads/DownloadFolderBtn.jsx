@@ -13,6 +13,7 @@ function DownloadFolderBtn({ folder_id }) {
       method: "GET",
     })
       .then((response) => {
+        console.log(response);
         if (!response.ok) {
           throw new Error("Erreur lors du téléchargement du zip");
         }

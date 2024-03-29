@@ -1,6 +1,5 @@
-import archiver from "archiver";
-import fs from "fs";
 import jwt from "jsonwebtoken";
+import { checkExisting, createFolder, deleteFolder, makeArchive } from "../../../config/S3.js";
 import Folder from "../../../model/Folder.model.js";
 import Query from "../../../model/Query.model.js";
 import User from "../../../model/User.model.js";
@@ -60,8 +59,9 @@ const create = async (req, res) => {
     const [newFolderId] = await Query.generateUUID();
 
     try {
-      if (!fs.existsSync(`./uploads/${req.body.path}/${newFolderId.uuid}`)) {
-        fs.mkdirSync(`./uploads/${req.body.path}/${newFolderId.uuid}`);
+      const existingFolder = await checkExisting(newFolderId.uuid);
+      if (!existingFolder) {
+        // fs.mkdirSync(`./uploads/${req.body.path}/${newFolderId.uuid}`);
         const newFolder = await Folder.create({
           id: newFolderId.uuid,
           user_id: user.id,
@@ -69,6 +69,8 @@ const create = async (req, res) => {
           label: req.body.newFolderName,
           created_at: new Date(),
         });
+        const completePath = `${req.body.path}/${newFolderId.uuid}`;
+        await createFolder(completePath);
         if (!newFolder) {
           return res.status(409).json({ error: "Erreur lors de la création du dossier" });
         }
@@ -79,7 +81,8 @@ const create = async (req, res) => {
 
     return res.json({ message: "Dossier creé avec succes" });
   } catch (error) {
-    return res.status(500).json({ error: "Une erreur est survenue" });
+    console.log(error);
+    // return res.status(500).json({ error: "Une erreur est survenue" });
   }
 };
 
@@ -89,11 +92,8 @@ const deleteOneFolder = async (req, res) => {
     if (!folder) {
       return res.status(404).json({ error: "Dossier introuvable" });
     }
-    const path = `./uploads/${req.body.path}/${folder.id}`;
-    if (!fs.existsSync(path)) {
-      return res.status(404).json({ error: "Dossier introuvable" });
-    }
-    fs.rmSync(path, { recursive: true });
+    const completePath = `${req.body.path}/${folder.id}/`;
+    await deleteFolder(completePath);
     await Folder.deleteOne(folder.id);
     return res.json({ message: "Dossier supprimé avec succès !" });
   } catch (error) {
@@ -101,11 +101,6 @@ const deleteOneFolder = async (req, res) => {
   }
 };
 
-/**
- * Download a folder and its contents as a zip file.
- * @param {object} req Express request object.
- * @param {object} res Express response object.
- */
 const download = async (req, res) => {
   try {
     // Get the folder from the database
@@ -114,73 +109,13 @@ const download = async (req, res) => {
     if (!folder) {
       return res.status(404).json({ error: "Dossier introuvable" });
     }
+    const path = `${req.params.path.replace("&&&", "/")}/${folder.id}/`;
 
-    /**
-     * Build the path to the folder to be downloaded.
-     * @type {string}
-     */
-    const path = `./uploads/${req.params.path.replace("&&&", "/")}/${folder.id}`;
-
-    /**
-     * Build the name of the zip file to be downloaded.
-     * @type {string}
-     */
-    const zipName = `${folder.id}.zip`;
-
-    /**
-     * Build the path to the downloaded zip file.
-     * @type {string}
-     */
-    const out = `./uploads/tmp/${zipName}`;
-
-    const existingArchive = fs.existsSync(out);
-    if (existingArchive) {
-      fs.unlink(out, (err) => {
-        if (err) {
-          console.error(err);
-        }
-      });
-    }
-
-    // Create a new zip archive
-    const archive = archiver("zip", { zlib: { level: 9 } });
-    // Create a write stream for the archive
-    const stream = fs.createWriteStream(out);
-
-    // Add the folder to the archive and pipe it to the response
-    archive
-      .directory(path, false)
-      .on("error", (err) => {
-        throw err;
-      })
-      .pipe(stream);
-
-    // When the archive has been finalized, send the file to the user
-    stream.on("close", () => {
-      res.download(out, (err) => {
-        if (err) {
-          console.error(err);
-        } else {
-          // Delete the downloaded zip file after a short delay
-          setTimeout(() => {
-            fs.unlink(out, (err) => {
-              if (err) {
-                console.error(err);
-              }
-            });
-          }, 3000);
-        }
-      });
-    });
-
-    /**
-     * Finalize the archive and send it to the user.
-     */
-    archive.finalize();
+    await makeArchive(path, res);
+    res.end();
   } catch (error) {
     console.error(error);
-    // If an error occurs, send a 500 response
-    // return res.status(500).json({ error: "Une erreur est survenue" });
+    return res.status(500).json({ error: "Une erreur est survenue" });
   }
 };
 

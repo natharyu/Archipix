@@ -1,11 +1,11 @@
 import emailjs from "@emailjs/nodejs";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
-import fs from "fs";
 import jwt from "jsonwebtoken";
 import Folder from "../../model/Folder.model.js";
 import Query from "../../model/Query.model.js";
 import User from "../../model/User.model.js";
+import { createFolder } from "../../config/S3.js";
 
 const register = async (req, res) => {
   try {
@@ -40,14 +40,16 @@ const register = async (req, res) => {
       return res.status(409).json({ error: "Erreur lors de l'inscription." });
     }
 
-    try {
-      if (!fs.existsSync(`./uploads/${storage.uuid}`)) {
-        fs.mkdirSync(`./uploads/${storage.uuid}`);
-        fs.mkdirSync(`./uploads/${storage.uuid}/tmp`);
-      }
-    } catch (err) {
-      console.error(err);
-    }
+    createFolder(storage.uuid);
+
+    // try {
+    //   if (!fs.existsSync(`./uploads/${storage.uuid}`)) {
+    //     fs.mkdirSync(`./uploads/${storage.uuid}`);
+    //     fs.mkdirSync(`./uploads/${storage.uuid}/tmp`);
+    //   }
+    // } catch (err) {
+    //   console.error(err);
+    // }
 
     const serviceID = process.env.EMAIL_JS_REGISTER_SERVICE_ID;
     const templateID = process.env.EMAIL_JS_REGISTER_TEMPLATE_ID;

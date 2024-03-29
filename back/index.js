@@ -18,8 +18,8 @@ app.use(express.static("views/dist"));
 app.use("/assets", express.static("views/src/assets"));
 app.use(
   fileUpload({
-    useTempFiles: true,
-    tempFileDir: "./uploads/tmp/",
+    // useTempFiles: true,
+    // tempFileDir: "./uploads/tmp/",
   })
 );
 app.use("/uploads", express.static("uploads"));
