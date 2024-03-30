@@ -2,6 +2,7 @@ import FolderIcon from "@mui/icons-material/Folder";
 import { useDispatch, useSelector } from "react-redux";
 import { getFiles, setCurrentFile } from "../../../../store/slices/files";
 import { setCurrentFolder } from "../../../../store/slices/folder";
+import DownloadFileBtn from "./Downloads/DownloadFileBtn";
 import DownloadFolderBtn from "./Downloads/DownloadFolderBtn";
 
 function GridView({
@@ -103,6 +104,7 @@ function GridView({
                       onChange={() => handleAddSelectedFile(file)}
                       checked={selectedFiles.includes(file)}
                     />
+                    <DownloadFileBtn file={file} />
                     <div className="grid-file" onClick={() => handleClickFile(file)}>
                       {file.type.includes("image") && (
                         <img

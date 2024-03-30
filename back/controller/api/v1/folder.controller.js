@@ -103,9 +103,7 @@ const deleteOneFolder = async (req, res) => {
 
 const download = async (req, res) => {
   try {
-    // Get the folder from the database
     const [folder] = await Folder.getOneById(req.params.folder_id);
-    // If the folder doesn't exist, return a 404
     if (!folder) {
       return res.status(404).json({ error: "Dossier introuvable" });
     }
@@ -114,7 +112,6 @@ const download = async (req, res) => {
     await makeArchive(path, res);
     res.end();
   } catch (error) {
-    console.error(error);
     return res.status(500).json({ error: "Une erreur est survenue" });
   }
 };

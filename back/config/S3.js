@@ -1,5 +1,6 @@
 import {
   DeleteObjectCommand,
+  GetObjectCommand,
   HeadObjectCommand,
   ListObjectsCommand,
   PutObjectCommand,
@@ -15,6 +16,14 @@ const s3Client = new S3Client({
     secretAccessKey: process.env.S3_SECRET_KEY,
   },
 });
+const s3Config = new AWS.Config({
+  credentials: {
+    accessKeyId: process.env.S3_ACCESS_KEY,
+    secretAccessKey: process.env.S3_SECRET_KEY,
+  },
+  region: "eu-west-3",
+});
+const s3 = new AWS.S3(s3Config);
 
 const uploadFile = async (destination, file, fileContent) => {
   const uploadParams = {
@@ -109,91 +118,14 @@ const getKeyList = async (key) => {
   return keyList;
 };
 
-// const makeArchive = async (key) => {
-//   const zipName = `${key}.zip`;
-//   const archive = archiver("zip", {
-//     zlib: { level: 9 }, // Sets the compression level (optional)
-//   });
-
-//   const keyList = await getKeyList(key);
-
-//   try {
-//     await keyList.map(async (item) => {
-//       const fileParams = new GetObjectCommand({
-//         Bucket: process.env.S3_BUCKET_NAME,
-//         Key: item, // Use the entire file key here
-//       });
-
-//       const fileStream = await s3Client.send(fileParams);
-//       const readableStream = Readable.from(fileStream.Body)
-//       archive.append(ReadableStream, { name: item.split("/").pop() });
-//     });
-
-//     // const s3WritableStream = getWritableStreamFromS3(key);
-//     // archive.pipe(s3WritableStream);
-
-//     archive.on("error", (err) => console.error("Error creating archive:", err));
-//     archive.on("finish", () => console.log("Archive created:", zipName));
-
-//     archive.finalize();
-
-//     const output = archive.out;
-//     console.log(output);
-
-//     // const s3ZipParams = {
-//     //   Bucket: process.env.S3_BUCKET_NAME,
-//     //   Key: zipName,
-//     //   Body: output,
-//     //   ContentType: "application/zip",
-//     // };
-
-//     // await s3Client.send(new PutObjectCommand(s3ZipParams));
-//     console.log("Archive uploaded to S3:", zipName);
-//   } catch (error) {
-//     console.error("Error creating or uploading archive:", error);
-//   }
-// };
-
-// async function getReadableStreamFromS3(s3Key) {
-//   const command = new GetObjectCommand({
-//     Bucket: process.env.S3_BUCKET_NAME,
-//     Key: s3Key,
-//   });
-//   const response = await s3Client.send(command);
-//   return response.Body;
-// }
-
-// function getWritableStreamFromS3(zipFileS3Key) {
-//   const passthrough = new stream.PassThrough();
-
-//   new Upload({
-//     client: s3Client,
-//     params: {
-//       Bucket: process.env.S3_BUCKET_NAME,
-//       Key: `${zipFileS3Key}.zip`,
-//       Body: passthrough,
-//     },
-//   }).done();
-//   console.log(passthrough);
-
-//   return passthrough;
-// }
-
-const makeArchive = async (key, res) => {
-  const s3Config = new AWS.Config({
-    credentials: {
-      accessKeyId: process.env.S3_ACCESS_KEY,
-      secretAccessKey: process.env.S3_SECRET_KEY,
-    },
-    region: "eu-west-3",
-  });
-  const s3 = new AWS.S3(s3Config);
+const makeArchive = async (key, res, folder) => {
   const params = {
     Bucket: process.env.S3_BUCKET_NAME,
     Prefix: key,
+    StartAfter: key,
   };
 
-  const { Contents } = await s3.listObjects(params).promise(); // convert request to promise
+  const { Contents } = await s3.listObjectsV2(params).promise(); // convert request to promise
 
   return new Promise((resolve, reject) => {
     // wrap into a promise
@@ -210,17 +142,44 @@ const makeArchive = async (key, res) => {
     // error handler
 
     for (const content of Contents) {
+      const regex = new RegExp(`.*\/${folder}\/`);
+      const contentKey = content.Key.replace(regex, `${folder}/`);
       const file = s3
         .getObject({
           Bucket: process.env.S3_BUCKET_NAME,
           Key: content.Key,
         })
         .createReadStream();
-      archive.append(file, { name: content.Key });
+      archive.append(file, { name: contentKey });
     }
 
     archive.finalize();
   });
 };
 
-export { checkExisting, createFolder, deleteFile, deleteFolder, getKeyList, makeArchive, s3Client, uploadFile };
+const downloadFile = async (path, res) => {
+  try {
+    const params = {
+      Bucket: process.env.S3_BUCKET_NAME,
+      Key: path,
+    };
+
+    const { Body } = await s3Client.send(new GetObjectCommand(params));
+
+    Body.pipe(res);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Une erreur est survenue" });
+  }
+};
+export {
+  checkExisting,
+  createFolder,
+  deleteFile,
+  deleteFolder,
+  downloadFile,
+  getKeyList,
+  makeArchive,
+  s3Client,
+  uploadFile,
+};

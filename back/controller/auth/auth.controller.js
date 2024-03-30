@@ -92,7 +92,7 @@ const login = async (req, res) => {
     const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, process.env.JWT_SECRET, {
       algorithm: "HS256",
       allowInsecureKeySizes: true,
-      expiresIn: "15m",
+      expiresIn: "1h",
     });
     const refreshToken = jwt.sign({ id: user.id, email: user.email, role: user.role }, process.env.JWT_SECRET_REFRESH, {
       algorithm: "HS256",
@@ -137,7 +137,7 @@ const refresh = (req, res) => {
         const token = jwt.sign({ id: user.id, email: user.email, role: role }, process.env.JWT_SECRET, {
           algorithm: "HS256",
           allowInsecureKeySizes: true,
-          expiresIn: "15m",
+          expiresIn: "1h",
         });
         res.cookie("Session", token, { sameSite: "lax", httpOnly: true, maxAge: 1000 * 60 * 15 });
         return res.json({ isLoggedIn: true, role: role });
@@ -154,7 +154,7 @@ const refresh = (req, res) => {
             const token = jwt.sign({ id: user.id, email: user.email, role: role }, process.env.JWT_SECRET, {
               algorithm: "HS256",
               allowInsecureKeySizes: true,
-              expiresIn: "15m",
+              expiresIn: "1h",
             });
             res.cookie("Session", token, { sameSite: "lax", httpOnly: true, maxAge: 1000 * 60 * 15 });
             return res.json({ isLoggedIn: true, role: role });
@@ -190,7 +190,7 @@ const resetPassword = async (req, res) => {
   const templateParams = {
     to_email: email,
     subject: "Réinitialisation du mot de passe",
-    message: `http://localhost:5173/nouveau-mot-de-passe/${resetToken}`,
+    message: `https://archipix.dew-hub.ovh/nouveau-mot-de-passe/${resetToken}`,
   };
 
   try {
