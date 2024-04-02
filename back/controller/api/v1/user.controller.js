@@ -15,4 +15,22 @@ const getUserInfo = async (req, res) => {
   }
 };
 
-export default { getUserInfo };
+const getAll = async (req, res) => {
+  try {
+    const users = await User.getAll();
+    return res.json(users);
+  } catch (error) {
+    return res.status(500).json({ error: "Une erreur est survenue" });
+  }
+};
+
+const getTotalUsers = async (req, res) => {
+  try {
+    const [totalUsers] = await User.total();
+    return res.json(totalUsers);
+  } catch (error) {
+    return res.status(500).json({ error: "Une erreur est survenue" });
+  }
+};
+
+export default { getUserInfo, getTotalUsers, getAll };

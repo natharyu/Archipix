@@ -37,9 +37,11 @@ function SelectAll({ setSelectedFolders, setSelectedFiles }) {
   };
 
   return (
-    <div>
-      <button onClick={handleCheckAll}>{isChecked ? "Décocher tout" : "Cocher tout"}</button>
-    </div>
+    <>
+      <button className="selectBtn" onClick={handleCheckAll}>
+        {isChecked ? "Décocher tout" : "Cocher tout"}
+      </button>
+    </>
   );
 }
 

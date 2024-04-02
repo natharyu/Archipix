@@ -5,9 +5,8 @@ import SizeCalculator from "../../../../Components/SizeCalculator";
 import { setCurrentFile } from "../../../../store/slices/files";
 import { setCurrentFolder } from "../../../../store/slices/folder";
 import FileIcon from "../Components/FileIcon";
-import SelectAll from "./Select/SelectAll";
-import SelectFiles from "./Select/SelectFiles";
-import SelectFolders from "./Select/SelectFolders";
+import DownloadFileBtn from "./Downloads/DownloadFileBtn";
+import DownloadFolderBtn from "./Downloads/DownloadFolderBtn";
 
 function ListView({
   setFilePreview,
@@ -62,12 +61,10 @@ function ListView({
   return (
     <>
       <article className="list-view">
-        <SelectAll setSelectedFiles={setSelectedFiles} setSelectedFolders={setSelectedFolders} />
         {isLoadingFolder ? (
           <p>Chargement...</p>
         ) : (
           <ul>
-            <SelectFolders setSelectedFolders={setSelectedFolders} />
             {folders.length === 0 ? null : (
               <>
                 {folders.map((folder, index) => (
@@ -83,6 +80,7 @@ function ListView({
                       <p>{folder.label}</p>
                       <p>Dossier</p>
                     </div>
+                    <DownloadFolderBtn folder_id={folder.id} />
                     <DeleteIcon className="delete-icon" onClick={() => handleClickDeleteFolder(folder.id)} />
                   </li>
                 ))}
@@ -96,7 +94,6 @@ function ListView({
           <p>Chargement...</p>
         ) : (
           <ul>
-            <SelectFiles setSelectedFiles={setSelectedFiles} />
             {files.length === 0 ? (
               <p>Aucun fichier présent dans ce dossier</p>
             ) : (
@@ -114,6 +111,7 @@ function ListView({
                       <p>{file.label}</p>
                       <SizeCalculator size={file.size} />
                     </div>
+                    <DownloadFileBtn file={file} />
                     <DeleteIcon className="delete-icon" onClick={() => handleClickDeleteFile(file.id)} />
                   </li>
                 ))}

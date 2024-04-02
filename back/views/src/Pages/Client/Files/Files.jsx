@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getFiles } from "../../../store/slices/files";
 import { getFolders, getPath, getRootFolder, setCurrentFolder } from "../../../store/slices/folder";
+import { setViewMode } from "../../../store/slices/user";
 import AddMenu from "./Components/AddMenu";
 import FilePreview from "./Components/FilePreview";
 import FolderTree from "./Components/FolderTree";
@@ -14,6 +15,7 @@ import ListView from "./Components/ListView";
 import DeleteFileModal from "./Components/Modals/DeleteFileModal";
 import DeleteFolderModal from "./Components/Modals/DeleteFolderModal";
 import DeleteMultipleModal from "./Components/Modals/DeleteMultipleModal";
+import SelectMenu from "./Components/Select/SelectMenu";
 
 function Files() {
   const [addMenu, setAddMenu] = useState(false);
@@ -26,7 +28,7 @@ function Files() {
   const [selectedFolders, setSelectedFolders] = useState([]);
   const [showDeleteMultipleModal, setShowDeleteMultipleModal] = useState(false);
   const { currentFolder, path, rootFolder, rootFolderName } = useSelector((state) => state.folder);
-  const [view, setView] = useState("list");
+  const { viewMode } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -60,18 +62,28 @@ function Files() {
               <AddCircleIcon /> Ajouter des fichiers
             </h2>
           )}
-          <button onClick={() => setShowDeleteMultipleModal(true)}>Supprimer</button>
+          <SelectMenu setSelectedFiles={setSelectedFiles} setSelectedFolders={setSelectedFolders} />
+          {selectedFiles.length > 0 || selectedFolders.length > 0 ? (
+            <button className="deleteBtn" onClick={() => setShowDeleteMultipleModal(true)}>
+              Supprimer
+            </button>
+          ) : (
+            <button className="deleteBtn" disabled>
+              Supprimer
+            </button>
+          )}
+
           <div className="viewMode">
             <p>Affichage :</p>
             <div
               onClick={() => {
                 setFilePreview(false);
-                setView(view === "list" ? "grid" : "list");
+                dispatch(setViewMode());
               }}
               className="viewModeSelector"
             >
-              <GridViewIcon className={view === "grid" ? "active" : null} />
-              <ViewListIcon className={view === "list" ? "active" : null} />
+              <GridViewIcon className={viewMode && "active"} />
+              <ViewListIcon className={!viewMode && "active"} />
             </div>
           </div>
         </article>
@@ -79,7 +91,7 @@ function Files() {
           <FolderTree />
         </article>
         {addMenu && <AddMenu setAddMenu={setAddMenu} />}
-        {view === "list" ? (
+        {!viewMode ? (
           <ListView
             setFilePreview={setFilePreview}
             selectedFiles={selectedFiles}

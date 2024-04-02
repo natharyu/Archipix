@@ -6,5 +6,7 @@ const userRoutes = express.Router();
 
 //get routes
 userRoutes.get("/get/info/:email", userController.getUserInfo);
+userRoutes.get("/total", userController.getTotalUsers);
+userRoutes.get("/all", userController.getAll);
 
 export default userRoutes;

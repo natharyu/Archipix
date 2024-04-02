@@ -2,7 +2,6 @@
   width: 100%;
   @include flex(column, normal, center, 0);
   flex-grow: 1;
-  flex-grow: 1;
   .icon {
     font-size: 1.2rem;
     margin-right: 0.5rem;
@@ -42,7 +41,6 @@
     left: 0;
     z-index: 50;
     width: 100%;
-    width: 100%;
     .burger-menu {
       width: 2.5rem;
       height: 2.5rem;
@@ -77,13 +75,6 @@
       width: 90%;
       @include lg {
         width: auto;
-      }
-      h1 {
-        @include flex(row, center, center, 1rem);
-        flex-grow: 1;
-        @include lg {
-          @include flex(row, normal, center, 1rem);
-        }
       }
       &:hover {
         cursor: pointer;
@@ -160,6 +151,21 @@
             color: var(--error);
             border-color: var(--error);
             background-color: var(--base);
+          }
+        }
+      }
+      ul:last-child {
+        @include flex(column, normal, center, 1rem);
+        width: 100%;
+        font-size: 1.2rem;
+        button {
+          background-color: transparent;
+          border: none;
+          @include transition(0.3s);
+          font-size: 1.2rem;
+          color: var(--error);
+          &:hover {
+            text-shadow: 0 0 1rem var(--error);
           }
         }
       }
@@ -277,7 +283,10 @@
   @include flex(column, normal, flex-start, 1rem);
   article:first-child {
     width: 100%;
-    @include flex(row, space-between, center, 1rem);
+    @include flex(column, normal, center, 1rem);
+    @include md {
+      @include flex(row, space-between, center, 1rem);
+    }
     h2 {
       font-size: 2rem;
       font-weight: bold;
@@ -343,6 +352,16 @@
       width: 100%;
       @include flex(column, normal, normal, 0);
       li {
+        input[type="checkbox"] {
+          margin-right: 0.5rem;
+          cursor: pointer;
+          width: 1rem;
+          height: 1rem;
+          @include lg {
+            width: 1.5rem;
+            height: 1.5rem;
+          }
+        }
         @include flex(row, space-between, center, 0);
         cursor: pointer;
         @include transition(0.3s);
@@ -365,6 +384,17 @@
         }
       }
     }
+    .download-button {
+      color: var(--base-content);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 10;
+      @include transition(0.3s);
+      &:hover {
+        color: var(--primary);
+      }
+    }
   }
   .grid-view {
     @include flex(column, center, center, 1rem);
@@ -376,17 +406,17 @@
     }
     div {
       @include flex(column, normal, center, 0);
-      flex-grow: 1;
       background-color: var(--base3);
       border: 1px solid var(--base-content);
       border-radius: 0.5rem;
-      margin: auto;
       width: 90%;
       @include md {
+        margin: auto;
         width: 45%;
       }
       @include lg {
-        width: 20%;
+        margin: 0;
+        width: calc(100% / 4 - 1rem);
       }
       position: relative;
       input[type="checkbox"] {
@@ -455,6 +485,7 @@
       }
     }
     .grid-file-container {
+      flex-grow: 1;
       .grid-file {
         width: 100%;
         border: none;
@@ -718,21 +749,67 @@
         }
         button:first-child {
           border: 1px solid var(--error);
-          color: var(--error);
+          color: var(--base-content);
+          font-weight: bold;
           &:hover {
+            color: var(--neutral);
             background-color: var(--error);
-            color: var(--base3);
           }
         }
         button:last-child {
           border: 1px solid var(--warning);
-          color: var(--warning);
+          color: var(--base-content);
+          font-weight: bold;
           &:hover {
+            color: var(--neutral);
             background-color: var(--warning);
-            color: var(--base3);
           }
         }
       }
+    }
+  }
+  .selectMenu,
+  .selectBtn,
+  .deleteBtn {
+    border: 1px solid var(--warning);
+    background-color: var(--base3);
+    color: var(--base-content);
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    width: fit-content;
+    @include transition(0.3s);
+    position: relative;
+    font-weight: bold;
+    &:hover {
+      background-color: var(--warning);
+      color: var(--neutral);
+      cursor: pointer;
+    }
+    .selectMenuContent {
+      @include flex(column, normal, center, 0.5rem);
+      padding: 0.5rem;
+      border: 1px solid var(--base-content);
+      border-radius: 0.5rem;
+      position: absolute;
+      top: 2.5rem;
+      right: 0;
+      background-color: var(--base3);
+      width: 10rem;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      z-index: 50;
+    }
+  }
+  .deleteBtn {
+    border: 1px solid var(--error);
+    @include transition(0.3s);
+    &:disabled:hover {
+      cursor: not-allowed;
+      background-color: transparent;
+    }
+    &:enabled:hover {
+      background-color: var(--error);
+      color: var(--neutral);
+      cursor: pointer;
     }
   }
 }

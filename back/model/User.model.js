@@ -34,6 +34,18 @@ class User {
     const [result] = await pool.execute(query, [...Object.values(data), id]);
     return result;
   }
+
+  static async total() {
+    const query = "SELECT COUNT(*) AS totalUsers FROM user";
+    const [result] = await pool.execute(query);
+    return result;
+  }
+
+  static async getAll() {
+    const query = "SELECT id, email, storage, username, role, is_verified, created_at FROM user";
+    const [result] = await pool.execute(query);
+    return result;
+  }
 }
 
 export default User;

@@ -6,6 +6,7 @@ const initialState = {
   createdAt: null,
   usedStorageSize: null,
   totalFiles: null,
+  viewMode: !!JSON.parse(localStorage.getItem("viewMode")),
   loading: false,
   error: null,
 };
@@ -20,7 +21,13 @@ export const getUserInfo = createAsyncThunk("user/getUserInfo", async (email) =>
 export const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    setViewMode: (state) => {
+      const viewMode = !!JSON.parse(localStorage.getItem("viewMode"));
+      localStorage.setItem("viewMode", !viewMode);
+      state.viewMode = !!JSON.parse(localStorage.getItem("viewMode"));
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getUserInfo.fulfilled, (state, action) => {
@@ -47,6 +54,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const {} = userSlice.actions;
+export const { setViewMode } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -8,7 +8,7 @@ import { resetFolderState } from "../../../../store/slices/folder";
 import MobileNav from "./MobileNav";
 function Header() {
   const [showMobileNav, setShowMobileNav] = useState(false);
-  const { isLoggedIn } = useSelector((state) => state.auth);
+  const { isLoggedIn, role } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -18,11 +18,10 @@ function Header() {
     }).then((res) => {
       if (res.ok) {
         dispatch(logout());
+        setShowMobileNav(false);
         dispatch(resetFileState());
         dispatch(resetFolderState());
         navigate("/connexion");
-      } else {
-        console.log(res.error);
       }
     });
   };
@@ -49,6 +48,7 @@ function Header() {
             <NavLink to="/mes-fichiers">Mes Fichiers</NavLink>
             <NavLink to="/mon-compte">Mon compte</NavLink>
             <button onClick={handleLogout}>Deconnexion</button>
+            {role === "admin" && <NavLink to="/admin">Admin</NavLink>}
           </>
         ) : (
           <>

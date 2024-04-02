@@ -53,6 +53,12 @@ class File {
     const [result] = await pool.execute(query, [id]);
     return result;
   }
+
+  static async total() {
+    const query = "SELECT COUNT(*) AS totalFiles FROM file";
+    const [result] = await pool.execute(query);
+    return result;
+  }
 }
 
 export default File;

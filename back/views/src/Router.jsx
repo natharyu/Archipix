@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Toast from "./Components/Toast";
 import AdminHome from "./Pages/Admin/Home";
 import AdminLayout from "./Pages/Admin/Layout/Layout";
+import Users from "./Pages/Admin/Users";
 import Login from "./Pages/Auth/Login";
 import Register from "./Pages/Auth/Register";
 import ResetPassword from "./Pages/Auth/ResetPassword";
@@ -55,7 +56,7 @@ function Router() {
           <Route path="*" element={<Error />} />
         </Route>
         <Route
-          path="/admin"
+          path="/admin/"
           element={
             <AdminOnly>
               <AdminLayout />
@@ -67,6 +68,14 @@ function Router() {
             element={
               <AdminOnly>
                 <AdminHome />
+              </AdminOnly>
+            }
+          />
+          <Route
+            path="users"
+            element={
+              <AdminOnly>
+                <Users />
               </AdminOnly>
             }
           />

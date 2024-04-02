@@ -39,10 +39,18 @@ const add = async (req, res) => {
     const files = req.files.file;
     await files.map(async (file) => {
       const [existingFileName] = await File.getOneByField("label", file.name);
-      if (existingFileName && file.folder_id === req.body.currentFolder) {
-        console.log("File already exists");
+      if (
+        existingFileName &&
+        existingFileName.label === file.name &&
+        existingFileName.size === file.size &&
+        existingFileName.type === file.mimetype
+      ) {
+        console.log("Exact same file already exists");
         return;
       } else {
+        if (existingFileName && existingFileName.label === file.name) {
+          file.name = `${Math.floor(Math.random() * 1000)}-${file.name}`;
+        }
         const checkExistingFile = async () => {
           const [fileId] = await Query.generateUUID();
           const [existingFile] = await File.getOneByField("id", fileId.uuid);
@@ -139,4 +147,13 @@ const download = async (req, res) => {
   }
 };
 
-export default { get, getOne, add, deleteOneFile, deleteManyFiles, download };
+const getTotalFiles = async (req, res) => {
+  try {
+    const [totalFiles] = await File.total();
+    return res.json(totalFiles);
+  } catch (error) {
+    return res.status(500).json({ error: "Une erreur est survenue" });
+  }
+};
+
+export default { get, getOne, add, deleteOneFile, deleteManyFiles, download, getTotalFiles };
