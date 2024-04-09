@@ -58,18 +58,12 @@ const register = async (req, res) => {
     const templateParams = {
       to_email: email,
       subject: "Vérification de l'adresse e-mail",
-      message: `<html>
-      <head>
-        <title>Vérification de votre adresse e-mail</title>
-      </head>
-      <body>
-        <p>Bonjour,</p>
-        <p>Merci de cliquer sur le lien ci-dessous pour vérifier votre adresse e-mail afin de pouvoir vous connecter :</p>
-        <a href="https://archipix.dew-hub.ovh/verification-email/${emailVerificationToken}">Vérifier mon adresse e-mail</a>
-        <p>Cordialement,</p>
-        <p>Archipix</p>
-      </body>
-    </html>`,
+      message: `Vérification de votre adresse e-mail
+        Bonjour,
+        Merci de cliquer sur le lien ci-dessous pour vérifier votre adresse e-mail afin de pouvoir vous connecter :
+        https://archipix.dew-hub.ovh/verification-email/${emailVerificationToken}
+        Cordialement,
+        Archipix`,
     };
 
     try {
