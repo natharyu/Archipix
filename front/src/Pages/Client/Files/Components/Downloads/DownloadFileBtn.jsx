@@ -2,37 +2,41 @@ import DownloadIcon from "@mui/icons-material/Download";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { resetToast, setToast } from "../../../../../store/slices/toast";
-function DownloadFolderBtn({ folder_id }) {
-  const { path } = useSelector((state) => state.folder);
+function DownloadFileBtn({ file }) {
   const [isDownloading, setIsDownloading] = useState(false);
   const dispatch = useDispatch();
-  const handleDownloadFolder = async (folder_id) => {
-    dispatch(setToast({ message: "Création de l'archive", type: "info", showToast: true }));
+  const { path } = useSelector((state) => state.folder);
+  const handleDownloadFile = async () => {
+    dispatch(setToast({ message: "Fichier en cours de telechargement", type: "info", showToast: true }));
     setIsDownloading(true);
-    await fetch(`/api/v1/folder/download/${path.join("&&&")}/${folder_id}`, {
+
+    await fetch(`/api/v1/file/download/${path.join("&&&")}/${file.id}`, {
       method: "GET",
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Erreur lors du téléchargement du zip");
+          throw new Error("Erreur lors du téléchargement du fichier");
         }
         return response.blob();
       })
       .then((blob) => {
+        console.log(blob);
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", `${folder_id}.zip`);
+        link.setAttribute("download", `${file.label}`);
         document.body.appendChild(link);
         link.click();
         URL.revokeObjectURL(url);
         document.body.removeChild(link);
       })
       .catch((error) => {
-        console.error("Erreur lors du téléchargement de l'archive:", error);
+        console.error("Erreur lors du téléchargement du fichier:", error);
       });
+
     dispatch(resetToast());
-    dispatch(setToast({ message: "Création de l'archive terminé", type: "success", showToast: true }));
+    dispatch(setToast({ message: "Fichier telechargé", type: "success", showToast: true }));
+
     setIsDownloading(false);
   };
 
@@ -41,7 +45,7 @@ function DownloadFolderBtn({ folder_id }) {
       {isDownloading ? (
         <span className="loader"></span>
       ) : (
-        <button className="download-button" onClick={() => handleDownloadFolder(folder_id, path)}>
+        <button className="download-button" onClick={() => handleDownloadFile()}>
           <DownloadIcon />
         </button>
       )}
@@ -49,4 +53,4 @@ function DownloadFolderBtn({ folder_id }) {
   );
 }
 
-export default DownloadFolderBtn;
+export default DownloadFileBtn;

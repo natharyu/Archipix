@@ -23,16 +23,27 @@ function Home() {
       .catch((error) => console.log(error));
   };
 
-  useEffect(async () => {
-    await fetchTotalUsers();
-    await fetchTotalFiles();
+  useEffect(() => {
+    fetchTotalUsers();
+    fetchTotalFiles();
   }, []);
   return (
-    <div>
-      Home
-      <h2>Total Users: {totalUsers}</h2>
-      <h2>Total Files: {totalFiles}</h2>
-    </div>
+    <section id="admin-home">
+      <article>
+        <h2>Bienvenue sur le panneau administrateur</h2>
+        <p>Ce panneau vous permet de voir les statistiques de l'application et de gérer les utilisateurs.</p>
+      </article>
+
+      <article>
+        <h3>Statistiques de l'application</h3>
+        <h4>
+          Nombre d'utilisateurs total : <span>{totalUsers}</span>
+        </h4>
+        <h4>
+          Nombre de fichiers total : <span>{totalFiles}</span>
+        </h4>
+      </article>
+    </section>
   );
 }
 

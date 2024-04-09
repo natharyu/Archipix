@@ -92,9 +92,7 @@ function GridView({
           <p>Chargement...</p>
         ) : (
           <>
-            {files.length === 0 ? (
-              <p>Aucun fichier présent dans ce dossier</p>
-            ) : (
+            {files.length === 0 ? null : (
               <>
                 {files.map((file, index) => (
                   <div className="grid-file-container" key={index}>

@@ -94,9 +94,7 @@ function ListView({
           <p>Chargement...</p>
         ) : (
           <ul>
-            {files.length === 0 ? (
-              <p>Aucun fichier présent dans ce dossier</p>
-            ) : (
+            {files.length === 0 ? null : (
               <>
                 {files.map((file, index) => (
                   <li key={index}>

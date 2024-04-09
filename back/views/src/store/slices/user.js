@@ -6,6 +6,7 @@ const initialState = {
   createdAt: null,
   usedStorageSize: null,
   totalFiles: null,
+  id: null,
   viewMode: !!JSON.parse(localStorage.getItem("viewMode")),
   loading: false,
   error: null,
@@ -36,6 +37,7 @@ export const userSlice = createSlice({
         state.createdAt = action.payload.user.created_at;
         state.usedStorageSize = action.payload.totalSize;
         state.totalFiles = action.payload.totalFiles;
+        state.id = action.payload.user.id;
         state.loading = false;
       })
       .addMatcher(

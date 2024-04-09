@@ -3,17 +3,18 @@ import SizeCalculator from "../../../../Components/SizeCalculator";
 
 function Stats() {
   const { usedStorageSize, totalFiles } = useSelector((state) => state.user);
-  const totalStorageSize = 1073741824 * 2;
-  const percentage = Math.floor((usedStorageSize / totalStorageSize) * 100);
   return (
     <article className="profile-stats">
-      <h2>Stats</h2>
-      <p>{totalFiles}</p>
-      <SizeCalculator size={usedStorageSize} />
-      <progress value={percentage} max="100">
-        <span>{percentage}%</span>
-      </progress>
-      <SizeCalculator size={totalStorageSize} />
+      <div className="stats-card">
+        <h3>Nombre total de fichiers :</h3>
+        <span>{totalFiles}</span>
+      </div>
+      <div className="stats-card">
+        <h3>Taille total de tous mes fichiers :</h3>
+        <span>
+          <SizeCalculator size={usedStorageSize} />
+        </span>
+      </div>
     </article>
   );
 }

@@ -2,9 +2,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;700&display=swap");
 @import "./assets/styles/settings.scss";
-@import "./Pages/Client/client.scss";
-@import "./Pages/Admin/admin.scss";
 @import "./Pages/Auth/auth.scss";
+@import "./Pages/Admin/admin.scss";
+@import "./Pages/Client/client.scss";
 
 #root {
   background-color: var(--base);
@@ -22,6 +22,46 @@
   h5,
   h6 {
     font-family: "Montserrat Alternates", sans-serif;
+  }
+  .burger-menu {
+    width: 2.5rem;
+    height: 2.5rem;
+    cursor: pointer;
+    display: block;
+    @include lg {
+      display: none;
+    }
+    svg {
+      stroke: var(--base-content);
+      @include transition(0.3s);
+      &:hover {
+        cursor: pointer;
+        stroke: var(--primary);
+      }
+    }
+  }
+  .brand {
+    @include flex(row, normal, center, 1rem);
+    width: 90%;
+    @include lg {
+      width: auto;
+    }
+    h1 {
+      @include flex(row, center, center, 1rem);
+      flex-grow: 1;
+      @include lg {
+        @include flex(row, normal, center, 1rem);
+      }
+    }
+    @include flex(row, normal, center, 1rem);
+    width: 90%;
+    @include lg {
+      width: auto;
+    }
+    &:hover {
+      cursor: pointer;
+      text-shadow: 0 0 0.1rem var(--primary);
+    }
   }
   .theme-toggle {
     position: relative;
@@ -119,6 +159,11 @@
   }
   .info {
     background-color: var(--info);
+    animation: slide 5s forwards;
+  }
+
+  .warning {
+    background-color: var(--warning);
     animation: slide 5s forwards;
   }
 

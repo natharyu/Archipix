@@ -1,8 +1,8 @@
+@import "../../assets/styles/settings.scss";
 #admin {
   @include flex(column, center, center, 1rem);
   flex-grow: 1;
   width: 100%;
-  padding: 2rem;
   @include lg {
     @include flex(row, center, center, 2rem);
   }
@@ -20,16 +20,83 @@
     padding: 1rem;
     background-color: var(--base3);
     color: var(--base-content);
-    box-shadow: var(--neutral) 0 0 1rem;
+    box-shadow: var(--neutral) 0 0 0.5rem;
     position: fixed;
     top: 0;
     left: 0;
     z-index: 50;
+    .admin-mobile-nav {
+      display: block;
+      position: fixed;
+      z-index: 100;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background-color: rgba(#4c566a, 0.8);
+      color: var(--base-content);
+      @include lg {
+        display: none;
+      }
+      div {
+        @include flex(column, normal, center, 1rem);
+        height: 100%;
+        width: 80%;
+        padding: 1rem;
+        @include md {
+          width: 50%;
+        }
+        background-color: var(--base3);
+      }
+      ul:first-child {
+        @include flex(row, space-between, center, 1rem);
+        width: 100%;
+        font-size: 1.5rem;
+        h2 {
+          font-weight: bold;
+        }
+        .close-mobile-nav {
+          color: var(--base-content);
+          cursor: pointer;
+          @include transition(0.3s);
+          border: 1px solid var(--base-content);
+          border-radius: 0.5rem;
+          padding: 0.5rem 0.7rem;
+          background-color: transparent;
+          &:hover {
+            color: var(--error);
+            border-color: var(--error);
+            background-color: var(--base);
+          }
+        }
+      }
+      ul:last-child {
+        @include flex(column, normal, center, 1rem);
+        width: 100%;
+        font-size: 1.2rem;
+        button {
+          background-color: transparent;
+          border: none;
+          @include transition(0.3s);
+          font-size: 1.2rem;
+          color: var(--error);
+          &:hover {
+            text-shadow: 0 0 1rem var(--error);
+          }
+        }
+      }
+    }
     h1 {
-      font-size: 2rem;
+      font-size: 1rem;
       font-weight: bold;
       flex-grow: 1;
       text-align: center;
+      @include sm {
+        font-size: 1.2rem;
+      }
+      @include md {
+        font-size: 1.5rem;
+      }
       @include lg {
         text-align: inherit;
         flex-grow: inherit;
@@ -45,16 +112,209 @@
     }
   }
   main {
-    margin-top: 6.5rem;
-    padding: 1rem 0;
+    padding: 5rem 0rem 0rem 0rem;
     border-radius: 0.5rem;
     box-shadow: var(--neutral) 0 0 2px;
-    @include flex(column, normal, center, 0);
+    @include flex(row, normal, normal, 0);
     width: 100%;
-    @include lg {
-      width: 80%;
-    }
+    min-height: 100vh;
     flex-grow: 1;
     background-color: var(--base2);
+    aside {
+      display: none;
+      @include lg {
+        @include flex(column, normal, center, 1rem);
+      }
+      width: fit-content;
+      padding: 1rem;
+      background-color: var(--base);
+      box-shadow: var(--neutral) 0 0 0.5rem;
+    }
+    section {
+      padding: 1rem;
+    }
+    .admin-add,
+    .admin-edit,
+    .admin-delete {
+      background-color: transparent;
+      color: var(--base-content);
+      border-radius: 0.5rem;
+      @include transition(0.3s);
+      padding: 0.5rem 1rem;
+    }
+    .admin-add {
+      border: 1px solid var(--success);
+      &:hover {
+        background-color: var(--success);
+        color: var(--neutral);
+      }
+    }
+    .admin-edit {
+      border: 1px solid var(--warning);
+      &:hover {
+        background-color: var(--warning);
+        color: var(--neutral);
+      }
+    }
+    .admin-delete {
+      border: 1px solid var(--error);
+      &:hover {
+        background-color: var(--error);
+        color: var(--neutral);
+      }
+    }
+  }
+  #admin-home {
+    @include flex(column, normal, center, 3rem);
+    flex-grow: 1;
+    article {
+      @include flex(column, normal, center, 1rem);
+      h2,
+      h3,
+      h4 {
+        text-align: center;
+        font-weight: bold;
+      }
+      h2 {
+        font-size: 1.5rem;
+        @include sm {
+          font-size: 2rem;
+        }
+        @include md {
+          font-size: 2.5rem;
+        }
+        @include lg {
+          font-size: 3rem;
+        }
+      }
+      h3 {
+        font-size: 1.2rem;
+        @include sm {
+          font-size: 1.5rem;
+        }
+        @include md {
+          font-size: 2rem;
+        }
+        @include lg {
+          font-size: 2.5rem;
+        }
+      }
+      h4 {
+        font-size: 1.1rem;
+        @include sm {
+          font-size: 1.3rem;
+        }
+        @include md {
+          font-size: 1.8rem;
+        }
+        @include lg {
+          font-size: 2rem;
+        }
+        span {
+          font-weight: bold;
+          color: var(--primary);
+        }
+      }
+    }
+  }
+  #users {
+    width: 100%;
+    overflow: auto;
+    @include flex(column, normal, center, 1rem);
+    .admin-search {
+      width: 80%;
+      @include lg {
+        width: 50%;
+      }
+      @include flex(row, normal, center, 1rem);
+      input[type="search"] {
+        width: 100%;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        background-color: var(--base);
+        border: 1px solid var(--base-content);
+        color: var(--base-content);
+        box-sizing: border-box;
+      }
+    }
+    table {
+      overflow-x: auto;
+      max-width: 100%;
+      border-collapse: collapse;
+      border-spacing: 0;
+
+      th,
+      td {
+        padding: 0.5rem;
+        border: 1px solid var(--base-content);
+        text-align: center;
+      }
+
+      th {
+        background-color: var(--base);
+        color: var(--base-content);
+      }
+
+      tbody tr:nth-child(even) {
+        background-color: var(--base);
+      }
+
+      td:last-child {
+        :first-child {
+          margin-right: 0.2rem;
+        }
+      }
+
+      th,
+      td {
+        @include transition(0.3s);
+        font-size: 0.8rem;
+        @include sm {
+          font-size: 1rem;
+        }
+      }
+      .hideonmobile {
+        display: none;
+        @include md {
+          display: table-cell;
+        }
+      }
+    }
+  }
+  #editUser,
+  #addUser {
+    width: 100%;
+    max-width: 40rem;
+    margin: 0 auto;
+    @include flex(column, normal, normal, 1rem);
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .editUserButtons {
+      @include flex(column, center, center, 0.5rem);
+      @include sm {
+        @include flex(row, center, center, 0.5rem);
+      }
+    }
+
+    form {
+      @include flex(column, normal, normal, 0.5rem);
+      input[type="text"],
+      input[type="email"],
+      input[type="password"],
+      select {
+        width: 100%;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        background-color: var(--base);
+        border: 1px solid var(--base-content);
+        color: var(--base-content);
+        box-sizing: border-box;
+      }
+      span {
+        color: var(--error);
+      }
+    }
   }
 }

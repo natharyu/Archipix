@@ -2,6 +2,7 @@ import FolderIcon from "@mui/icons-material/Folder";
 import { useDispatch, useSelector } from "react-redux";
 import { getFiles, setCurrentFile } from "../../../../store/slices/files";
 import { setCurrentFolder } from "../../../../store/slices/folder";
+import DownloadFileBtn from "./Downloads/DownloadFileBtn";
 import DownloadFolderBtn from "./Downloads/DownloadFolderBtn";
 
 function GridView({
@@ -71,6 +72,7 @@ function GridView({
                       type="checkbox"
                       name={`folder-${folder.id}`}
                       onChange={() => handleAddSelectedFolder(folder)}
+                      checked={selectedFolders.includes(folder)}
                     />
                     <DownloadFolderBtn folder_id={folder.id} />
 
@@ -96,14 +98,26 @@ function GridView({
               <>
                 {files.map((file, index) => (
                   <div className="grid-file-container" key={index}>
-                    <input type="checkbox" name={`file-${file.id}`} onChange={() => handleAddSelectedFile(file)} />
+                    <input
+                      type="checkbox"
+                      name={`file-${file.id}`}
+                      onChange={() => handleAddSelectedFile(file)}
+                      checked={selectedFiles.includes(file)}
+                    />
+                    <DownloadFileBtn file={file} />
                     <div className="grid-file" onClick={() => handleClickFile(file)}>
                       {file.type.includes("image") && (
-                        <img src={`/uploads/${path.join("/")}/${file.label}`} alt={file.label} />
+                        <img
+                          src={`https://archipix.s3.eu-west-3.amazonaws.com/${path.join("/")}/${file.label}`}
+                          alt={file.label}
+                        />
                       )}
 
                       {file.type.includes("video") && (
-                        <video src={`/uploads/${path.join("/")}/${file.label}`} controls />
+                        <video
+                          src={`https://archipix.s3.eu-west-3.amazonaws.com/${path.join("/")}/${file.label}`}
+                          controls
+                        />
                       )}
                     </div>
                   </div>

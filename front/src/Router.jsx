@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Toast from "./Components/Toast";
 import AdminHome from "./Pages/Admin/Home";
 import AdminLayout from "./Pages/Admin/Layout/Layout";
+import Users from "./Pages/Admin/Users";
 import Login from "./Pages/Auth/Login";
 import Register from "./Pages/Auth/Register";
 import ResetPassword from "./Pages/Auth/ResetPassword";
@@ -52,24 +53,33 @@ function Router() {
           />
           <Route path="politique-confidentialite" element={<PolitiqueConfidentialite />} />
           <Route path="mentions-legales" element={<MentionsLegales />} />
-          <Route path="*" element={<Error />} />
-        </Route>
-        <Route
-          path="/admin"
-          element={
-            <AdminOnly>
-              <AdminLayout />
-            </AdminOnly>
-          }
-        >
+
           <Route
-            index
+            path="admin"
             element={
               <AdminOnly>
-                <AdminHome />
+                <AdminLayout />
               </AdminOnly>
             }
-          />
+          >
+            <Route
+              path=""
+              element={
+                <AdminOnly>
+                  <AdminHome />
+                </AdminOnly>
+              }
+            />
+            <Route
+              path="/admin/users"
+              element={
+                <AdminOnly>
+                  <Users />
+                </AdminOnly>
+              }
+            />
+          </Route>
+          <Route path="*" element={<Error />} />
         </Route>
       </Routes>
       {showToast && <Toast />}

@@ -1,31 +1,34 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 function SelectFolders({ setSelectedFolders }) {
-  const [isChecked, setIsChecked] = useState(false);
+  const [isCheckedFolders, setIsCheckedFolders] = useState(false);
   const { folders } = useSelector((state) => state.folder);
 
   const handleCheckFolders = () => {
-    setIsChecked(!isChecked);
+    setIsCheckedFolders(!isCheckedFolders);
     setSelectedFolders([]);
     const selectedFolders = [];
     document.querySelectorAll("input[type=checkbox]").forEach((checkbox) => {
       if (checkbox.name.includes("folder")) {
-        if (!isChecked) {
+        if (!isCheckedFolders) {
           const folder_id = checkbox.name.replace("folder-", "");
           const [folder] = folders.filter((folder) => folder.id === folder_id);
           selectedFolders.push(folder);
-          checkbox.checked = !isChecked;
+          checkbox.checked = !isCheckedFolders;
           setSelectedFolders(selectedFolders);
         }
-        checkbox.checked = !isChecked;
+        checkbox.checked = !isCheckedFolders;
       }
     });
+    setIsCheckedFolders(false);
   };
 
   return (
-    <div>
-      <button onClick={handleCheckFolders}>{isChecked ? "Décocher tout" : "Cocher tous les dossiers"}</button>
-    </div>
+    <>
+      <button className="selectBtn" onClick={handleCheckFolders}>
+        {isCheckedFolders ? "Décocher tout" : "Cocher tous les dossiers"}
+      </button>
+    </>
   );
 }
 

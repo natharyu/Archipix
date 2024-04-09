@@ -61,7 +61,6 @@ const create = async (req, res) => {
     try {
       const existingFolder = await checkExisting(newFolderId.uuid);
       if (!existingFolder) {
-        // fs.mkdirSync(`./uploads/${req.body.path}/${newFolderId.uuid}`);
         const newFolder = await Folder.create({
           id: newFolderId.uuid,
           user_id: user.id,
@@ -81,8 +80,7 @@ const create = async (req, res) => {
 
     return res.json({ message: "Dossier creé avec succes" });
   } catch (error) {
-    console.log(error);
-    // return res.status(500).json({ error: "Une erreur est survenue" });
+    return res.status(500).json({ error: "Une erreur est survenue" });
   }
 };
 

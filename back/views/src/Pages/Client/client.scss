@@ -1,3 +1,4 @@
+@import "../../assets/styles/settings.scss";
 #client {
   width: 100%;
   @include flex(column, normal, center, 0);
@@ -41,46 +42,7 @@
     left: 0;
     z-index: 50;
     width: 100%;
-    .burger-menu {
-      width: 2.5rem;
-      height: 2.5rem;
-      cursor: pointer;
-      display: block;
-      @include lg {
-        display: none;
-      }
-      svg {
-        stroke: var(--base-content);
-        @include transition(0.3s);
-        &:hover {
-          cursor: pointer;
-          stroke: var(--primary);
-        }
-      }
-    }
-    .brand {
-      @include flex(row, normal, center, 1rem);
-      width: 90%;
-      @include lg {
-        width: auto;
-      }
-      h1 {
-        @include flex(row, center, center, 1rem);
-        flex-grow: 1;
-        @include lg {
-          @include flex(row, normal, center, 1rem);
-        }
-      }
-      @include flex(row, normal, center, 1rem);
-      width: 90%;
-      @include lg {
-        width: auto;
-      }
-      &:hover {
-        cursor: pointer;
-        text-shadow: 0 0 0.1rem var(--primary);
-      }
-    }
+
     h1 {
       font-size: 2rem;
       font-weight: bold;
@@ -816,6 +778,7 @@
 #profile {
   @include flex(column, normal, center, 1rem);
   width: 100%;
+  flex-grow: 1;
   .profile-nav {
     @include flex(column, normal, center, 1rem);
     width: 100%;
@@ -848,14 +811,113 @@
     }
   }
   .profile-stats {
-    @include flex(column, normal, center, 1rem);
-    @include transition(0.3s);
     width: 100%;
+    flex-grow: 1;
+    @include flex(row, space-around, center, 1rem);
+    @include transition(0.3s);
+    flex-wrap: wrap;
+    .stats-card {
+      @include flex(column, center, center, 1rem);
+      flex-grow: 1;
+      width: 100%;
+      @include lg {
+        width: 40%;
+      }
+      background-color: var(--base3);
+      border-radius: 0.5rem;
+      border: 1px solid var(--base-content);
+      @include transition(0.3s);
+      margin: 1rem;
+      padding: 2rem;
+      span {
+        font-weight: bold;
+        font-size: 1.5rem;
+        @include md {
+          font-size: 1.8rem;
+        }
+        @include lg {
+          font-size: 2rem;
+        }
+        color: var(--primary);
+      }
+    }
   }
   .profile-account {
     @include flex(column, normal, center, 1rem);
     display: none;
     @include transition(0.3s);
     width: 100%;
+    flex-grow: 1;
+    @include lg {
+      width: 75%;
+    }
+    div {
+      @include flex(column, normal, center, 1rem);
+      @include lg {
+        @include flex(row, space-around, normal, 1rem);
+      }
+    }
+    .account-form,
+    .edit-account-form {
+      background-color: var(--base3);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      @include flex(column, normal, center, 1rem);
+      width: 100%;
+      p {
+        font-size: 1.5rem;
+      }
+      input {
+        width: 80%;
+        @include md {
+          width: 50%;
+        }
+        border: 1px solid var(--base);
+        border-radius: 0.5rem;
+        background-color: var(--base);
+        color: var(--base-content);
+        padding: 0.5rem 1rem;
+        @include transition(0.3s);
+      }
+    }
+    .edit-info {
+      background-color: transparent;
+      color: var(--base-content);
+      border-radius: 0.5rem;
+      @include transition(0.3s);
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--warning);
+      &:hover {
+        cursor: pointer;
+        background-color: var(--warning);
+        color: var(--neutral);
+      }
+    }
+    .cancel-edit {
+      background-color: transparent;
+      color: var(--base-content);
+      border-radius: 0.5rem;
+      @include transition(0.3s);
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--error);
+      &:hover {
+        cursor: pointer;
+        background-color: var(--error);
+        color: var(--neutral);
+      }
+    }
+    .save-edit {
+      background-color: transparent;
+      color: var(--base-content);
+      border-radius: 0.5rem;
+      @include transition(0.3s);
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--success);
+      &:hover {
+        cursor: pointer;
+        background-color: var(--success);
+        color: var(--neutral);
+      }
+    }
   }
 }

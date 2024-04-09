@@ -2,7 +2,6 @@ import Dropzone from "react-dropzone-uploader";
 import "react-dropzone-uploader/dist/styles.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getFiles } from "../../../../store/slices/files";
-import { setToast } from "../../../../store/slices/toast";
 import Input from "./DragAndDrop/Input";
 import Layout from "./DragAndDrop/Layout";
 import Preview from "./DragAndDrop/Preview";
@@ -25,12 +24,11 @@ const DragAndDrop = ({ setAddMenu }) => {
       if (f.meta.status === "ready" && f.meta.exist === true) f.remove();
 
       if (f.meta.status === "done") {
-        await f.remove();
-        dispatch(setToast({ type: "success", message: "Fichiers importés avec succès !", showToast: true }));
-        setTimeout(() => dispatch(getFiles(currentFolder)), 200);
+        // await f.remove();
         setAddMenu(false);
       }
     });
+    setTimeout(() => dispatch(getFiles(currentFolder)), 200);
   };
 
   const handleSubmit = async (successFiles, allFiles) => {

@@ -125,21 +125,17 @@ const makeArchive = async (key, res, folder) => {
     StartAfter: key,
   };
 
-  const { Contents } = await s3.listObjectsV2(params).promise(); // convert request to promise
+  const { Contents } = await s3.listObjectsV2(params).promise();
 
   return new Promise((resolve, reject) => {
-    // wrap into a promise
     const archive = archiver("zip", { gzip: true, zlib: { level: 9 } });
     archive.on("error", (err) => {
       reject(err);
     });
     archive.on("finish", () => {
-      // end | close
-      resolve(archive); // return to main function
+      resolve(archive);
     });
     archive.pipe(res);
-
-    // error handler
 
     for (const content of Contents) {
       const regex = new RegExp(`.*\/${folder}\/`);

@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import ThemeToggler from "../../../../Components/ThemeToggler";
 
 function MobileNav({ setShowMobileNav, handleLogout }) {
-  const { isLoggedIn } = useSelector((state) => state.auth);
+  const { isLoggedIn, role } = useSelector((state) => state.auth);
 
   return (
     <nav className="mobile-nav">
@@ -55,6 +55,13 @@ function MobileNav({ setShowMobileNav, handleLogout }) {
                 </NavLink>
               </li>
             </>
+          )}
+          {role === "admin" && (
+            <li>
+              <NavLink to="/admin" onClick={() => setShowMobileNav(false)}>
+                Administration
+              </NavLink>
+            </li>
           )}
         </ul>
       </div>

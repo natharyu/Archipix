@@ -5,8 +5,8 @@ import SizeCalculator from "../../../../Components/SizeCalculator";
 import { setCurrentFile } from "../../../../store/slices/files";
 import { setCurrentFolder } from "../../../../store/slices/folder";
 import FileIcon from "../Components/FileIcon";
-import SelectAll from "./Select/SelectAll";
-import SelectFolders from "./Select/SelectFolders";
+import DownloadFileBtn from "./Downloads/DownloadFileBtn";
+import DownloadFolderBtn from "./Downloads/DownloadFolderBtn";
 
 function ListView({
   setFilePreview,
@@ -61,12 +61,10 @@ function ListView({
   return (
     <>
       <article className="list-view">
-        <SelectAll />
         {isLoadingFolder ? (
           <p>Chargement...</p>
         ) : (
           <ul>
-            <SelectFolders setSelectedFolders={setSelectedFolders} />
             {folders.length === 0 ? null : (
               <>
                 {folders.map((folder, index) => (
@@ -75,12 +73,14 @@ function ListView({
                       type="checkbox"
                       name={`folder-${folder.id}`}
                       onChange={() => handleAddSelectedFolder(folder)}
+                      checked={selectedFolders.includes(folder)}
                     />
                     <FolderIcon className="icon" />
                     <div onClick={() => handleClickFolder(folder.id, folder.label)}>
                       <p>{folder.label}</p>
                       <p>Dossier</p>
                     </div>
+                    <DownloadFolderBtn folder_id={folder.id} />
                     <DeleteIcon className="delete-icon" onClick={() => handleClickDeleteFolder(folder.id)} />
                   </li>
                 ))}
@@ -100,12 +100,18 @@ function ListView({
               <>
                 {files.map((file, index) => (
                   <li key={index}>
-                    <input type="checkbox" name={`file-${file.id}`} onChange={() => handleAddSelectedFile(file)} />
+                    <input
+                      type="checkbox"
+                      name={`file-${file.id}`}
+                      onChange={() => handleAddSelectedFile(file)}
+                      checked={selectedFiles.includes(file)}
+                    />
                     <FileIcon ext={file.extension} className="icon" />
                     <div onClick={() => handleClickFile(file)}>
                       <p>{file.label}</p>
                       <SizeCalculator size={file.size} />
                     </div>
+                    <DownloadFileBtn file={file} />
                     <DeleteIcon className="delete-icon" onClick={() => handleClickDeleteFile(file.id)} />
                   </li>
                 ))}

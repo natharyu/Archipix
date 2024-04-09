@@ -25,7 +25,7 @@ function DeleteMultipleModal({ setShowDeleteMultipleModal, files, folders, setSe
           dispatch(setToast({ type: "success", message: res.message, showToast: true }));
           dispatch(getFiles(currentFolder));
           dispatch(getFolders(currentFolder));
-        }, 200);
+        }, 500);
       })
       .catch((err) => {
         dispatch(setToast({ type: "error", message: err, showToast: true }));

@@ -17,7 +17,6 @@ function Footer() {
           <h3>Menu</h3>
           <Link to="/">Accueil</Link>
           {isLoggedIn && <Link to="/mes-fichiers">Mes fichiers</Link>}
-          <Link to="/a-propos">A propos</Link>
           <button onClick={() => document.getElementById("contact").showModal()}>Contact</button>
         </nav>
         <div>

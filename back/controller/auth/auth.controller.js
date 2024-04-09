@@ -17,7 +17,17 @@ const register = async (req, res) => {
 
     const hashedPassword = bcrypt.hashSync(password, 10);
     const emailVerificationToken = crypto.randomBytes(20).toString("hex");
-    const [storage] = await Query.generateUUID();
+    const checkExistingUUID = async () => {
+      const [newUUID] = await Query.generateUUID();
+      const [existingUUID] = await User.getOneByField("storage", newUUID.uuid);
+      if (existingUUID) {
+        checkExistingUUID();
+      } else {
+        return newUUID;
+      }
+    };
+    const storage = await checkExistingUUID();
+
     const newUser = await User.create({
       storage: storage.uuid,
       username,

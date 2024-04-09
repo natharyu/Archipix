@@ -28,7 +28,7 @@ const DragAndDrop = ({ setAddMenu }) => {
         setAddMenu(false);
       }
     });
-    setTimeout(() => dispatch(getFiles(currentFolder)), 200);
+    setTimeout(() => dispatch(getFiles(currentFolder)), 1000);
   };
 
   const handleSubmit = async (successFiles, allFiles) => {

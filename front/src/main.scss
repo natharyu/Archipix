@@ -55,6 +55,7 @@
       border-radius: 1rem;
       @include transition(0.3s);
       &:before {
+        font-size: 1rem;
         position: absolute;
         content: "🔆";
         height: 1.5rem;
