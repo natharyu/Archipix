@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setToast } from "../../../../store/slices/toast";
+import DeleteAccountModal from "./DeleteAccountModal";
 function Account() {
   const { id } = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
   const [showEditAccount, setShowEditAccount] = useState(false);
   const [userAccount, setUserAccount] = useState({});
+  const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
   const dispatch = useDispatch();
 
   const fetchUser = async (id) => {
@@ -113,18 +115,28 @@ function Account() {
             <>
               <form className="account-form">
                 <p>Compte crée le : {new Date(userAccount.created_at).toLocaleDateString()}</p>
-                <p>Email : {userAccount.email}</p>
-                <p>Nom d'utilisateur : {userAccount.username}</p>
-                <p>Prénom : {userAccount?.firstname}</p>
-                <p>Nom : {userAccount?.lastname}</p>
+                <p className="title">Email :</p>
+                <p className="content">{userAccount.email}</p>
+                <p className="title">Nom d'utilisateur :</p>
+                <p className="content">{userAccount.username}</p>
+                <p className="title">Prénom :</p>
+                <p className="content">{userAccount?.firstname}</p>
+                <p className="title">Nom :</p>
+                <p className="content">{userAccount?.lastname}</p>
               </form>
-              <button onClick={() => setShowEditAccount(true)} className="edit-info">
-                Modifier mes informations
-              </button>
+              <div>
+                <button onClick={() => setShowEditAccount(true)} className="edit-info">
+                  Modifier mes informations
+                </button>
+                <button className="delete-account" onClick={() => setShowDeleteAccountModal(true)}>
+                  Supprimer mon compte
+                </button>
+              </div>
             </>
           )}
         </>
       )}
+      {showDeleteAccountModal && <DeleteAccountModal setShowDeleteAccountModal={setShowDeleteAccountModal} id={id} />}
     </article>
   );
 }

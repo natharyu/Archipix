@@ -1,4 +1,5 @@
 import emailjs from "@emailjs/browser";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setToast } from "../../store/slices/toast";
@@ -42,7 +43,7 @@ const Contact = () => {
     <dialog id="contact">
       <section>
         <form method="dialog">
-          <button className="closeBtn">✕</button>
+          <CloseOutlinedIcon className="closeBtn" onClick={() => document.getElementById("contact").close()} />
         </form>
         <h3>Contactez-nous !</h3>
         <form id="contactForm" onSubmit={handleSubmit}>

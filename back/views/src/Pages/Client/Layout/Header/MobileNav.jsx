@@ -1,3 +1,4 @@
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import ThemeToggler from "../../../../Components/ThemeToggler";
@@ -14,9 +15,7 @@ function MobileNav({ setShowMobileNav, handleLogout }) {
           </li>
           <ThemeToggler />
           <li>
-            <button className="close-mobile-nav" onClick={() => setShowMobileNav(false)}>
-              X
-            </button>
+            <CloseOutlinedIcon className="closeBtn" onClick={() => setShowMobileNav(false)} />
           </li>
         </ul>
         <ul>

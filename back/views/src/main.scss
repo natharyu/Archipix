@@ -185,7 +185,38 @@
       opacity: 0;
     }
   }
+  .closeBtn {
+    padding: 0.5rem;
+    border-radius: 100%;
+    border: 1px solid var(--error);
+    color: var(--error);
+    cursor: pointer;
+    height: 2rem;
+    width: 2rem;
+    @include transition(0.3s);
+    z-index: 101;
+    background-color: var(--base);
+    &:hover {
+      color: var(--neutral);
+      border: 1px solid var(--error);
+      background-color: var(--error);
+    }
+  }
   #contact {
+    .closeBtn {
+      position: absolute;
+      top: 1.7rem;
+      right: 1rem;
+      @include md {
+        top: 2.1rem;
+      }
+      @include lg {
+        height: 2.5rem;
+        width: 2.5rem;
+        top: 2.2rem;
+        right: 1rem;
+      }
+    }
     min-width: 100vw;
     min-height: 100vh;
     background-color: rgba($light-neutral, 0.5);
@@ -215,26 +246,7 @@
         font-weight: bold;
         margin: 0 3rem 0 0;
       }
-      .closeBtn {
-        position: absolute;
-        top: 2.2rem;
-        right: 1rem;
-        cursor: pointer;
-        font-weight: bold;
-        height: 2.5rem;
-        width: 2.5rem;
-        border-radius: 100%;
-        @include transition(0.3s);
-        z-index: 101;
-        border: var(--error) solid 1px;
-        color: var(--error);
-        background-color: var(--base);
-        &:hover {
-          color: var(--neutral);
-          border: 1px solid var(--error);
-          background-color: var(--error);
-        }
-      }
+
       #contactForm {
         width: 80%;
         display: flex;

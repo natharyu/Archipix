@@ -1,4 +1,5 @@
 import emailjs from "@emailjs/browser";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
@@ -47,7 +48,10 @@ const ForgotPassword = () => {
         <div>
           <h3>Mot de passe oublié ?</h3>
           <form method="dialog">
-            <button className="closeBtn">X</button>
+            <CloseOutlinedIcon
+              className="closeBtn"
+              onClick={() => document.getElementById("forgot-password").close()}
+            />
           </form>
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>

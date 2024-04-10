@@ -95,25 +95,11 @@
         background-color: var(--base3);
       }
       ul:first-child {
-        @include flex(row, space-between, center, 1rem);
+        @include flex(row, space-between, flex-start, 1rem);
         width: 100%;
         font-size: 1.5rem;
         h2 {
           font-weight: bold;
-        }
-        .close-mobile-nav {
-          color: var(--base-content);
-          cursor: pointer;
-          @include transition(0.3s);
-          border: 1px solid var(--base-content);
-          border-radius: 0.5rem;
-          padding: 0.5rem 0.7rem;
-          background-color: transparent;
-          &:hover {
-            color: var(--error);
-            border-color: var(--error);
-            background-color: var(--base);
-          }
         }
       }
       ul:last-child {
@@ -255,6 +241,7 @@
     }
     .head-add-file,
     .head-close-add-file {
+      @include flex(row, normal, center, 1rem);
       cursor: pointer;
       color: var(--base-content);
       @include transition(0.3s);
@@ -264,6 +251,15 @@
       }
       @include lg {
         font-size: 2rem;
+      }
+      svg {
+        font-size: 1.2rem;
+        @include md {
+          font-size: 1.5rem;
+        }
+        @include lg {
+          font-size: 2rem;
+        }
       }
     }
     .head-add-file {
@@ -335,26 +331,41 @@
           @include flex(row, space-between, center, 0.5rem);
           flex-grow: 1;
           margin-right: 1rem;
+          max-width: 50%;
+          @include sm {
+            max-width: 100%;
+          }
+          :first-child {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          :last-child {
+            display: none;
+            @include sm {
+              display: block;
+            }
+          }
+        }
+        .download-button,
+        .delete-icon {
+          color: var(--base-content);
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          z-index: 10;
+          @include transition(0.3s);
+        }
+        .download-button {
+          &:hover {
+            color: var(--primary);
+          }
         }
         .delete-icon {
-          cursor: pointer;
-          @include transition(0.3s);
-          z-index: 10;
           &:hover {
             color: var(--error);
           }
         }
-      }
-    }
-    .download-button {
-      color: var(--base-content);
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      z-index: 10;
-      @include transition(0.3s);
-      &:hover {
-        color: var(--primary);
       }
     }
   }
@@ -865,7 +876,22 @@
       @include flex(column, normal, center, 1rem);
       width: 100%;
       p {
-        font-size: 1.5rem;
+        font-size: 1rem;
+        @include md {
+          font-size: 1.2rem;
+        }
+        @include lg {
+          font-size: 1.5rem;
+        }
+      }
+      .title {
+        font-weight: bold;
+        color: var(--primary);
+        text-decoration: underline;
+        align-self: flex-start;
+      }
+      .content {
+        align-self: flex-start;
       }
       input {
         width: 80%;
@@ -893,7 +919,8 @@
         color: var(--neutral);
       }
     }
-    .cancel-edit {
+    .cancel-edit,
+    .delete-account {
       background-color: transparent;
       color: var(--base-content);
       border-radius: 0.5rem;
@@ -917,6 +944,72 @@
         cursor: pointer;
         background-color: var(--success);
         color: var(--neutral);
+      }
+    }
+  }
+  .delete-account-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    background-color: rgba(#4c566a, 0.8);
+    font-size: 1rem;
+    @include md {
+      font-size: 1.2rem;
+    }
+    @include lg {
+      font-size: 1.5rem;
+    }
+    text-align: center;
+    div:first-child {
+      width: fit-content;
+      height: fit-content;
+      @include flex(column, center, center, 1rem);
+      background-color: var(--base3);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      @include transition(0.3s);
+      @include lg {
+        width: 50%;
+      }
+      position: relative;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      @include sm {
+        transform: translate(-75%, -50%);
+      }
+      @include lg {
+        transform: translate(-100%, -50%);
+      }
+      .delete-modal-buttons {
+        @include flex(row, center, center, 1rem);
+        button {
+          padding: 0.5rem 1rem;
+          @include transition(0.3s);
+          border-radius: 0.5rem;
+          background-color: var(--base3);
+        }
+        button:first-child {
+          border: 1px solid var(--error);
+          color: var(--base-content);
+          font-weight: bold;
+          &:hover {
+            color: var(--neutral);
+            background-color: var(--error);
+          }
+        }
+        button:last-child {
+          border: 1px solid var(--warning);
+          color: var(--base-content);
+          font-weight: bold;
+          &:hover {
+            color: var(--neutral);
+            background-color: var(--warning);
+          }
+        }
       }
     }
   }

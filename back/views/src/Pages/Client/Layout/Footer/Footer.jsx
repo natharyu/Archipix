@@ -7,7 +7,8 @@ function Footer() {
     <footer>
       <section>
         <aside>
-          <p>ArchiPix &copy; {new Date().getFullYear()} Tous droits réservés.</p>
+          <p>&copy; {new Date().getFullYear()} ArchiPix.</p>
+          <p>Tous droits réservés.</p>
           <div>
             <a href="/mentions-legales">Mentions legales</a>
             <a href="/politique-confidentialite">Politique de confidentialité</a>

@@ -81,7 +81,9 @@ function ListView({
                       <p>Dossier</p>
                     </div>
                     <DownloadFolderBtn folder_id={folder.id} />
-                    <DeleteIcon className="delete-icon" onClick={() => handleClickDeleteFolder(folder.id)} />
+                    <button className="delete-icon" onClick={() => handleClickDeleteFolder(folder.id)}>
+                      <DeleteIcon />
+                    </button>
                   </li>
                 ))}
               </>
@@ -110,7 +112,9 @@ function ListView({
                       <SizeCalculator size={file.size} />
                     </div>
                     <DownloadFileBtn file={file} />
-                    <DeleteIcon className="delete-icon" onClick={() => handleClickDeleteFile(file.id)} />
+                    <button className="delete-icon" onClick={() => handleClickDeleteFile(file.id)}>
+                      <DeleteIcon />
+                    </button>
                   </li>
                 ))}
               </>
