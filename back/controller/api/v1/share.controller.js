@@ -72,7 +72,6 @@ const verifyLink = async (req, res) => {
     if (!share) {
       return res.status(404).json({ valid: false, message: "Lien invalide" });
     } else if (share.expiration < new Date()) {
-      await Share.deleteOne(share.id);
       return res.status(400).json({ valid: false, message: "Lien expiré" });
     }
     return res.status(200).json({ valid: true, link: share.link, file_id: share.file_id });

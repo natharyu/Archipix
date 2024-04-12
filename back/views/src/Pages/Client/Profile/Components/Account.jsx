@@ -33,6 +33,7 @@ function Account() {
   // Use effect hook to fetch user data when component mounts and when the component updates
   // (i.e when the user ID changes)
   useEffect(() => {
+    if (!id) return setIsLoading(true);
     setIsLoading(true); // display a loading message
     fetchUser(id); // fetch user data from API
     setIsLoading(false); // stop displaying the loading message
