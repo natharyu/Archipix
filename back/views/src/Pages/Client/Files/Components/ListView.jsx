@@ -43,6 +43,8 @@ function ListView({
   const { path } = useSelector((state) => state.folder);
   const [showShareFileModal, setShowShareFileModal] = useState(false);
   const [showShareFolderModal, setShowShareFolderModal] = useState(false);
+  const [fileToShare, setFileToShare] = useState(null);
+  const [folderToShare, setFolderToShare] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -182,12 +184,15 @@ function ListView({
                     <button className="delete-icon" onClick={() => handleClickDeleteFolder(folder.id)}>
                       <DeleteIcon />
                     </button>
-                    <button className="share-icon" onClick={() => setShowShareFolderModal(true)}>
+                    <button
+                      className="share-icon"
+                      onClick={() => {
+                        setFolderToShare(folder);
+                        setShowShareFolderModal(true);
+                      }}
+                    >
                       <ShareOutlinedIcon />
                     </button>
-                    {showShareFolderModal && (
-                      <ShareFolderModal setShowShareFolderModal={setShowShareFolderModal} folder={folder} path={path} />
-                    )}
                   </li>
                 ))}
               </>
@@ -227,17 +232,26 @@ function ListView({
                     <button className="delete-icon" onClick={() => handleClickDeleteFile(file.id)}>
                       <DeleteIcon />
                     </button>
-                    <button className="share-icon" onClick={() => setShowShareFileModal(true)}>
+                    <button
+                      className="share-icon"
+                      onClick={() => {
+                        setFileToShare(file);
+                        setShowShareFileModal(true);
+                      }}
+                    >
                       <ShareOutlinedIcon />
                     </button>
-                    {showShareFileModal && (
-                      <ShareFileModal setShowShareFileModal={setShowShareFileModal} file={file} path={path} />
-                    )}
                   </li>
                 ))}
               </>
             )}
           </ul>
+        )}
+        {showShareFolderModal && (
+          <ShareFolderModal setShowShareFolderModal={setShowShareFolderModal} folder={folderToShare} path={path} />
+        )}
+        {showShareFileModal && (
+          <ShareFileModal setShowShareFileModal={setShowShareFileModal} file={fileToShare} path={path} />
         )}
       </article>
     </>
