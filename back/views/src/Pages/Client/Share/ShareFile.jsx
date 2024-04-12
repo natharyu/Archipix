@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { shareGetFile } from "../../../store/slices/files";
 import { setToast } from "../../../store/slices/toast";
 
@@ -10,6 +10,7 @@ function ShareFile() {
   const [url, setUrl] = useState("");
   const dispatch = useDispatch();
   const { currentFile } = useSelector((state) => state.file);
+  const navigate = useNavigate();
 
   const verifyLink = async (id) => {
     await fetch(`/api/v1/share/verify/${id}`, { method: "GET" })
@@ -21,13 +22,14 @@ function ShareFile() {
           setUrl(data.link);
         } else {
           setValidLink(false);
+          navigate("/error");
           dispatch(setToast({ message: data.message, type: "error", showToast: true }));
         }
       });
   };
   useEffect(() => {
     verifyLink(id);
-  }, []);
+  }, [id]);
 
   return (
     <>

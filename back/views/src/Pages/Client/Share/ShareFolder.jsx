@@ -1,19 +1,20 @@
 import FolderIcon from "@mui/icons-material/Folder";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { shareGetFiles } from "../../../store/slices/files";
 import { setCurrentFolder, shareGetFolders, shareGetPath } from "../../../store/slices/folder";
 import { setToast } from "../../../store/slices/toast";
 import ShareDownloadBtn from "./ShareDownloadBtn";
 import ShareDownloadBtnFolder from "./ShareDownloadBtnFolder";
+
 function ShareFolder() {
   const { id } = useParams();
   const [validLink, setValidLink] = useState(false);
   const dispatch = useDispatch();
   const { files, isLoading: isLoadingFiles } = useSelector((state) => state.file);
   const { isLoading: isLoadingFolder, folders, path, currentFolder } = useSelector((state) => state.folder);
-
+  const navigate = useNavigate();
   /**
    * Verify link to shared folder
    *
@@ -35,6 +36,7 @@ function ShareFolder() {
         } else {
           // If link is not valid
           setValidLink(false); // Set validLink state to false
+          navigate("/error");
           dispatch(
             setToast({
               // Show toast with error message
@@ -49,7 +51,7 @@ function ShareFolder() {
 
   useEffect(() => {
     verifyLink(id);
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (currentFolder) {
