@@ -3,10 +3,19 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { setToast } from "../../store/slices/toast";
 
+/**
+ * ResetPassword page component.
+ *
+ * @returns {JSX.Element} ResetPassword page.
+ */
 const ResetPassword = () => {
+  // Redux dispatch.
   const dispatch = useDispatch();
+  // React Router navigate.
   const navigate = useNavigate();
+  // Reset token from URL.
   const { resetToken } = useParams();
+  // React Hook Form.
   const {
     register,
     handleSubmit,
@@ -14,7 +23,14 @@ const ResetPassword = () => {
     watch,
   } = useForm();
 
+  /**
+   * Form submit handler.
+   *
+   * @param {Object} data Form data.
+   * @returns {Promise<void>}
+   */
   const onSubmit = async (data) => {
+    // Fetch API.
     await fetch(`/auth/reset-password/${resetToken}`, {
       method: "POST",
       headers: {
@@ -25,9 +41,12 @@ const ResetPassword = () => {
       .then((res) => res.json())
       .then((res) => {
         if (res.error) {
+          // Display the error message from server.
           return dispatch(setToast({ message: res.error, type: "error", showToast: true }));
         }
+        // Redirect to login page.
         navigate("/connexion");
+        // Display the success message from server.
         dispatch(setToast({ message: res.message, type: "success", showToast: true }));
       });
   };

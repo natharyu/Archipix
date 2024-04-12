@@ -224,7 +224,25 @@
     }
   }
 }
-#files {
+#share-folder {
+  h2 {
+    width: 100%;
+  }
+}
+#files,
+#share-folder {
+  h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    @include md {
+      font-size: 2rem;
+    }
+    @include lg {
+      font-size: 2.5rem;
+    }
+  }
   width: 100%;
   padding: 1rem;
   flex-grow: 1;
@@ -348,7 +366,8 @@
           }
         }
         .download-button,
-        .delete-icon {
+        .delete-icon,
+        .share-icon {
           color: var(--base-content);
           background: transparent;
           border: none;
@@ -364,6 +383,11 @@
         .delete-icon {
           &:hover {
             color: var(--error);
+          }
+        }
+        .share-icon {
+          &:hover {
+            color: var(--info);
           }
         }
       }
@@ -421,6 +445,23 @@
           color: var(--primary);
         }
       }
+      .share-icon {
+        color: var(--base-content);
+        background: transparent;
+        border: 1px solid var(--base-content);
+        border-radius: 0.5rem;
+        position: absolute;
+        bottom: 0.5rem;
+        left: 0.5rem;
+        width: 2.5rem;
+        height: 2.5rem;
+        cursor: pointer;
+        z-index: 10;
+        @include transition(0.3s);
+        &:hover {
+          color: var(--info);
+        }
+      }
       .loader {
         position: absolute;
         top: 0.5rem;
@@ -471,7 +512,7 @@
           @include transition(0.3s);
           &:hover {
             cursor: pointer;
-            transform: scale(1.1);
+            transform: scale(1.02);
             border: 1px solid var(--base-content);
           }
         }
@@ -681,7 +722,39 @@
     }
   }
 
-  .delete-modal {
+  .share-modal {
+    input[type="number"] {
+      width: 100%;
+      border: 1px solid var(--base-content);
+      border-radius: 0.5rem;
+      background-color: var(--neutral);
+      color: var(--neutral-content);
+      padding: 0.5rem 1rem;
+      @include transition(0.3s);
+      &:focus {
+        outline: none;
+        border: 1px solid var(--primary);
+      }
+      @include md {
+        width: 50%;
+      }
+    }
+    .close-share-modal {
+      background-color: transparent;
+      color: var(--base-content);
+      border-radius: 0.5rem;
+      @include transition(0.3s);
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--error);
+      &:hover {
+        cursor: pointer;
+        background-color: var(--error);
+        color: var(--neutral);
+      }
+    }
+  }
+  .delete-modal,
+  .share-modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -703,6 +776,7 @@
       @include flex(column, center, center, 1rem);
       background-color: var(--base3);
       border-radius: 0.5rem;
+      border: none;
       padding: 1rem;
       @include transition(0.3s);
       @include lg {
@@ -712,23 +786,17 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      .delete-modal-buttons {
+      .delete-modal-buttons,
+      .share-modal-buttons {
         @include flex(row, center, center, 1rem);
+        border: none;
         button {
           padding: 0.5rem 1rem;
           @include transition(0.3s);
           border-radius: 0.5rem;
           background-color: var(--base3);
         }
-        button:first-child {
-          border: 1px solid var(--error);
-          color: var(--base-content);
-          font-weight: bold;
-          &:hover {
-            color: var(--neutral);
-            background-color: var(--error);
-          }
-        }
+
         button:last-child {
           border: 1px solid var(--warning);
           color: var(--base-content);
@@ -736,6 +804,28 @@
           &:hover {
             color: var(--neutral);
             background-color: var(--warning);
+          }
+        }
+      }
+      .share-modal-buttons {
+        button:first-child {
+          border: 1px solid var(--primary);
+          color: var(--base-content);
+          font-weight: bold;
+          &:hover {
+            color: var(--neutral);
+            background-color: var(--primary);
+          }
+        }
+      }
+      .delete-modal-buttons {
+        button:first-child {
+          border: 1px solid var(--error);
+          color: var(--base-content);
+          font-weight: bold;
+          &:hover {
+            color: var(--neutral);
+            background-color: var(--error);
           }
         }
       }

@@ -1,14 +1,14 @@
 import DownloadIcon from "@mui/icons-material/Download";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { resetToast, setToast } from "../../../../../store/slices/toast";
+import { resetToast, setToast } from "../../../store/slices/toast";
 /**
  * Function to handle the download of a file.
  *
  * @param {object} file - The file object to be downloaded
  * @return {JSX.Element} The download button or loader based on download state
  */
-function DownloadFileBtn({ file }) {
+function ShareDownloadBtn({ file }) {
   const [isDownloading, setIsDownloading] = useState(false);
   const dispatch = useDispatch();
   const { path } = useSelector((state) => state.folder);
@@ -20,10 +20,11 @@ function DownloadFileBtn({ file }) {
   const handleDownloadFile = async () => {
     // Download file asynchronously
     // Show a loading state and dispatch a toast message
+    dispatch(resetToast());
     dispatch(setToast({ message: "Fichier en cours de téléchargement", type: "info", showToast: true }));
     setIsDownloading(true);
 
-    await fetch(`/api/v1/file/download/${path.join("&&&")}/${file.id}`, {
+    await fetch(`/api/v1/share/download/file/${path.join("&&&")}/${file.id}`, {
       method: "GET",
     })
       .then((response) => {
@@ -34,7 +35,6 @@ function DownloadFileBtn({ file }) {
       })
       .then((blob) => {
         // Create a temporary URL to download the file
-        console.log(blob);
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
@@ -72,4 +72,4 @@ function DownloadFileBtn({ file }) {
   );
 }
 
-export default DownloadFileBtn;
+export default ShareDownloadBtn;

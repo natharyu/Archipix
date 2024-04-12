@@ -6,6 +6,12 @@ import { setCurrentFolder, setRootFolder } from "../../store/slices/folder";
 import { setToast } from "../../store/slices/toast";
 import ForgotPassword from "./ForgotPassword";
 
+/**
+ * A function for handling the login process, including form submission and API call.
+ *
+ * @param {object} data - The data object containing email, password, and remember fields.
+ * @return {void}
+ */
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -16,7 +22,14 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
+  /**
+   * A function that handles form submission by sending a POST request to the authentication endpoint.
+   *
+   * @param {object} data - An object containing email, password, and remember values for authentication
+   * @return {void}
+   */
   const onSubmit = async (data) => {
+    // Send a POST request to the authentication endpoint with the email, password, and remember fields.
     await fetch(`/auth/login`, {
       method: "POST",
       headers: {
@@ -30,9 +43,11 @@ const Login = () => {
     })
       .then((res) => res.json())
       .then((res) => {
+        // If there's an error, display it to the user and abort.
         if (res.error) {
           return dispatch(setToast({ message: res.error, type: "error", showToast: true }));
         }
+        // Otherwise, authenticate the user and redirect them to the home page.
         dispatch(checkAuth());
         dispatch(setRootFolder({ rootFolder: res.folder, rootFolderName: res.folderName }));
         dispatch(setCurrentFolder({ currentFolder: res.folder, currentFolderName: res.folderName }));

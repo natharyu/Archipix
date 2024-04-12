@@ -3,6 +3,13 @@ import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import ThemeToggler from "../../../../Components/ThemeToggler";
 
+/**
+ * Renders the mobile navigation bar with different menu options based on user authentication status and role.
+ *
+ * @param {function} setShowMobileNav - A function to control the visibility of the mobile navigation bar.
+ * @param {function} handleLogout - A function to handle the logout functionality.
+ * @return {JSX.Element} The JSX element representing the mobile navigation bar.
+ */
 function MobileNav({ setShowMobileNav, handleLogout }) {
   const { isLoggedIn, role } = useSelector((state) => state.auth);
 

@@ -1,4 +1,9 @@
+/**
+ * Component representing the politique confidentialite page.
+ * @returns {JSX.Element} The component
+ */
 function PolitiqueConfidentialite() {
+  // The template for the page
   return (
     <section id="politique">
       <h2>Politique de Confidentialité</h2>

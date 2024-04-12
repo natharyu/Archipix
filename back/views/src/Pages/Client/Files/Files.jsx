@@ -17,30 +17,50 @@ import DeleteFolderModal from "./Components/Modals/DeleteFolderModal";
 import DeleteMultipleModal from "./Components/Modals/DeleteMultipleModal";
 import SelectMenu from "./Components/Select/SelectMenu";
 
+/**
+ * The files page of the client interface.
+ *
+ * @returns {JSX.Element} The files page component.
+ */
 function Files() {
+  // Toggles the visibility of the add menu
   const [addMenu, setAddMenu] = useState(false);
+  // Toggles the visibility of a file preview
   const [filePreview, setFilePreview] = useState(false);
+  // Toggles the visibility of the delete folder modal
   const [showDeleteFolderModal, setShowDeleteFolderModal] = useState(false);
+  // The folder that the delete folder modal is currently displayed for
   const [folderToDelete, setFolderToDelete] = useState(null);
+  // Toggles the visibility of the delete file modal
   const [showDeleteFileModal, setShowDeleteFileModal] = useState(false);
+  // The file that the delete file modal is currently displayed for
   const [fileToDelete, setFileToDelete] = useState(null);
+  // Array of selected files
   const [selectedFiles, setSelectedFiles] = useState([]);
+  // Array of selected folders
   const [selectedFolders, setSelectedFolders] = useState([]);
+  // Toggles the visibility of the delete multiple modal
   const [showDeleteMultipleModal, setShowDeleteMultipleModal] = useState(false);
+  // Tracks the currently selected folder
   const { currentFolder, path, rootFolder, rootFolderName } = useSelector((state) => state.folder);
+  // Tracks the current view mode
   const { viewMode } = useSelector((state) => state.user);
+  // Redux dispatch function
   const dispatch = useDispatch();
 
+  // Fetches the root folder when the component mounts
   useEffect(() => {
     dispatch(getRootFolder());
   }, []);
 
+  // Sets the current folder to the root folder when the root folder is fetched
   useEffect(() => {
     if (rootFolder) {
       dispatch(setCurrentFolder({ currentFolder: rootFolder, currentFolderName: rootFolderName }));
     }
   }, [rootFolder]);
 
+  // Fetches the files and folders for the current folder whenever the current folder changes
   useEffect(() => {
     if (currentFolder) {
       dispatch(getFiles(currentFolder));

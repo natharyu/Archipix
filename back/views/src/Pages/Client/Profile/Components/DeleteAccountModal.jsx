@@ -2,9 +2,26 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../../../store/slices/auth";
 import { setToast } from "../../../../store/slices/toast";
+/**
+ * Delete account modal component.
+ *
+ * @param {Object} props component props
+ * @param {Function} props.setShowDeleteAccountModal function to close modal
+ * @param {string} props.id user id to delete
+ * @returns {JSX.Element} Delete account modal component
+ */
 function DeleteAccountModal({ setShowDeleteAccountModal, id }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  /**
+   * Handle confirm button click.
+   * Send DELETE request to api to delete user account.
+   * If succeed logout user and redirect to home page.
+   *
+   * @param {string} id user id to delete
+   * @returns {Promise<void>}
+   */
   const handleConfirm = async (id) => {
     await fetch(`/api/v1/user/delete/${id}`, {
       method: "DELETE",

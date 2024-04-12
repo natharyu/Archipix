@@ -2,14 +2,21 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setToast } from "../../../../store/slices/toast";
 import DeleteAccountModal from "./DeleteAccountModal";
+/**
+ * Function that manages the user account profile display and editing.
+ *
+ * @param {string} id - The user ID used to fetch and update user data
+ * @return {JSX.Element} The JSX element representing the user account profile
+ */
 function Account() {
-  const { id } = useSelector((state) => state.user);
-  const [isLoading, setIsLoading] = useState(false);
-  const [showEditAccount, setShowEditAccount] = useState(false);
-  const [userAccount, setUserAccount] = useState({});
-  const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
-  const dispatch = useDispatch();
+  const { id } = useSelector((state) => state.user); // user ID used to fetch and update user data
+  const [isLoading, setIsLoading] = useState(false); // flag to display a loading message
+  const [showEditAccount, setShowEditAccount] = useState(false); // flag to display the edit account form
+  const [userAccount, setUserAccount] = useState({}); // user data fetched from the API
+  const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false); // flag to display the delete account modal
+  const dispatch = useDispatch(); // redux dispatch function
 
+  // Fetch user data from API
   const fetchUser = async (id) => {
     await fetch(`/api/v1/user/get/${id}`, {
       method: "GET",
@@ -23,27 +30,31 @@ function Account() {
       });
   };
 
+  // Use effect hook to fetch user data when component mounts and when the component updates
+  // (i.e when the user ID changes)
   useEffect(() => {
-    setIsLoading(true);
-    fetchUser(id);
-    setIsLoading(false);
+    setIsLoading(true); // display a loading message
+    fetchUser(id); // fetch user data from API
+    setIsLoading(false); // stop displaying the loading message
   }, [id]);
 
+  // Function to handle edit account form submission
   const handleEditAccount = async () => {
     await fetch(`/api/v1/user/update/${id}`, {
+      // send a PUT request to update user data
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(userAccount),
+      body: JSON.stringify(userAccount), // send the updated user data as JSON in the request body
     })
       .then((response) => response.json())
       .then((data) => {
-        dispatch(setToast({ message: data.message, type: "success", showToast: true }));
-        setShowEditAccount(false);
+        dispatch(setToast({ message: data.message, type: "success", showToast: true })); // display a success toast
+        setShowEditAccount(false); // hide the edit account form
       })
       .catch((error) => {
-        dispatch(setToast({ message: error, type: "error", showToast: true }));
+        dispatch(setToast({ message: error, type: "error", showToast: true })); // display an error toast
       });
   };
 

@@ -1,32 +1,51 @@
 import { useEffect, useState } from "react";
 import "../../main.scss";
 
+/**
+ * Home component for admin page.
+ *
+ * @returns {JSX.Element} The admin home component
+ */
 function Home() {
+  // States to keep track of the total number of users and files
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalFiles, setTotalFiles] = useState(0);
 
+  /**
+   * Fetch the total number of users from the API
+   */
   const fetchTotalUsers = async () => {
-    await fetch("/api/v1/user/total", {
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((data) => setTotalUsers(data.totalUsers))
-      .catch((error) => console.log(error));
+    try {
+      const res = await fetch("/api/v1/user/total", { method: "GET" });
+      const data = await res.json();
+      setTotalUsers(data.totalUsers);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
+  /**
+   * Fetch the total number of files from the API
+   */
   const fetchTotalFiles = async () => {
-    await fetch("/api/v1/file/total", {
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((data) => setTotalFiles(data.totalFiles))
-      .catch((error) => console.log(error));
+    try {
+      const res = await fetch("/api/v1/file/total", { method: "GET" });
+      const data = await res.json();
+      setTotalFiles(data.totalFiles);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
+  /**
+   * Use effect to fetch the total number of users and files when the
+   * component mounts and never re-run
+   */
   useEffect(() => {
     fetchTotalUsers();
     fetchTotalFiles();
   }, []);
+
   return (
     <section id="admin-home">
       <article>

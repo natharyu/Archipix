@@ -4,31 +4,63 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setToast } from "../../store/slices/toast";
 
+/**
+ * Component that renders the contact form.
+ */
 const Contact = () => {
+  // Email input state
   const [email, setEmail] = useState("");
+
+  // Message input state
   const [message, setMessage] = useState("");
+
+  // Loading state
   const [isLoading, setIsLoading] = useState(false);
+
+  // Redux dispatch
   const dispatch = useDispatch();
 
-  useEffect(() => emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY), []);
+  // Initializes emailjs
+  useEffect(() => {
+    emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
+  }, []);
 
+  /**
+   * Handles email input changes.
+   * @param {Event} e - Event
+   */
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
+
+  /**
+   * Handles message input changes.
+   * @param {Event} e - Event
+   */
   const handleMessageChange = (e) => {
     setMessage(e.target.value);
   };
 
+  /**
+   * Handles form submission.
+   * @param {Event} e - Event
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+
+    // Service ID and template ID for emailjs
     const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
     const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+
     try {
+      // Sends email using emailjs
       await emailjs.send(serviceId, templateId, {
         email: email,
         message: `message de ${email}: ${message}`,
       });
+
+      // Closes dialog, shows success toast and resets form
       setIsLoading(false);
       document.getElementById("contact").close();
       dispatch(setToast({ message: "Message envoyé !", type: "success", showToast: true }));

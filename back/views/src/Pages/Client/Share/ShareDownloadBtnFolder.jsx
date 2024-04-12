@@ -1,14 +1,14 @@
 import DownloadIcon from "@mui/icons-material/Download";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { resetToast, setToast } from "../../../../../store/slices/toast";
+import { resetToast, setToast } from "../../../store/slices/toast";
 /**
  * Download a folder as a zip archive.
  *
  * @param {string} folder_id - The ID of the folder to be downloaded
  * @return {JSX.Element} Rendered JSX for the download button
  */
-function DownloadFolderBtn({ folder_id }) {
+function ShareDownloadBtnFolder({ folder_id }) {
   const { path } = useSelector((state) => state.folder); // The path of the current folder
   const [isDownloading, setIsDownloading] = useState(false); // Whether the archive is being downloaded
   const dispatch = useDispatch(); // Redux dispatch function
@@ -21,7 +21,7 @@ function DownloadFolderBtn({ folder_id }) {
   const handleDownloadFolder = async (folder_id) => {
     dispatch(setToast({ message: "Création de l'archive", type: "info", showToast: true })); // Show a toast
     setIsDownloading(true); // Set isDownloading to true
-    await fetch(`/api/v1/folder/download/${path.join("&&&")}/${folder_id}`, {
+    await fetch(`/api/v1/share/download/folder/${path.join("&&&")}/${folder_id}`, {
       method: "GET",
     })
       .then((response) => {
@@ -61,4 +61,4 @@ function DownloadFolderBtn({ folder_id }) {
   );
 }
 
-export default DownloadFolderBtn;
+export default ShareDownloadBtnFolder;

@@ -3,6 +3,11 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { setToast } from "../../../store/slices/toast";
 
+/**
+ * Function for editing a user's details.
+ *
+ * @return {JSX.Element} The edit user section JSX element.
+ */
 function EditUser() {
   const [user, setUser] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -12,6 +17,12 @@ function EditUser() {
 
   const { id } = useParams();
 
+  /**
+   * Fetches user data from the server using the provided ID.
+   *
+   * @param {} - No parameters
+   * @return {} - No return value
+   */
   const fetchUser = async () => {
     await fetch(`/api/v1/user/get/${id}`, {
       method: "GET",
@@ -27,10 +38,23 @@ function EditUser() {
     setIsLoading(false);
   }, []);
 
+  /**
+   * This function handles the cancel action by navigating to the "/admin/users" route.
+   *
+   * @param {} - No parameters
+   * @return {} - No return value
+   */
   const handleCancel = () => {
     navigate("/admin/users");
   };
+
+  /**
+   * Update user by making a PUT request to the server
+   *
+   * @returns {Promise<void>} Promise that resolves once the user is updated
+   */
   const handleUpdateUser = async () => {
+    // Make a PUT request to the server to update the user
     await fetch(`/api/v1/user/update/${id}`, {
       method: "PUT",
       headers: {
@@ -40,13 +64,36 @@ function EditUser() {
     })
       .then((res) => res.json())
       .then((data) => {
+        // If there is an error, display it in a toast
         if (data.error) {
-          return dispatch(setToast({ message: data.error, type: "error", showToast: true }));
+          return dispatch(
+            setToast({
+              message: data.error,
+              type: "error",
+              showToast: true,
+            })
+          );
         }
+        // If successful, redirect to the users page and display a success toast
         navigate("/admin/users");
-        dispatch(setToast({ message: data.message, type: "success", showToast: true }));
+        dispatch(
+          setToast({
+            message: data.message,
+            type: "success",
+            showToast: true,
+          })
+        );
       })
-      .catch((error) => dispatch(setToast({ message: error, type: "error", showToast: true })));
+      // If there is an error, display it in a toast
+      .catch((error) =>
+        dispatch(
+          setToast({
+            message: error,
+            type: "error",
+            showToast: true,
+          })
+        )
+      );
   };
 
   return (

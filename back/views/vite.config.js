@@ -5,10 +5,10 @@ import { defineConfig } from "vite";
 export default defineConfig({
   server: {
     proxy: {
-      "/auth": "http://localhost:3000/",
-      "/uploads": "http://localhost:3000/",
-      "/api": "http://localhost:3000/",
-      "/uploads/tmp": "http://localhost:3000/uploads/tmp/",
+      "/auth": "http://localhost:8089/",
+      "/uploads": "http://localhost:8089/",
+      "/api": "http://localhost:8089/",
+      "/uploads/tmp": "http://localhost:8089/uploads/tmp/",
     },
   },
   resolve: {

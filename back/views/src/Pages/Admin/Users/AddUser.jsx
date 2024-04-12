@@ -2,16 +2,38 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setToast } from "../../../store/slices/toast";
+/**
+ * Component to add a new user in the admin panel.
+ *
+ * @returns {JSX.Element} The add user component.
+ */
 function AddUser() {
+  // State to hold the new user's data
   const [newUser, setNewUser] = useState({});
+  // State to toggle loading spinner
   const [isLoading, setIsLoading] = useState(false);
+  // Navigate through routes
   const navigate = useNavigate();
+  // Dispatch Redux actions
   const dispatch = useDispatch();
 
+  /**
+   * Handle user's submission by sending a POST request
+   * to the /api/v1/user/add endpoint with the new user's data.
+   */
   const handleAddUser = async () => {
+    // If some required fields are missing, display a warning message
     if (!newUser.email || !newUser.password || !newUser.username) {
-      return dispatch(setToast({ message: "Veuillez remplir les champs requis", type: "warning", showToast: true }));
+      return dispatch(
+        setToast({
+          message: "Veuillez remplir les champs requis",
+          type: "warning",
+          showToast: true,
+        })
+      );
     }
+
+    // Send request to add new user
     await fetch("/api/v1/user/add", {
       method: "POST",
       headers: {
@@ -21,15 +43,39 @@ function AddUser() {
     })
       .then((res) => res.json())
       .then((data) => {
-        dispatch(setToast({ message: data.message, type: "success", showToast: true }));
+        // If the new user was added successfully, display a success message
+        // and redirect the user to the users page
+        dispatch(
+          setToast({
+            message: data.message,
+            type: "success",
+            showToast: true,
+          })
+        );
         navigate("/admin/users");
       })
-      .catch((error) => dispatch(setToast({ message: error, type: "error", showToast: true })));
+      .catch((error) =>
+        dispatch(
+          setToast({
+            message: error,
+            type: "error",
+            showToast: true,
+          })
+        )
+      );
   };
+
+  /**
+   * Handle cancel button click by redirecting the user to the users page.
+   */
   const handleCancel = () => {
     navigate("/admin/users");
   };
 
+  /**
+   * Update the new user's data state on input change.
+   * Set the initial values of the new user by setting the is_verified and role fields.
+   */
   useEffect(() => {
     setIsLoading(true);
     newUser.is_verified = 1;

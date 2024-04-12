@@ -1,5 +1,6 @@
 import express from "express";
 import userController from "../../../controller/api/v1/user.controller.js";
+import { adminOnly } from "../../middleware/middleware.js";
 
 const userRoutes = express.Router();
 //route prefix: /api/v1/user
@@ -11,7 +12,7 @@ userRoutes.get("/total", userController.getTotalUsers);
 userRoutes.get("/all", userController.getAll);
 
 //post routes
-userRoutes.post("/add", userController.adminAddUser);
+userRoutes.post("/add", adminOnly, userController.adminAddUser);
 
 //put routes
 userRoutes.put("/update/:id", userController.update);

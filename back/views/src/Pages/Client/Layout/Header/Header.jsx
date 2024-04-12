@@ -6,12 +6,27 @@ import { logout } from "../../../../store/slices/auth";
 import { resetFileState } from "../../../../store/slices/files";
 import { resetFolderState } from "../../../../store/slices/folder";
 import MobileNav from "./MobileNav";
+/**
+ * The main header of the client app.
+ * This component contains the logo, navigation, and theme toggler.
+ */
 function Header() {
+  // Whether or not the mobile nav is currently open
   const [showMobileNav, setShowMobileNav] = useState(false);
+
+  // The current user's info, from the Redux store
   const { isLoggedIn, role } = useSelector((state) => state.auth);
+
+  // Allows us to dispatch Redux actions
   const dispatch = useDispatch();
+
+  // Allows us to navigate to other parts of the app
   const navigate = useNavigate();
 
+  /**
+   * Handles logging the user out by making a POST request to /auth/logout
+   * and then updating the Redux store accordingly.
+   */
   const handleLogout = () => {
     fetch(`/auth/logout`, {
       credentials: "include",
