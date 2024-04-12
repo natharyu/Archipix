@@ -39,6 +39,8 @@ function GridView({
 
   const [showShareFileModal, setShowShareFileModal] = useState(false);
   const [showShareFolderModal, setShowShareFolderModal] = useState(false);
+  const [fileToShare, setFileToShare] = useState(null);
+  const [folderToShare, setFolderToShare] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -169,7 +171,13 @@ function GridView({
                     />
                     {/* Button to download folder */}
                     <DownloadFolderBtn folder_id={folder.id} />
-                    <button className="share-icon" onClick={() => setShowShareFolderModal(true)}>
+                    <button
+                      className="share-icon"
+                      onClick={() => {
+                        setFolderToShare(folder);
+                        setShowShareFolderModal(true);
+                      }}
+                    >
                       <ShareOutlinedIcon />
                     </button>
 
@@ -179,9 +187,6 @@ function GridView({
                       {/* Folder name */}
                       <p>{folder.label}</p>
                     </div>
-                    {showShareFolderModal && (
-                      <ShareFolderModal setShowShareFolderModal={setShowShareFolderModal} folder={folder} path={path} />
-                    )}
                   </div>
                 ))}
               </>
@@ -211,7 +216,13 @@ function GridView({
                     />
                     {/* Button to download file */}
                     <DownloadFileBtn file={file} />
-                    <button className="share-icon" onClick={() => setShowShareFileModal(true)}>
+                    <button
+                      className="share-icon"
+                      onClick={() => {
+                        setFileToShare(file);
+                        setShowShareFileModal(true);
+                      }}
+                    >
                       <ShareOutlinedIcon />
                     </button>
                     <div className="grid-file" onClick={() => handleClickFile(file)}>
@@ -231,14 +242,17 @@ function GridView({
                         />
                       )}
                     </div>
-                    {showShareFileModal && (
-                      <ShareFileModal setShowShareFileModal={setShowShareFileModal} file={file} path={path} />
-                    )}
                   </div>
                 ))}
               </>
             )}
           </>
+        )}
+        {showShareFolderModal && (
+          <ShareFolderModal setShowShareFolderModal={setShowShareFolderModal} folder={folderToShare} path={path} />
+        )}
+        {showShareFileModal && (
+          <ShareFileModal setShowShareFileModal={setShowShareFileModal} file={fileToShare} path={path} />
         )}
       </article>
     </>

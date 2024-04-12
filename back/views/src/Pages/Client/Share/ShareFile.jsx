@@ -32,19 +32,19 @@ function ShareFile() {
   }, [id]);
 
   return (
-    <>
+    <section id="share">
       {validLink ? (
-        <div>
+        <article>
           {/* If the file is an image, display an image tag */}
           {currentFile?.type.includes("image") && <img src={url} alt="Preview" />}
 
           {/* If the file is a video, display a video tag */}
           {currentFile?.type.includes("video") && <video src={url} controls />}
-        </div>
+        </article>
       ) : (
         <h2>Le lien n'est pas valide</h2>
       )}
-    </>
+    </section>
   );
 }
 

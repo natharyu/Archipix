@@ -227,6 +227,29 @@
     }
   }
 }
+#share {
+  @include flex(column, normal, center, 1rem);
+  flex-grow: 1;
+  padding: 0 1rem;
+  width: 100%;
+  article {
+    @include flex(column, center, center, 1rem);
+    flex-grow: 1;
+    width: 100%;
+    h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      @include md {
+        font-size: 2rem;
+      }
+      @include lg {
+        font-size: 2.5rem;
+      }
+    }
+  }
+}
 #home {
   @include flex(column, normal, center, 1rem);
   flex-grow: 1;
@@ -460,7 +483,7 @@
       }
       .download-button {
         color: var(--base-content);
-        background: transparent;
+        background: var(--base3);
         border: 1px solid var(--base-content);
         border-radius: 0.5rem;
         position: absolute;
@@ -477,7 +500,7 @@
       }
       .share-icon {
         color: var(--base-content);
-        background: transparent;
+        background: var(--base3);
         border: 1px solid var(--base-content);
         border-radius: 0.5rem;
         position: absolute;
