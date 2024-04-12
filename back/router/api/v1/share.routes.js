@@ -19,4 +19,7 @@ shareRoutes.get("/download/folder/:path/:folder_id", folderController.download);
 shareRoutes.post("/file", shareController.shareFile);
 shareRoutes.post("/folder", shareController.shareFolder);
 
+//delete routes
+shareRoutes.delete("/delete/:id", shareController.deleteOne);
+
 export default shareRoutes;

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setToast } from "../../../../../store/slices/toast";
+import { resetToast, setToast } from "../../../../../store/slices/toast";
 function ShareFileModal({ setShowShareFileModal, file, path }) {
   const [expiration, setExpiration] = useState(0);
   const dispatch = useDispatch();
@@ -29,9 +29,16 @@ function ShareFileModal({ setShowShareFileModal, file, path }) {
           data +
           "</p>" +
           "</p>" +
+          "<button id='copy-share-modal' class='copy-share-modal'>Copier le lien</button>" +
           "<button id='close-share-modal' class='close-share-modal'>Fermer</button>" +
           "</div>";
         const closeBtn = document.getElementById("close-share-modal");
+        const copyBtn = document.getElementById("copy-share-modal");
+        copyBtn.addEventListener("click", () => {
+          navigator.clipboard.writeText(`https://archipix.dew-hub.ovh${data}`);
+          dispatch(resetToast());
+          dispatch(setToast({ type: "success", message: "Lien copié dans le presse papier !", showToast: true }));
+        });
         closeBtn.addEventListener("click", () => {
           setShowShareFileModal(false);
         });

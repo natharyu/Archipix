@@ -10,6 +10,7 @@ userRoutes.get("/get/info/:email", userController.getUserInfo);
 userRoutes.get("/get/:id", userController.getOne);
 userRoutes.get("/total", userController.getTotalUsers);
 userRoutes.get("/all", userController.getAll);
+userRoutes.get("/get/share/:id", userController.getShare);
 
 //post routes
 userRoutes.post("/add", adminOnly, userController.adminAddUser);

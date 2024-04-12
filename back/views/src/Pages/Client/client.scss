@@ -739,6 +739,19 @@
         width: 50%;
       }
     }
+    .copy-share-modal {
+      background-color: transparent;
+      color: var(--base-content);
+      border-radius: 0.5rem;
+      @include transition(0.3s);
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--warning);
+      &:hover {
+        cursor: pointer;
+        background-color: var(--warning);
+        color: var(--neutral);
+      }
+    }
     .close-share-modal {
       background-color: transparent;
       color: var(--base-content);
@@ -1035,6 +1048,78 @@
         background-color: var(--success);
         color: var(--neutral);
       }
+    }
+  }
+  .profile-shares {
+    @include flex(column, center, center, 1rem);
+    display: none;
+    @include transition(0.3s);
+    width: 100%;
+    flex-grow: 1;
+    table {
+      overflow-x: auto;
+      max-width: 100%;
+      border-collapse: collapse;
+      border-spacing: 0;
+
+      th,
+      td {
+        padding: 0.5rem;
+        border: 1px solid var(--base-content);
+        text-align: center;
+      }
+
+      th {
+        background-color: var(--base);
+        color: var(--base-content);
+      }
+
+      tbody tr:nth-child(even) {
+        background-color: var(--base);
+      }
+
+      td:last-child {
+        :first-child {
+          margin-right: 0.2rem;
+        }
+      }
+
+      th,
+      td {
+        @include transition(0.3s);
+        font-size: 0.8rem;
+        @include sm {
+          font-size: 1rem;
+        }
+      }
+    }
+    .copy-link,
+    .delete-link {
+      background-color: transparent;
+      color: var(--base-content);
+      border-radius: 0.5rem;
+      @include transition(0.3s);
+      padding: 0.5rem 1rem;
+    }
+    .copy-link {
+      border: 1px solid var(--warning);
+      &:hover {
+        background-color: var(--warning);
+        color: var(--neutral);
+      }
+    }
+    .delete-link {
+      border: 1px solid var(--error);
+      &:hover {
+        background-color: var(--error);
+        color: var(--neutral);
+      }
+    }
+    .valid-link {
+      color: var(--success);
+    }
+    .expired-link {
+      color: var(--error);
     }
   }
   .delete-account-modal {

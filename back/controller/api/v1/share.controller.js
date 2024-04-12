@@ -30,6 +30,8 @@ const shareFile = async (req, res) => {
     expiration: new Date(Date.now() + expiration * 1000),
   });
   const shareLink = `/share/file/${share.insertId}`;
+
+  await Share.update({ url: `https://archipix.dew-hub.ovh${shareLink}` }, share.insertId);
   return res.status(200).json(shareLink);
 };
 
@@ -57,6 +59,9 @@ const shareFolder = async (req, res) => {
     expiration: new Date(Date.now() + expiration * 1000),
   });
   const shareLink = `/share/folder/${share.insertId}`;
+
+  await Share.update({ url: `https://archipix.dew-hub.ovh${shareLink}` }, share.insertId);
+
   return res.status(200).json(shareLink);
 };
 
@@ -75,4 +80,14 @@ const verifyLink = async (req, res) => {
     return res.status(500).json({ error: "Une erreur est survenue" });
   }
 };
-export default { shareFile, shareFolder, verifyLink };
+
+const deleteOne = async (req, res) => {
+  const { id } = req.params;
+  const [share] = await Share.getOneById(id);
+  if (!share) {
+    return res.status(404).json({ error: "Lien introuvable" });
+  }
+  await Share.deleteOne(id);
+  return res.status(200).json({ message: "Lien supprimé avec succès !" });
+};
+export default { shareFile, shareFolder, verifyLink, deleteOne };

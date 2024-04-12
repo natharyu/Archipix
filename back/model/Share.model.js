@@ -15,6 +15,14 @@ class Share {
     return result;
   }
 
+  static async update(data, id) {
+    const query = `UPDATE share SET ${Object.keys(data)
+      .map((key) => `${key} = ?`)
+      .join(", ")} WHERE id = ?`;
+    const [result] = await pool.execute(query, [...Object.values(data), id]);
+    return result;
+  }
+
   static async getOneById(id) {
     const query = "SELECT * FROM share WHERE id = ?";
     const [result] = await pool.execute(query, [id]);
@@ -24,6 +32,12 @@ class Share {
   static async deleteOne(id) {
     const query = "DELETE FROM share WHERE id = ?";
     const [result] = await pool.execute(query, [id]);
+    return result;
+  }
+
+  static async getAllByField(field, data) {
+    const query = `SELECT id, url, expiration, created_at FROM share WHERE ${field} = ?`;
+    const [result] = await pool.execute(query, [data]);
     return result;
   }
 }

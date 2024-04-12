@@ -3,6 +3,7 @@ import { createFolder, deleteFolder } from "../../../config/S3.js";
 import File from "../../../model/File.model.js";
 import Folder from "../../../model/Folder.model.js";
 import Query from "../../../model/Query.model.js";
+import Share from "../../../model/Share.model.js";
 import User from "../../../model/User.model.js";
 
 /**
@@ -256,4 +257,21 @@ const adminAddUser = async (req, res) => {
   }
 };
 
-export default { getUserInfo, getOne, getTotalUsers, getAll, deleteOneUser, update, adminAddUser };
+const getShare = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const [user] = await User.getOneByField("id", id);
+    if (!user) {
+      return res.status(404).json({ error: "Utilisateur introuvable" });
+    }
+
+    const shares = await Share.getAllByField("user_id", id);
+
+    return res.json(shares);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Une erreur est survenue" });
+  }
+};
+
+export default { getUserInfo, getOne, getTotalUsers, getAll, deleteOneUser, update, adminAddUser, getShare };
