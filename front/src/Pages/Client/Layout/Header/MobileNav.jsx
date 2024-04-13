@@ -1,9 +1,17 @@
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import ThemeToggler from "../../../../Components/ThemeToggler";
 
+/**
+ * Renders the mobile navigation bar with different menu options based on user authentication status and role.
+ *
+ * @param {function} setShowMobileNav - A function to control the visibility of the mobile navigation bar.
+ * @param {function} handleLogout - A function to handle the logout functionality.
+ * @return {JSX.Element} The JSX element representing the mobile navigation bar.
+ */
 function MobileNav({ setShowMobileNav, handleLogout }) {
-  const { isLoggedIn } = useSelector((state) => state.auth);
+  const { isLoggedIn, role } = useSelector((state) => state.auth);
 
   return (
     <nav className="mobile-nav">
@@ -14,9 +22,7 @@ function MobileNav({ setShowMobileNav, handleLogout }) {
           </li>
           <ThemeToggler />
           <li>
-            <button className="close-mobile-nav" onClick={() => setShowMobileNav(false)}>
-              X
-            </button>
+            <CloseOutlinedIcon className="closeBtn" onClick={() => setShowMobileNav(false)} />
           </li>
         </ul>
         <ul>
@@ -55,6 +61,13 @@ function MobileNav({ setShowMobileNav, handleLogout }) {
                 </NavLink>
               </li>
             </>
+          )}
+          {role === "admin" && (
+            <li>
+              <NavLink to="/admin" onClick={() => setShowMobileNav(false)}>
+                Administration
+              </NavLink>
+            </li>
           )}
         </ul>
       </div>

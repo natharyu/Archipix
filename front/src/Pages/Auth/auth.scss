@@ -38,6 +38,7 @@
         border-radius: 0.5rem;
         border: 1px solid var(--neutral-content);
         background-color: var(--base3);
+        color: var(--base-content);
       }
       .inputError {
         border: 2px solid var(--error);
@@ -120,19 +121,17 @@
         margin: 0;
         width: 1.5rem;
         .closeBtn {
-          z-index: 101;
-          color: var(--error);
-          cursor: pointer;
-          @include transition(0.3s);
-          border: 1px solid var(--base-content);
-          border-radius: 0.5rem;
-          font-size: 1.5rem;
-          padding: 0;
-          background-color: transparent;
-          &:hover {
-            color: var(--error);
-            border-color: var(--error);
-            background-color: var(--base);
+          position: absolute;
+          top: 0.5rem;
+          right: 0.5rem;
+          @include md {
+            top: 0.8rem;
+          }
+          @include lg {
+            height: 2rem;
+            width: 2rem;
+            top: 1.2rem;
+            right: 1rem;
           }
         }
       }

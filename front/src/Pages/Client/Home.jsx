@@ -1,8 +1,14 @@
+/**
+ * Home page component
+ * @returns {JSX.Element} Home page
+ */
 function Home() {
+  // JSX element for home page
   return (
     <section id="home">
       <article>
         <figure>
+          {/* Image accueil */}
           <img src={"/assets/images/home.jpeg"} alt="Image accueil" />
         </figure>
       </article>

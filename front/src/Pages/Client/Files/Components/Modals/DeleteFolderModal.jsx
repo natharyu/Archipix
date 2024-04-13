@@ -1,30 +1,52 @@
 import { useDispatch, useSelector } from "react-redux";
 import { getFolders } from "../../../../../store/slices/folder";
 import { setToast } from "../../../../../store/slices/toast";
+/**
+ * Delete folder modal component.
+ *
+ * @param {Object} props Component properties
+ * @param {Function} props.setShowDeleteFolderModal Function to call when closing the modal
+ * @param {string} props.folder_id ID of the folder to delete
+ * @returns {JSX.Element} Delete folder modal
+ */
 function DeleteFolderModal({ setShowDeleteFolderModal, folder_id }) {
+  /**
+   * Currently opened folder and its path.
+   * @type {{currentFolder: string, path: string[]}}
+   */
   const { currentFolder, path } = useSelector((state) => state.folder);
   const dispatch = useDispatch();
+
+  /**
+   * Confirm folder deletion and close modal.
+   * @returns {Promise<void>}
+   */
   const handleConfirm = async () => {
-    await fetch(`/api/v1/folder/delete`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ folder_id: folder_id, path: path.join("/") }),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.error) {
-          return dispatch(setToast({ message: res.error, type: "error", showToast: true }));
-        }
-        dispatch(setToast({ message: res.message, type: "success", showToast: true }));
-        setTimeout(() => dispatch(getFolders(currentFolder)), 200);
-        setShowDeleteFolderModal(false);
-      })
-      .catch((err) => {
-        dispatch(setToast({ message: err, type: "error", showToast: true }));
+    try {
+      const res = await fetch(`/api/v1/folder/delete`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          folder_id: folder_id,
+          path: path.join("/"),
+        }),
       });
+      const data = await res.json();
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      dispatch(setToast({ message: data.message, type: "success", showToast: true }));
+      setTimeout(() => dispatch(getFolders(currentFolder)), 200);
+      setShowDeleteFolderModal(false);
+    } catch (err) {
+      dispatch(setToast({ message: err, type: "error", showToast: true }));
+    }
   };
+
   return (
     <div className="delete-modal">
       <div>

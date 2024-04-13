@@ -2,7 +2,13 @@ import ImageIcon from "@mui/icons-material/Image";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import VideoFileIcon from "@mui/icons-material/VideoFile";
 import { useEffect, useState } from "react";
+/**
+ * Component to display the icon of a file based on its extension.
+ * @param {string} ext - file extension
+ * @returns {JSX.Element} Icon of the file
+ */
 function FileIcon({ ext }) {
+  // List of image file extensions
   const imageExt = [
     "ase",
     "art",
@@ -128,6 +134,7 @@ function FileIcon({ ext }) {
     "heic",
     "heif",
   ];
+  // List of video file extensions
   const videoExt = [
     "3g2",
     "3gp",
@@ -165,7 +172,14 @@ function FileIcon({ ext }) {
     "yuv",
   ];
 
+  // State to hold the type of file icon to display
   const [icon, setIcon] = useState("");
+
+  // Function to get the icon based on the extension
+  /**
+   * Get the icon of the file based on its extension
+   * @param {string} ext - file extension
+   */
   const getIcon = (ext) => {
     if (ext) {
       const extLower = ext.toLowerCase();
@@ -179,11 +193,13 @@ function FileIcon({ ext }) {
     }
   };
 
+  // UseEffect hook to call the getIcon function on first render
   useEffect(() => {
     getIcon(ext);
   }, []);
 
   return (
+    // Use a ternary operator to conditionally return the correct icon
     <>
       {(() => {
         switch (icon) {

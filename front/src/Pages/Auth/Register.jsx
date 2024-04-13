@@ -4,6 +4,12 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setToast } from "../../store/slices/toast";
 
+/**
+ * Function to handle user registration.
+ *
+ * @param {Object} data - User registration data.
+ * @return {void} No return value.
+ */
 const Register = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -14,28 +20,53 @@ const Register = () => {
     formState: { errors },
   } = useForm();
 
+  /**
+   * A description of the entire function.
+   *
+   * @param {type} data - description of parameter
+   * @return {type} description of return value
+   */
   const onSubmit = async (data) => {
+    // Send request to API to create new user
     setIsLoading(true);
     await fetch(`/auth/signup`, {
-      method: "POST",
+      method: "POST", // Use HTTP POST method
       headers: {
+        // Set headers for JSON content
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        // Set request body
         email: data.email,
         password: data.password,
         username: data.username,
       }),
     })
-      .then((res) => res.json())
+      .then((res) => res.json()) // Parse response as JSON
       .then((res) => {
+        // Handle response
         if (res.error) {
-          return dispatch(setToast({ message: res.error, type: "error", showToast: true }));
+          // If error
+          return dispatch(
+            setToast({
+              // Show toast with error message
+              message: res.error,
+              type: "error",
+              showToast: true,
+            })
+          );
         }
-        navigate("/connexion");
-        dispatch(setToast({ message: res.message, type: "success", showToast: true }));
+        navigate("/connexion"); // Redirect user to login page
+        dispatch(
+          setToast({
+            // Show toast with success message
+            message: res.message,
+            type: "success",
+            showToast: true,
+          })
+        );
       });
-    setIsLoading(false);
+    setIsLoading(false); // Stop showing loading indicator
   };
 
   return (

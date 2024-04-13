@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build-watch": "vite build --watch --config ./vite.config.js",
+    "build-watch": "vite build --watch --config ./vite.config.js --emptyOutDir true",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },

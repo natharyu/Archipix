@@ -19,6 +19,7 @@ export default defineConfig({
     },
   },
   build: {
+    outDir: "../back/views",
     watch: "./vite.config.js",
   },
   plugins: [react()],

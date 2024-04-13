@@ -1,3 +1,4 @@
+@import "../../assets/styles/settings.scss";
 #client {
   width: 100%;
   @include flex(column, normal, center, 0);
@@ -41,46 +42,7 @@
     left: 0;
     z-index: 50;
     width: 100%;
-    .burger-menu {
-      width: 2.5rem;
-      height: 2.5rem;
-      cursor: pointer;
-      display: block;
-      @include lg {
-        display: none;
-      }
-      svg {
-        stroke: var(--base-content);
-        @include transition(0.3s);
-        &:hover {
-          cursor: pointer;
-          stroke: var(--primary);
-        }
-      }
-    }
-    .brand {
-      @include flex(row, normal, center, 1rem);
-      width: 90%;
-      @include lg {
-        width: auto;
-      }
-      h1 {
-        @include flex(row, center, center, 1rem);
-        flex-grow: 1;
-        @include lg {
-          @include flex(row, normal, center, 1rem);
-        }
-      }
-      @include flex(row, normal, center, 1rem);
-      width: 90%;
-      @include lg {
-        width: auto;
-      }
-      &:hover {
-        cursor: pointer;
-        text-shadow: 0 0 0.1rem var(--primary);
-      }
-    }
+
     h1 {
       font-size: 2rem;
       font-weight: bold;
@@ -133,25 +95,11 @@
         background-color: var(--base3);
       }
       ul:first-child {
-        @include flex(row, space-between, center, 1rem);
+        @include flex(row, space-between, flex-start, 1rem);
         width: 100%;
         font-size: 1.5rem;
         h2 {
           font-weight: bold;
-        }
-        .close-mobile-nav {
-          color: var(--base-content);
-          cursor: pointer;
-          @include transition(0.3s);
-          border: 1px solid var(--base-content);
-          border-radius: 0.5rem;
-          padding: 0.5rem 0.7rem;
-          background-color: transparent;
-          &:hover {
-            color: var(--error);
-            border-color: var(--error);
-            background-color: var(--base);
-          }
         }
       }
       ul:last-child {
@@ -219,6 +167,32 @@
     }
   }
 }
+#error {
+  @include flex(column, normal, center, 1rem);
+  flex-grow: 1;
+  height: 100%;
+  width: 100%;
+
+  article {
+    @include flex(column, center, center, 1rem);
+    flex-grow: 1;
+    width: 80%;
+
+    h2 {
+      @include lg {
+        font-size: 2.5rem;
+      }
+      font-size: 2rem;
+      font-weight: bold;
+    }
+    p {
+      @include lg {
+        font-size: 1.5rem;
+      }
+      font-size: 1rem;
+    }
+  }
+}
 #mentions,
 #politique {
   @include flex(column, normal, normal, 1rem);
@@ -253,6 +227,29 @@
     }
   }
 }
+#share {
+  @include flex(column, normal, center, 1rem);
+  flex-grow: 1;
+  padding: 0 1rem;
+  width: 100%;
+  article {
+    @include flex(column, center, center, 1rem);
+    flex-grow: 1;
+    width: 100%;
+    h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      @include md {
+        font-size: 2rem;
+      }
+      @include lg {
+        font-size: 2.5rem;
+      }
+    }
+  }
+}
 #home {
   @include flex(column, normal, center, 1rem);
   flex-grow: 1;
@@ -276,7 +273,25 @@
     }
   }
 }
-#files {
+#share-folder {
+  h2 {
+    width: 100%;
+  }
+}
+#files,
+#share-folder {
+  h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    @include md {
+      font-size: 2rem;
+    }
+    @include lg {
+      font-size: 2.5rem;
+    }
+  }
   width: 100%;
   padding: 1rem;
   flex-grow: 1;
@@ -293,6 +308,7 @@
     }
     .head-add-file,
     .head-close-add-file {
+      @include flex(row, normal, center, 1rem);
       cursor: pointer;
       color: var(--base-content);
       @include transition(0.3s);
@@ -302,6 +318,15 @@
       }
       @include lg {
         font-size: 2rem;
+      }
+      svg {
+        font-size: 1.2rem;
+        @include md {
+          font-size: 1.5rem;
+        }
+        @include lg {
+          font-size: 2rem;
+        }
       }
     }
     .head-add-file {
@@ -352,6 +377,7 @@
       width: 100%;
       @include flex(column, normal, normal, 0);
       li {
+        width: 100%;
         input[type="checkbox"] {
           margin-right: 0.5rem;
           cursor: pointer;
@@ -373,26 +399,50 @@
           @include flex(row, space-between, center, 0.5rem);
           flex-grow: 1;
           margin-right: 1rem;
+          max-width: 50%;
+          @include sm {
+            max-width: 70%;
+          }
+          @include lg {
+            max-width: 80%;
+          }
+          :first-child {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          :last-child {
+            display: none;
+            @include sm {
+              display: block;
+            }
+          }
+        }
+        .download-button,
+        .delete-icon,
+        .share-icon {
+          color: var(--base-content);
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          z-index: 10;
+          @include transition(0.3s);
+        }
+        .download-button {
+          &:hover {
+            color: var(--primary);
+          }
         }
         .delete-icon {
-          cursor: pointer;
-          @include transition(0.3s);
-          z-index: 10;
           &:hover {
             color: var(--error);
           }
         }
-      }
-    }
-    .download-button {
-      color: var(--base-content);
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      z-index: 10;
-      @include transition(0.3s);
-      &:hover {
-        color: var(--primary);
+        .share-icon {
+          &:hover {
+            color: var(--info);
+          }
+        }
       }
     }
   }
@@ -433,7 +483,7 @@
       }
       .download-button {
         color: var(--base-content);
-        background: transparent;
+        background: var(--base3);
         border: 1px solid var(--base-content);
         border-radius: 0.5rem;
         position: absolute;
@@ -446,6 +496,23 @@
         @include transition(0.3s);
         &:hover {
           color: var(--primary);
+        }
+      }
+      .share-icon {
+        color: var(--base-content);
+        background: var(--base3);
+        border: 1px solid var(--base-content);
+        border-radius: 0.5rem;
+        position: absolute;
+        bottom: 0.5rem;
+        left: 0.5rem;
+        width: 2.5rem;
+        height: 2.5rem;
+        cursor: pointer;
+        z-index: 10;
+        @include transition(0.3s);
+        &:hover {
+          color: var(--info);
         }
       }
       .loader {
@@ -498,7 +565,7 @@
           @include transition(0.3s);
           &:hover {
             cursor: pointer;
-            transform: scale(1.1);
+            transform: scale(1.02);
             border: 1px solid var(--base-content);
           }
         }
@@ -708,7 +775,52 @@
     }
   }
 
-  .delete-modal {
+  .share-modal {
+    input[type="number"] {
+      width: 100%;
+      border: 1px solid var(--base-content);
+      border-radius: 0.5rem;
+      background-color: var(--neutral);
+      color: var(--neutral-content);
+      padding: 0.5rem 1rem;
+      @include transition(0.3s);
+      &:focus {
+        outline: none;
+        border: 1px solid var(--primary);
+      }
+      @include md {
+        width: 50%;
+      }
+    }
+    .copy-share-modal {
+      background-color: transparent;
+      color: var(--base-content);
+      border-radius: 0.5rem;
+      @include transition(0.3s);
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--warning);
+      &:hover {
+        cursor: pointer;
+        background-color: var(--warning);
+        color: var(--neutral);
+      }
+    }
+    .close-share-modal {
+      background-color: transparent;
+      color: var(--base-content);
+      border-radius: 0.5rem;
+      @include transition(0.3s);
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--error);
+      &:hover {
+        cursor: pointer;
+        background-color: var(--error);
+        color: var(--neutral);
+      }
+    }
+  }
+  .delete-modal,
+  .share-modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -730,6 +842,7 @@
       @include flex(column, center, center, 1rem);
       background-color: var(--base3);
       border-radius: 0.5rem;
+      border: none;
       padding: 1rem;
       @include transition(0.3s);
       @include lg {
@@ -739,23 +852,17 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      .delete-modal-buttons {
+      .delete-modal-buttons,
+      .share-modal-buttons {
         @include flex(row, center, center, 1rem);
+        border: none;
         button {
           padding: 0.5rem 1rem;
           @include transition(0.3s);
           border-radius: 0.5rem;
           background-color: var(--base3);
         }
-        button:first-child {
-          border: 1px solid var(--error);
-          color: var(--base-content);
-          font-weight: bold;
-          &:hover {
-            color: var(--neutral);
-            background-color: var(--error);
-          }
-        }
+
         button:last-child {
           border: 1px solid var(--warning);
           color: var(--base-content);
@@ -763,6 +870,28 @@
           &:hover {
             color: var(--neutral);
             background-color: var(--warning);
+          }
+        }
+      }
+      .share-modal-buttons {
+        button:first-child {
+          border: 1px solid var(--primary);
+          color: var(--base-content);
+          font-weight: bold;
+          &:hover {
+            color: var(--neutral);
+            background-color: var(--primary);
+          }
+        }
+      }
+      .delete-modal-buttons {
+        button:first-child {
+          border: 1px solid var(--error);
+          color: var(--base-content);
+          font-weight: bold;
+          &:hover {
+            color: var(--neutral);
+            background-color: var(--error);
           }
         }
       }
@@ -816,6 +945,7 @@
 #profile {
   @include flex(column, normal, center, 1rem);
   width: 100%;
+  flex-grow: 1;
   .profile-nav {
     @include flex(column, normal, center, 1rem);
     width: 100%;
@@ -848,14 +978,267 @@
     }
   }
   .profile-stats {
-    @include flex(column, normal, center, 1rem);
-    @include transition(0.3s);
     width: 100%;
+    flex-grow: 1;
+    @include flex(row, space-around, center, 1rem);
+    @include transition(0.3s);
+    flex-wrap: wrap;
+    .stats-card {
+      @include flex(column, center, center, 1rem);
+      flex-grow: 1;
+      width: 100%;
+      @include lg {
+        width: 40%;
+      }
+      background-color: var(--base3);
+      border-radius: 0.5rem;
+      border: 1px solid var(--base-content);
+      @include transition(0.3s);
+      margin: 1rem;
+      padding: 2rem;
+      span {
+        font-weight: bold;
+        font-size: 1.5rem;
+        @include md {
+          font-size: 1.8rem;
+        }
+        @include lg {
+          font-size: 2rem;
+        }
+        color: var(--primary);
+      }
+    }
   }
   .profile-account {
     @include flex(column, normal, center, 1rem);
     display: none;
     @include transition(0.3s);
     width: 100%;
+    flex-grow: 1;
+    @include lg {
+      width: 75%;
+    }
+    div {
+      @include flex(column, normal, center, 1rem);
+      @include lg {
+        @include flex(row, space-around, normal, 1rem);
+      }
+    }
+    .account-form,
+    .edit-account-form {
+      background-color: var(--base3);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      @include flex(column, normal, center, 1rem);
+      width: 100%;
+      p {
+        font-size: 1rem;
+        @include md {
+          font-size: 1.2rem;
+        }
+        @include lg {
+          font-size: 1.5rem;
+        }
+      }
+      .title {
+        font-weight: bold;
+        color: var(--primary);
+        text-decoration: underline;
+        align-self: flex-start;
+      }
+      .content {
+        align-self: flex-start;
+      }
+      input {
+        width: 80%;
+        @include md {
+          width: 50%;
+        }
+        border: 1px solid var(--base);
+        border-radius: 0.5rem;
+        background-color: var(--base);
+        color: var(--base-content);
+        padding: 0.5rem 1rem;
+        @include transition(0.3s);
+      }
+    }
+    .edit-info {
+      background-color: transparent;
+      color: var(--base-content);
+      border-radius: 0.5rem;
+      @include transition(0.3s);
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--warning);
+      &:hover {
+        cursor: pointer;
+        background-color: var(--warning);
+        color: var(--neutral);
+      }
+    }
+    .cancel-edit,
+    .delete-account {
+      background-color: transparent;
+      color: var(--base-content);
+      border-radius: 0.5rem;
+      @include transition(0.3s);
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--error);
+      &:hover {
+        cursor: pointer;
+        background-color: var(--error);
+        color: var(--neutral);
+      }
+    }
+    .save-edit {
+      background-color: transparent;
+      color: var(--base-content);
+      border-radius: 0.5rem;
+      @include transition(0.3s);
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--success);
+      &:hover {
+        cursor: pointer;
+        background-color: var(--success);
+        color: var(--neutral);
+      }
+    }
+  }
+  .profile-shares {
+    @include flex(column, center, center, 1rem);
+    display: none;
+    @include transition(0.3s);
+    width: 100%;
+    flex-grow: 1;
+    table {
+      overflow-x: auto;
+      max-width: 100%;
+      border-collapse: collapse;
+      border-spacing: 0;
+
+      th,
+      td {
+        padding: 0.5rem;
+        border: 1px solid var(--base-content);
+        text-align: center;
+      }
+
+      th {
+        background-color: var(--base);
+        color: var(--base-content);
+      }
+
+      tbody tr:nth-child(even) {
+        background-color: var(--base);
+      }
+
+      td:last-child {
+        :first-child {
+          margin-right: 0.2rem;
+        }
+      }
+
+      th,
+      td {
+        @include transition(0.3s);
+        font-size: 0.8rem;
+        @include sm {
+          font-size: 1rem;
+        }
+      }
+    }
+    .copy-link,
+    .delete-link {
+      background-color: transparent;
+      color: var(--base-content);
+      border-radius: 0.5rem;
+      @include transition(0.3s);
+      padding: 0.5rem 1rem;
+    }
+    .copy-link {
+      border: 1px solid var(--warning);
+      &:hover {
+        background-color: var(--warning);
+        color: var(--neutral);
+      }
+    }
+    .delete-link {
+      border: 1px solid var(--error);
+      &:hover {
+        background-color: var(--error);
+        color: var(--neutral);
+      }
+    }
+    .valid-link {
+      color: var(--success);
+    }
+    .expired-link {
+      color: var(--error);
+    }
+  }
+  .delete-account-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    background-color: rgba(#4c566a, 0.8);
+    font-size: 1rem;
+    @include md {
+      font-size: 1.2rem;
+    }
+    @include lg {
+      font-size: 1.5rem;
+    }
+    text-align: center;
+    div:first-child {
+      width: fit-content;
+      height: fit-content;
+      @include flex(column, center, center, 1rem);
+      background-color: var(--base3);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      @include transition(0.3s);
+      @include lg {
+        width: 50%;
+      }
+      position: relative;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      @include sm {
+        transform: translate(-75%, -50%);
+      }
+      @include lg {
+        transform: translate(-100%, -50%);
+      }
+      .delete-modal-buttons {
+        @include flex(row, center, center, 1rem);
+        button {
+          padding: 0.5rem 1rem;
+          @include transition(0.3s);
+          border-radius: 0.5rem;
+          background-color: var(--base3);
+        }
+        button:first-child {
+          border: 1px solid var(--error);
+          color: var(--base-content);
+          font-weight: bold;
+          &:hover {
+            color: var(--neutral);
+            background-color: var(--error);
+          }
+        }
+        button:last-child {
+          border: 1px solid var(--warning);
+          color: var(--base-content);
+          font-weight: bold;
+          &:hover {
+            color: var(--neutral);
+            background-color: var(--warning);
+          }
+        }
+      }
+    }
   }
 }
