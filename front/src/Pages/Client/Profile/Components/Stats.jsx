@@ -12,11 +12,11 @@ function Stats() {
   return (
     <article className="profile-stats">
       <div className="stats-card">
-        <h3>Nombre total de fichiers :</h3>
+        <h4>Nombre total de fichiers :</h4>
         <span>{totalFiles}</span>
       </div>
       <div className="stats-card">
-        <h3>Taille total de tous mes fichiers :</h3>
+        <h4>Taille total de tous mes fichiers :</h4>
         <span>
           {/* Pass the used storage size to SizeCalculator */}
           <SizeCalculator size={usedStorageSize} />

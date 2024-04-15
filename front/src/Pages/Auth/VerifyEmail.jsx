@@ -63,7 +63,7 @@ function VerifyEmail() {
   return (
     <section id="verify-email">
       <article>
-        <h2>Vérification !</h2>
+        <h3>Vérification !</h3>
         <p>
           Vérification de l'adresse e-mail. Vous serez redirigé vers la page de connexion lorsque celle-ci sera
           terminée.

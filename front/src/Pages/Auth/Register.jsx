@@ -122,7 +122,7 @@ const Register = () => {
         <button type="submit">{isLoading ? "En cours..." : "S'inscrire"}</button>
       </form>
       <aside>
-        <h2>S'incrire !</h2>
+        <h3>S'incrire !</h3>
         <p>S'inscrire dès maintenant pour profiter de tous les services disponibles.</p>
         <p>Vous avez déjà un compte ?</p>
         <button onClick={() => navigate("/connexion")}>Se connecter</button>

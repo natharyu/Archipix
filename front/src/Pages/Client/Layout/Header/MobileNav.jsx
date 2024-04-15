@@ -18,7 +18,7 @@ function MobileNav({ setShowMobileNav, handleLogout }) {
       <div>
         <ul>
           <li>
-            <h2>Menu</h2>
+            <h3>Menu</h3>
           </li>
           <ThemeToggler />
           <li>

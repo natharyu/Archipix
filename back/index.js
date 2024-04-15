@@ -6,26 +6,27 @@ import fileUpload from "express-fileupload";
 import router from "./router/router.js";
 
 const app = express();
-const port = process.env.PORT || 8089;
+const port = process.env.PORT || 9000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
-  cors({ origin: `${process.env.CLIENT_APP_URL}`, methods: ["GET", "POST", "PATCH", "DELETE"], credentials: true })
+  cors({
+    // origin: `${process.env.CLIENT_APP_URL}`,
+    methods: ["GET", "POST", "PATCH", "DELETE"],
+    credentials: true,
+  })
 );
 app.use(cookieParser());
-app.use(express.static("views/dist"));
-app.use("/assets", express.static("views/src/assets"));
+app.use(express.static("views"));
 app.use(fileUpload());
-app.use("/uploads", express.static("uploads"));
 
 app.use(router);
 
 app.listen(port, (err, res) => {
   if (err) {
-    console.log(err);
     return res.status(500).send(err.message);
   } else {
-    console.log("[INFO] Server Running on port:", port);
+    console.log("Server Running on port:", port);
   }
 });

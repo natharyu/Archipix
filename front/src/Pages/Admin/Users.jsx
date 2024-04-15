@@ -111,7 +111,7 @@ function Users() {
 
   return (
     <section id="users">
-      <h2>Utilisateurs</h2>
+      <h3>Utilisateurs</h3>
       <div className="admin-search">
         <SearchIcon />
         <input
@@ -126,7 +126,7 @@ function Users() {
         </button>
       </div>
       {isLoading ? (
-        <h2>Loading...</h2>
+        <h3>Loading...</h3>
       ) : (
         <table>
           <thead>

@@ -85,9 +85,9 @@ function AddUser() {
 
   return (
     <section id="addUser">
-      <h2>Ajouter un utilisateur</h2>
+      <h3>Ajouter un utilisateur</h3>
       {isLoading ? (
-        <h2>Loading...</h2>
+        <h3>Loading...</h3>
       ) : (
         <>
           <form>

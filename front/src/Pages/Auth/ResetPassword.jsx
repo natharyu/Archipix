@@ -53,7 +53,7 @@ const ResetPassword = () => {
 
   return (
     <section id="reset-password">
-      <h2>Choisir un nouveau mot de passe</h2>
+      <h3>Choisir un nouveau mot de passe</h3>
       <p>Veuillez choisir un nouveau mot de passe.</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <label>

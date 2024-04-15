@@ -98,7 +98,7 @@ function EditUser() {
 
   return (
     <section id="editUser">
-      <h2>Modifier l'utilisateur</h2>
+      <h3>Modifier l'utilisateur</h3>
       {isLoading ? (
         <p>Loading...</p>
       ) : (

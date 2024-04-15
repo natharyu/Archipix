@@ -74,13 +74,13 @@ function Files() {
       <section id="files">
         <article>
           {addMenu ? (
-            <h2 className="head-close-add-file" onClick={() => setAddMenu(!addMenu)}>
+            <h3 className="head-close-add-file" onClick={() => setAddMenu(!addMenu)}>
               <CancelIcon /> Annuler
-            </h2>
+            </h3>
           ) : (
-            <h2 className="head-add-file" onClick={() => setAddMenu(!addMenu)}>
+            <h3 className="head-add-file" onClick={() => setAddMenu(!addMenu)}>
               <AddCircleIcon /> Ajouter des fichiers
-            </h2>
+            </h3>
           )}
           <SelectMenu setSelectedFiles={setSelectedFiles} setSelectedFolders={setSelectedFolders} />
           {selectedFiles.length > 0 || selectedFolders.length > 0 ? (

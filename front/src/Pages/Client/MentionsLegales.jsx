@@ -6,7 +6,7 @@ function MentionsLegales() {
   // The template for the page
   return (
     <section id="mentions">
-      <h2>MENTIONS LEGALES</h2>
+      <h3>MENTIONS LEGALES</h3>
       <p>En vigueur au 20/04/2024</p>
 
       <p>
@@ -22,27 +22,27 @@ function MentionsLegales() {
 
       <p>Ces dernières sont accessibles sur le Site à la rubrique « Mentions légales ».</p>
 
-      <h3>ARTICLE 1 - L'ÉDITEUR</h3>
+      <h4>ARTICLE 1 - L'ÉDITEUR</h4>
       <p>
         L’édition et la direction de la publication du Site est assurée par Anthony DEWITTE, domiciliée 1 rue du
         domicile 75000 Paris, dont le numéro de téléphone est 0612345678, et l'adresse e-mail anthony.dewitte@3wa.io.
       </p>
       <p>Ci-après l'«Editeur».</p>
 
-      <h3>ARTICLE 2 - L'HÉBERGEUR</h3>
+      <h4>ARTICLE 2 - L'HÉBERGEUR</h4>
       <p>
         L'hébergeur du Site est la société 3WAcademy, dont le siège social est situé au 46 rue René Clair 75018 Paris ,
         avec le numéro de téléphone : 0123456789 et l'adresse e-mail : 3wa.io.
       </p>
 
-      <h3>ARTICLE 3 - ACCÈS AU SITE</h3>
+      <h4>ARTICLE 3 - ACCÈS AU SITE</h4>
       <p>
         Le Site est accessible en tout endroit, 7j/7, 24h/24 sauf cas de force majeure, interruption programmée ou non
         et pouvant découlant d’une nécessité de maintenance.
       </p>
       <p>En cas de modification, interruption ou suspension du Site, l'Editeur ne saurait être tenu responsable.</p>
 
-      <h3>ARTICLE 4 - COLLECTE DES DONNÉES</h3>
+      <h4>ARTICLE 4 - COLLECTE DES DONNÉES</h4>
       <p>
         Le Site assure à l'Utilisateur une collecte et un traitement d'informations personnelles dans le respect de la
         vie privée conformément à la loi n°78-17 du 6 janvier 1978 relative à l'informatique, aux fichiers et aux

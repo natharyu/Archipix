@@ -1,3 +1,4 @@
+import HomeImage from "../../assets/images/home.jpeg";
 /**
  * Home page component
  * @returns {JSX.Element} Home page
@@ -9,11 +10,11 @@ function Home() {
       <article>
         <figure>
           {/* Image accueil */}
-          <img src={"/assets/images/home.jpeg"} alt="Image accueil" />
+          <img src={HomeImage} alt="Image accueil" />
         </figure>
       </article>
       <article>
-        <h2>ArchiPix</h2>
+        <h3>ArchiPix</h3>
         <p>
           Découvrez notre solution de stockage dans le cloud, une plateforme innovante conçue pour répondre à vos
           besoins de stockage et de gestion de fichiers en toute sécurité.

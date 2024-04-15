@@ -98,7 +98,7 @@
         @include flex(row, space-between, flex-start, 1rem);
         width: 100%;
         font-size: 1.5rem;
-        h2 {
+        h3 {
           font-weight: bold;
         }
       }
@@ -149,7 +149,7 @@
       div {
         @include flex(column, normal, center, 1rem);
       }
-      h3 {
+      h4 {
         font-weight: bold;
         font-size: 1.5rem;
       }
@@ -178,7 +178,7 @@
     flex-grow: 1;
     width: 80%;
 
-    h2 {
+    h3 {
       @include lg {
         font-size: 2.5rem;
       }
@@ -199,14 +199,14 @@
   padding: 1rem;
   width: 100%;
   :nth-child(2),
-  h2 {
+  h3 {
     text-align: center;
   }
-  h2 {
+  h3 {
     font-size: 2rem;
     font-weight: bold;
   }
-  h3 {
+  h4 {
     font-size: 1.5rem;
     font-weight: bold;
   }
@@ -236,7 +236,7 @@
     @include flex(column, center, center, 1rem);
     flex-grow: 1;
     width: 100%;
-    h2 {
+    h3 {
       text-align: center;
       font-size: 1.5rem;
       font-weight: bold;
@@ -266,7 +266,7 @@
   }
   article:last-child {
     @include flex(column, center, normal, 1rem);
-    h2 {
+    h3 {
       font-size: 2rem;
       font-weight: bold;
       text-align: center;
@@ -274,13 +274,13 @@
   }
 }
 #share-folder {
-  h2 {
+  h3 {
     width: 100%;
   }
 }
 #files,
 #share-folder {
-  h2 {
+  h3 {
     text-align: center;
     font-size: 1.5rem;
     font-weight: bold;
@@ -302,7 +302,7 @@
     @include md {
       @include flex(row, space-between, center, 1rem);
     }
-    h2 {
+    h3 {
       font-size: 2rem;
       font-weight: bold;
     }
@@ -392,7 +392,6 @@
         cursor: pointer;
         @include transition(0.3s);
         &:hover {
-          text-shadow: 0 0 0.5rem var(--primary);
           background-color: rgba(#4c566a, 0.2);
         }
         div {

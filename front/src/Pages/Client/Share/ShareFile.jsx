@@ -42,7 +42,7 @@ function ShareFile() {
           {currentFile?.type.includes("video") && <video src={url} controls />}
         </article>
       ) : (
-        <h2>Le lien n'est pas valide</h2>
+        <h3>Le lien n'est pas valide</h3>
       )}
     </section>
   );

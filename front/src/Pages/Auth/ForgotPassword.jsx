@@ -76,7 +76,7 @@ const ForgotPassword = () => {
     <dialog id="forgot-password">
       <section>
         <div>
-          <h3>Mot de passe oublié ?</h3>
+          <h4>Mot de passe oublié ?</h4>
           <form method="dialog">
             <CloseOutlinedIcon
               className="closeBtn"

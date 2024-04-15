@@ -49,12 +49,12 @@ function Home() {
   return (
     <section id="admin-home">
       <article>
-        <h2>Bienvenue sur le panneau administrateur</h2>
+        <h3>Bienvenue sur le panneau administrateur</h3>
         <p>Ce panneau vous permet de voir les statistiques de l'application et de gérer les utilisateurs.</p>
       </article>
 
       <article>
-        <h3>Statistiques de l'application</h3>
+        <h4>Statistiques de l'application</h4>
         <h4>
           Nombre d'utilisateurs total : <span>{totalUsers}</span>
         </h4>

@@ -16,13 +16,13 @@ router.use("/auth", authRoutes);
 // Handle admin routes
 router.get("/admin*", adminOnly, (req, res) => {
   // Send index.html for admin views
-  res.sendFile(path.join(__dirname, "views/dist", "index.html"));
+  res.sendFile(path.join(__dirname, "views/", "index.html"));
 });
 
 // Handle client routes
 router.get("*", (req, res) => {
   // Send index.html for client views
-  res.sendFile(path.join(__dirname, "views/dist", "index.html"));
+  res.sendFile(path.join(__dirname, "views/", "index.html"));
 });
 
 export default router;

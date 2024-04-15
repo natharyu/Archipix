@@ -1,7 +1,7 @@
 import FolderIcon from "@mui/icons-material/Folder";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { shareGetFiles } from "../../../store/slices/files";
 import { setCurrentFolder, shareGetFolders, shareGetPath } from "../../../store/slices/folder";
 import { setToast } from "../../../store/slices/toast";
@@ -80,7 +80,7 @@ function ShareFolder() {
     <>
       {validLink ? (
         <section id="share-folder">
-          <h2>Dossier partagé</h2>
+          <h3>Dossier partagé</h3>
           {/* Folders grid view */}
           <article className="grid-view">
             {isLoadingFolder ? (
@@ -149,7 +149,7 @@ function ShareFolder() {
           </article>
         </section>
       ) : (
-        <h2>Le lien n'est pas valide</h2>
+        <h3>Le lien n'est pas valide</h3>
       )}
     </>
   );

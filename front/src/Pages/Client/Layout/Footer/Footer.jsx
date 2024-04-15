@@ -28,7 +28,7 @@ function Footer() {
           </div>
         </aside>
         <nav>
-          <h3>Menu</h3>
+          <h4>Menu</h4>
           <Link to="/">Accueil</Link>
           {/* Link to the user's files (if logged in) */}
           {isLoggedIn && (
@@ -40,7 +40,7 @@ function Footer() {
           <button onClick={() => document.getElementById("contact").showModal()}>Contact</button>
         </nav>
         <div>
-          <h3>Contactez-nous</h3>
+          <h4>Contactez-nous</h4>
           <p>Email : anthony.dewitte@3wa.io</p>
           <p>Téléphone : +33 123-456-789</p>
         </div>

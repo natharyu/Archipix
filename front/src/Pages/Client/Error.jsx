@@ -8,7 +8,7 @@ function Error() {
   return (
     <section id="error">
       <article>
-        <h2>⚠️ Erreur !</h2>
+        <h3>⚠️ Erreur !</h3>
         <p>Oops! Il semblerait que cette page n'existe pas.</p>
       </article>
     </section>

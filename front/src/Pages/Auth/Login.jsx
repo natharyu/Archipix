@@ -96,7 +96,7 @@ const Login = () => {
         <button type="submit">Se connecter</button>
       </form>
       <aside>
-        <h2>Se connecter !</h2>
+        <h3>Se connecter !</h3>
         <p>Se connecter dès maintenant pour profiter de tous les services disponibles.</p>
         <p>Vous n'avez pas de compte ?</p>
         <button onClick={() => navigate("/inscription")}>S'enregistrer</button>

@@ -77,7 +77,7 @@ const Contact = () => {
         <form method="dialog">
           <CloseOutlinedIcon className="closeBtn" onClick={() => document.getElementById("contact").close()} />
         </form>
-        <h3>Contactez-nous !</h3>
+        <h4>Contactez-nous !</h4>
         <form id="contactForm" onSubmit={handleSubmit}>
           <label>
             Email

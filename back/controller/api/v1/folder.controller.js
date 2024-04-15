@@ -182,7 +182,7 @@ const download = async (req, res) => {
     const path = `${req.params.path.replace("&&&", "/")}/${folder.id}/`;
 
     // Download the folder as a .zip file
-    await makeArchive(path, res);
+    await makeArchive(path, res, folder.id);
     // End the response to signal the download is complete
     res.end();
   } catch (error) {

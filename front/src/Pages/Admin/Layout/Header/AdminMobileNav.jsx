@@ -14,7 +14,7 @@ function AdminMobileNav({ setShowAdminMobileNav }) {
         {/* Header for the menu */}
         <ul>
           <li>
-            <h2>Menu</h2>
+            <h3>Menu</h3>
           </li>
           {/* Toggle for the dark/light theme */}
           <ThemeToggler />
