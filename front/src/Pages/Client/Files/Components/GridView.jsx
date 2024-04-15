@@ -236,10 +236,7 @@ function GridView({
 
                       {/* If file is a video, display it */}
                       {file.type.includes("video") && (
-                        <video
-                          src={`https://archipix.s3.eu-west-3.amazonaws.com/${path.join("/")}/${file.label}`}
-                          controls
-                        />
+                        <video src={`https://archipix.s3.eu-west-3.amazonaws.com/${path.join("/")}/${file.label}`} />
                       )}
                     </div>
                   </div>
