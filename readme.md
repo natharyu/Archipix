@@ -27,12 +27,14 @@ Ce projet est destiné aux photographes professionnels qui ont besoin d'un syst�
 
 1. Clonez le dépôt :
    `git clone https://github.com/natharyu/Archipix.git`
-2. Installez les dépendances :
+2. Naviguez dans le dossier `Archipix` :
+   `cd Archipix`
+3. Installez les dépendances :
    `cd back && npm install && cd ../front && npm install`
-3. Configurez les variables d'environnement :
+4. Configurez les variables d'environnement :
    `cd back && cp .env.example .env && cd ../front && cp .env.example .env`
    Ensuite modifier les fichier .env avec vos paramètres d'environnement.
-4. Lancez le serveur :
+5. Lancez le serveur :
    ouvrez 2 terminaux et lancer les commandes suivantes :
    `cd back && npm start`
    `cd front && npm run build`
