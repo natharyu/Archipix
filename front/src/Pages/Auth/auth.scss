@@ -71,7 +71,7 @@
       width: 50%;
     }
     @include flex(column, center, center, 2rem);
-    h2 {
+    h3 {
       font-size: 2rem;
       @include md {
         font-size: 3rem;
@@ -186,7 +186,7 @@
   @include flex(column, center, center, 1rem);
   padding: 2rem;
   flex-grow: 1;
-  h2 {
+  h3 {
     font-size: 2rem;
     font-weight: bold;
     @include lg {
@@ -250,7 +250,7 @@
     height: 100%;
     @include flex(column, center, center, 2rem);
   }
-  h2 {
+  h3 {
     font-size: 2.5rem;
     font-weight: bold;
     @include lg {
