@@ -166,7 +166,7 @@ function Files() {
           />
         )}
       </section>
-      {filePreview && <FilePreview />}
+      {filePreview && <FilePreview setFilePreview={setFilePreview} />}
     </>
   );
 }
