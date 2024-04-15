@@ -51,13 +51,14 @@ function ShareFolderModal({ setShowShareFolderModal, folder, path }) {
       <div>
         <p>Partage du dossier :</p>
         <p>veuillez selectionner la durée du partage (en secondes)</p>
-        <p>3600s = 1h | 86400s = 24h</p>
+        <p>3600s = 1h | 86400s = 24h (maximum)</p>
         <input
           type="number"
           name="expiration"
           id="expiration"
           onChange={(e) => setExpiration(e.target.value)}
           required={true}
+          max={86400}
         />
         <div className="share-modal-buttons">
           <button onClick={() => handleShareFolder(folder, expiration)}>partager</button>

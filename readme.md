@@ -35,6 +35,6 @@ Ce projet est destiné aux photographes professionnels qui ont besoin d'un syst�
    `cd back && cp .env.example .env && cd ../front && cp .env.example .env`
    Ensuite modifier les fichier .env avec vos paramètres d'environnement.
 5. Lancez le serveur :
-   ouvrez 2 terminaux et lancer les commandes suivantes :
+   ouvrez 2 terminaux et lancer les commandes suivantes pour lancer le serveur :
    `cd back && npm start`
    `cd front && npm run build`
