@@ -6,7 +6,7 @@ import fileUpload from "express-fileupload";
 import router from "./router/router.js";
 
 const app = express();
-const port = process.env.PORT || 9000;
+const port = process.env.SERVER_PORT || 9000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
