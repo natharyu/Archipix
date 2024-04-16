@@ -58,7 +58,7 @@ const shareFile = async (req, res) => {
 
   const shareLink = `/share/file/${share}`;
 
-  await Share.update({ url: `https://archipix.dew-hub.ovh${shareLink}` }, share);
+  await Share.update({ url: `${process.env.CLIENT_APP_URL}${shareLink}` }, share);
   return res.status(200).json(shareLink);
 };
 
@@ -114,7 +114,7 @@ const shareFolder = async (req, res) => {
 
   const shareLink = `/share/folder/${share}`;
 
-  await Share.update({ url: `https://archipix.dew-hub.ovh${shareLink}` }, share);
+  await Share.update({ url: `${process.env.CLIENT_APP_URL}${shareLink}` }, share);
 
   return res.status(200).json(shareLink);
 };

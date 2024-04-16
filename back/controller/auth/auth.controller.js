@@ -82,7 +82,7 @@ const register = async (req, res) => {
       message: `Vérification de votre adresse e-mail
         Bonjour,
         Merci de cliquer sur le lien ci-dessous pour vérifier votre adresse e-mail afin de pouvoir vous connecter :
-        https://archipix.dew-hub.ovh/verification-email/${emailVerificationToken}
+        ${process.env.CLIENT_APP_URL}/${emailVerificationToken}
         Cordialement,
         Archipix`,
     };
@@ -302,7 +302,7 @@ const resetPassword = async (req, res) => {
     to_email: email,
     subject: "Réinitialisation du mot de passe",
     // The message contains a link to reset the user's password
-    message: `https://archipix.dew-hub.ovh/nouveau-mot-de-passe/${resetToken}`,
+    message: `${process.env.CLIENT_APP_URL}/nouveau-mot-de-passe/${resetToken}`,
   };
 
   try {

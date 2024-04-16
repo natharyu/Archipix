@@ -25,7 +25,7 @@ function ShareFileModal({ setShowShareFileModal, file, path }) {
           "<div><p>Partage effectue avec succes</p><p>la duree du partage est de " +
           expiration +
           " secondes</p><p>le lien de partage est : </p>" +
-          "<p>https://archipix.dew-hub.ovh" +
+          `<p>${import.meta.env.VITE_FRONT_URL}` +
           data +
           "</p>" +
           "</p>" +
@@ -35,7 +35,7 @@ function ShareFileModal({ setShowShareFileModal, file, path }) {
         const closeBtn = document.getElementById("close-share-modal");
         const copyBtn = document.getElementById("copy-share-modal");
         copyBtn.addEventListener("click", () => {
-          navigator.clipboard.writeText(`https://archipix.dew-hub.ovh${data}`);
+          navigator.clipboard.writeText(`${import.meta.env.VITE_FRONT_URL}${data}`);
           dispatch(resetToast());
           dispatch(setToast({ type: "success", message: "Lien copié dans le presse papier !", showToast: true }));
         });

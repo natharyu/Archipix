@@ -27,6 +27,7 @@
     "express-fileupload": "^1.4.3",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.7.1",
+    "nodemon": "^3.1.0",
     "s3-zip": "^3.3.0"
   }
 }
