@@ -47,6 +47,8 @@ function Files() {
   const { viewMode } = useSelector((state) => state.user);
   // Redux dispatch function
   const dispatch = useDispatch();
+  // The search query
+  const [search, setSearch] = useState("");
 
   // Fetches the root folder when the component mounts
   useEffect(() => {
@@ -69,6 +71,15 @@ function Files() {
     }
   }, [currentFolder]);
 
+  /**
+   * Updates the search query.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} event The change event
+   */
+  const handleSearchChange = (event) => {
+    setSearch(event.target.value);
+  };
+
   return (
     <>
       <section id="files">
@@ -82,6 +93,13 @@ function Files() {
               <AddCircleIcon /> Ajouter des fichiers
             </h3>
           )}
+          <input
+            placeholder="Rechercher..."
+            type="search"
+            name="fileSearch"
+            id="fileSearch"
+            onChange={handleSearchChange}
+          />
           <SelectMenu setSelectedFiles={setSelectedFiles} setSelectedFolders={setSelectedFolders} />
           {selectedFiles.length > 0 || selectedFolders.length > 0 ? (
             <button className="deleteBtn" onClick={() => setShowDeleteMultipleModal(true)}>
@@ -122,6 +140,8 @@ function Files() {
             setShowDeleteFolderModal={setShowDeleteFolderModal}
             setFolderToDelete={setFolderToDelete}
             setFileToDelete={setFileToDelete}
+            search={search}
+            setSearch={setSearch}
           />
         ) : (
           <GridView
@@ -134,6 +154,8 @@ function Files() {
             setShowDeleteFolderModal={setShowDeleteFolderModal}
             setFolderToDelete={setFolderToDelete}
             setFileToDelete={setFileToDelete}
+            search={search}
+            setSearch={setSearch}
           />
         )}
 

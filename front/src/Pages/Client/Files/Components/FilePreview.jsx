@@ -29,6 +29,7 @@ const FilePreview = ({ setFilePreview }) => {
         {currentFile?.type.includes("video") && (
           <video src={`https://archipix.s3.eu-west-3.amazonaws.com/${path.join("/")}/${currentFile.label}`} controls />
         )}
+        <p>{currentFile?.label}</p>
       </article>
     </section>
   );

@@ -288,6 +288,7 @@
   background-color: rgba(#4c566a, 0.8);
   font-size: 1rem;
   article {
+    @include flex(column, normal, center, 1rem);
     max-height: 90%;
     display: flex;
     position: relative;
@@ -306,7 +307,12 @@
     }
     img,
     video {
-      width: 100%;
+      width: fit-content;
+    }
+    p {
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
     }
     .close-file-preview {
       position: absolute;
@@ -332,7 +338,6 @@
     text-align: center;
     font-size: 1.5rem;
     font-weight: bold;
-    margin-bottom: 1rem;
     @include md {
       font-size: 2rem;
     }
@@ -349,6 +354,13 @@
     @include flex(column, normal, center, 1rem);
     @include md {
       @include flex(row, space-between, center, 1rem);
+    }
+    #fileSearch {
+      flex-grow: 1;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid var(--base-content);
+      @include transition(0.3s);
     }
     h3 {
       font-size: 2rem;

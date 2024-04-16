@@ -33,6 +33,8 @@ function GridView({
   setShowDeleteFileModal,
   setFolderToDelete,
   setFileToDelete,
+  search,
+  setSearch,
 }) {
   const { files, isLoading: isLoadingFiles } = useSelector((state) => state.file);
   const { isLoading: isLoadingFolder, folders, path, rootFolder } = useSelector((state) => state.folder);
@@ -51,6 +53,8 @@ function GridView({
    * @param {string} label - Label of folder
    */
   const handleClickFolder = (id, label) => {
+    setSearch("");
+    document.querySelector("#fileSearch").value = "";
     // Reset file preview state
     setFilePreview(false);
 
@@ -86,26 +90,6 @@ function GridView({
    *
    * @param {number} file_id - Id of file to be deleted
    */
-  const handleClickDeleteFile = async (file_id) => {
-    // Show delete file modal
-    setShowDeleteFileModal(true);
-
-    // Set file to delete
-    setFileToDelete(file_id);
-  };
-
-  /**
-   * Handles click on delete folder button.
-   *
-   * @param {number} folder_id - Id of folder to be deleted
-   */
-  const handleClickDeleteFolder = async (folder_id) => {
-    // Show delete folder modal
-    setShowDeleteFolderModal(true);
-
-    // Set folder to delete
-    setFolderToDelete(folder_id);
-  };
 
   /**
    * Adds or removes file from selected files.
@@ -148,6 +132,16 @@ function GridView({
     }
   };
 
+  /**
+   * Filters the files and folders based on the search query.
+   */
+  const filteredFiles = search
+    ? files.filter((file) => file.label.toUpperCase().includes(search.toUpperCase()))
+    : files;
+  const filteredFolders = search
+    ? folders.filter((folder) => folder.label.toUpperCase().includes(search.toUpperCase()))
+    : folders;
+
   return (
     <>
       {/* Folders grid view */}
@@ -157,10 +151,10 @@ function GridView({
         ) : (
           <>
             {/* If there are no folders, do not display anything */}
-            {folders.length === 0 ? null : (
+            {filteredFolders.length === 0 ? null : (
               <>
                 {/* Map folders to display them as a grid */}
-                {folders.map((folder, index) => (
+                {filteredFolders.map((folder, index) => (
                   <div key={index}>
                     {/* checkbox input to select/deselect folder */}
                     <input
@@ -202,10 +196,10 @@ function GridView({
         ) : (
           <>
             {/* If there are no files, do not display anything */}
-            {files.length === 0 ? null : (
+            {filteredFiles.length === 0 ? null : (
               <>
                 {/* Map files to display them as a grid */}
-                {files.map((file, index) => (
+                {filteredFiles.map((file, index) => (
                   <div className="grid-file-container" key={index}>
                     {/* checkbox input to select/deselect file */}
                     <input

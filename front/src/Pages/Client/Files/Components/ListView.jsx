@@ -37,6 +37,8 @@ function ListView({
   setShowDeleteFileModal,
   setFolderToDelete,
   setFileToDelete,
+  search,
+  setSearch,
 }) {
   const { files, isLoading: isLoadingFiles } = useSelector((state) => state.file);
   const { isLoading: isLoadingFolder, folders } = useSelector((state) => state.folder);
@@ -49,12 +51,24 @@ function ListView({
   const dispatch = useDispatch();
 
   /**
+   * Filters the files and folders based on the search query.
+   */
+  const filteredFiles = search
+    ? files.filter((file) => file.label.toUpperCase().includes(search.toUpperCase()))
+    : files;
+  const filteredFolders = search
+    ? folders.filter((folder) => folder.label.toUpperCase().includes(search.toUpperCase()))
+    : folders;
+
+  /**
    * Handles click on a folder, sets current folder state and resets file preview state.
    *
    * @param {number} id - Id of folder
    * @param {string} label - Label of folder
    */
   const handleClickFolder = (id, label) => {
+    setSearch("");
+    document.querySelector("#fileSearch").value = "";
     // Reset file preview state
     setFilePreview(false);
 
@@ -161,10 +175,10 @@ function ListView({
         ) : (
           <ul>
             {/* If there are no folders, do not render anything */}
-            {folders.length === 0 ? null : (
+            {filteredFolders.length === 0 ? null : (
               <>
                 {/* Map through folders */}
-                {folders.map((folder, index) => (
+                {filteredFolders.map((folder, index) => (
                   <li key={index}>
                     {/* Checkbox to select folder */}
                     <input
@@ -207,10 +221,10 @@ function ListView({
         ) : (
           <ul>
             {/* If there are no files, do not render anything */}
-            {files.length === 0 ? null : (
+            {filteredFiles.length === 0 ? null : (
               <>
                 {/* Map through files */}
-                {files.map((file, index) => (
+                {filteredFiles.map((file, index) => (
                   <li key={index}>
                     {/* Checkbox to select file */}
                     <input
