@@ -2,10 +2,10 @@ import emailjs from "@emailjs/nodejs";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
-import { createFolder } from "../../utils/S3.js";
 import Folder from "../../model/Folder.model.js";
 import Query from "../../model/Query.model.js";
 import User from "../../model/User.model.js";
+import { createFolder } from "../../utils/S3.js";
 
 /**
  * Registers a new user
@@ -82,7 +82,7 @@ const register = async (req, res) => {
       message: `Vérification de votre adresse e-mail
         Bonjour,
         Merci de cliquer sur le lien ci-dessous pour vérifier votre adresse e-mail afin de pouvoir vous connecter :
-        ${process.env.CLIENT_APP_URL}/${emailVerificationToken}
+        ${process.env.CLIENT_APP_URL}/verification-email/${emailVerificationToken}
         Cordialement,
         Archipix`,
     };
