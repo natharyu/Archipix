@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { checkExisting, deleteFile, deleteFolder, downloadFile, uploadFile } from "../../../config/S3.js";
+import { checkExisting, deleteFile, deleteFolder, downloadFile, uploadFile } from "../../../utils/S3.js";
 import File from "../../../model/File.model.js";
 import Folder from "../../../model/Folder.model.js";
 import Query from "../../../model/Query.model.js";

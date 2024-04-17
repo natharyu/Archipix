@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { createFolder, deleteFolder } from "../../../config/S3.js";
+import { createFolder, deleteFolder } from "../../../utils/S3.js";
 import File from "../../../model/File.model.js";
 import Folder from "../../../model/Folder.model.js";
 import Query from "../../../model/Query.model.js";

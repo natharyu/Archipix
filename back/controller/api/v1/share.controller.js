@@ -1,4 +1,4 @@
-import { checkExisting, getOneSignedUrl } from "../../../config/S3.js";
+import { checkExisting, getOneSignedUrl } from "../../../utils/S3.js";
 import File from "../../../model/File.model.js";
 import Folder from "../../../model/Folder.model.js";
 import Query from "../../../model/Query.model.js";
