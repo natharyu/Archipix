@@ -11,14 +11,14 @@ export const loggedOnly = (req, res, next) => {
   // Check if the JWT is missing
   if (!token) {
     // Redirect the user to the login page
-    return res.status(301).redirect("/connexion");
+    return res.status(301).redirect(process.env.CLIENT_APP_URL + "/connexion");
   }
   // Verify the JWT
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     // Check if the JWT is invalid
     if (err) {
       // Redirect the user to the login page
-      return res.status(301).redirect("/connexion");
+      return res.status(301).redirect(process.env.CLIENT_APP_URL + "/connexion");
     }
     // Set the user ID
     req.userId = decoded.id;
@@ -39,7 +39,7 @@ export const adminOnly = (req, res, next) => {
   // Check if the JWT is missing
   if (!token) {
     // Return a 403 Forbidden status code and redirect to the login page
-    return res.status(403).redirect("/connexion");
+    return res.status(403).redirect(process.env.CLIENT_APP_URL + "/connexion");
   }
 
   // Verify the JWT
@@ -47,7 +47,7 @@ export const adminOnly = (req, res, next) => {
     // Check if the JWT is invalid
     if (err) {
       // Redirect the user to the login page
-      return res.status(301).redirect("/connexion");
+      return res.status(301).redirect(process.env.CLIENT_APP_URL + "/connexion");
     }
     // Check if the user is an admin
     if (decoded.role === "admin") {
@@ -57,7 +57,7 @@ export const adminOnly = (req, res, next) => {
       next();
     } else {
       // Redirect the user to the login page
-      return res.status(301).redirect("/connexion");
+      return res.status(301).redirect(process.env.CLIENT_APP_URL + "/connexion");
     }
   });
 };
