@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
-import { checkExisting, deleteFile, deleteFolder, downloadFile, uploadFile } from "../../../utils/S3.js";
 import File from "../../../model/File.model.js";
 import Folder from "../../../model/Folder.model.js";
 import Query from "../../../model/Query.model.js";
 import User from "../../../model/User.model.js";
+import { checkExisting, deleteFile, deleteFolder, downloadFile, uploadFile } from "../../../utils/S3.js";
 /**
  * Get all files of a folder
  * @param {string} folder_id.path.required - ID of the folder
@@ -67,7 +67,7 @@ const add = async (req, res) => {
     // Add each file to the database
     await files.map(async (file) => {
       // Check if the file already exists
-      const [existingFileName] = await File.getOneByField("label", file.name);
+      const [existingFileName] = await File.getOneByFieldByUser("label", file.name, user.id);
       if (
         existingFileName &&
         existingFileName.label === file.name &&
@@ -80,6 +80,7 @@ const add = async (req, res) => {
           // If the file already exists with the same name but a different size or type, generate a new file name
           file.name = `${Math.floor(Math.random() * 1000)}-${file.name}`;
         }
+        console.log(req.body.currentFolder);
         // Generate a new file ID
         const checkExistingFile = async () => {
           const [fileId] = await Query.generateUUID();

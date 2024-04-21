@@ -18,6 +18,12 @@ class File {
     return result;
   }
 
+  static getOneByFieldByUser(field, data, user_id) {
+    const query = `SELECT id, user_id, label, size, type, extension FROM file WHERE ${field} = ? AND user_id = ? LIMIT 1`;
+    const result = pool.execute(query, [data, user_id]);
+    return result;
+  }
+
   /**
    * Gets all files by given field and data.
    *

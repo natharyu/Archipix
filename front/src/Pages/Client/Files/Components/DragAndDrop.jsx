@@ -52,13 +52,15 @@ const DragAndDrop = ({ setAddMenu }) => {
   const handleChangeStatus = ({ meta, file }, status, allFiles) => {
     allFiles.map(async (f) => {
       if (status === "ready" && f.meta.exist === true) await f.remove();
-      if (status === "headers_received") {
+      if (status === "headers_received" || status === "done") {
         await f.remove();
         dispatch(resetToast());
         dispatch(setToast({ message: "Fichier(s) ajouté(s)", type: "success", showToast: true }));
-        setAddMenu(false);
       }
     });
+    if (allFiles.length === 0) {
+      setAddMenu(false);
+    }
     setTimeout(() => dispatch(getFiles(currentFolder)), 1000);
   };
 
