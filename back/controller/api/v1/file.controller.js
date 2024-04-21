@@ -80,7 +80,6 @@ const add = async (req, res) => {
           // If the file already exists with the same name but a different size or type, generate a new file name
           file.name = `${Math.floor(Math.random() * 1000)}-${file.name}`;
         }
-        console.log(req.body.currentFolder);
         // Generate a new file ID
         const checkExistingFile = async () => {
           const [fileId] = await Query.generateUUID();
